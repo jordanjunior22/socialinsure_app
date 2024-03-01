@@ -5,11 +5,13 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
+
 import Campaigns from './app/screens/Campaigns';
 import Account from './app/screens/Account';
 import Histories from './app/screens/Histories';
 import Home from './app/screens/Home'
-
+import ProfileDisplay from './app/screens/profile/ProfileDisplay';
+import ProfileEdit from './app/screens/profile/ProfileEdit';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -29,6 +31,8 @@ function App() {
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen name="Main" component={MainTabNavigator} />
+        <Stack.Screen name="ProfileDisplay" component={ProfileDisplay} />
+        <Stack.Screen name="ProfileEdit" component={ProfileEdit} />
       </Stack.Navigator>
     </NavigationContainer>
   );

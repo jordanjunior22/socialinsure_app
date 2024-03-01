@@ -1,12 +1,19 @@
 import { StyleSheet, Text, View, ScrollView, Image,Button,TouchableOpacity } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import TodoScrollView from '../components/TodoScrollView';
 import SocialFeatures from '../components/SocialFeatures';
 import FeaturedCampaings from '../components/FeaturedCampaigns';
 
+
 const Home = () => {
   const onPress = () => {
     console.log('Button pressed');
+  };
+  const navigation = useNavigation();
+
+  const handleImageClick = () => {
+    navigation.navigate('ProfileDisplay');
   };
   return (
     <ScrollView style={styles.scrollView}>
@@ -14,7 +21,9 @@ const Home = () => {
 
         <View style={styles.headingSection}>
           <Text style={styles.heading}>Hello Ted</Text>
-          <Image source={require('../../assets/ted.jpg')} style={styles.image} />
+          <TouchableOpacity onPress={handleImageClick}>
+            <Image source={require('../../assets/ted.jpg')} style={styles.image} />
+          </TouchableOpacity>
         </View>
         
         <View style={styles.hero}>
