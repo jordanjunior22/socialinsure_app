@@ -13,6 +13,8 @@ import Histories from './app/screens/Histories';
 import Home from './app/screens/Home'
 import ProfileDisplay from './app/screens/profile/ProfileDisplay';
 import QuickTopUp from './app/screens/QuickTopUp';
+import SuccessFeedback from './app/screens/SuccessFeedback';
+import FailedFeedback from './app/screens/FailedFeedback';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -35,7 +37,8 @@ function App() {
         <Stack.Screen name="Main" component={MainTabNavigator} />
         <Stack.Screen name="ProfileDisplay" component={ProfileDisplay} />
         <Stack.Screen name="QuickTopUp" component={QuickTopUp} />
-
+        <Stack.Screen name="SuccessFeedback" component={SuccessFeedback} />
+        <Stack.Screen name="FailedFeedback" component={FailedFeedback} />
       </Stack.Navigator>
     </NavigationContainer>
   );

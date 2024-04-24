@@ -24,11 +24,13 @@ const QuickTopUp = () => {
               />
         <View style={{marginTop:20}}><AmountInput/></View>
         <View style={{width:'100%',height:1,backgroundColor:'lightgray',marginTop:20}}></View>
-        <Text style={{textAlign:'center',color:'#24FF00',fontWeight:700,marginTop:10}}>Choose Payment Method</Text>
+        <Text style={{textAlign:'center',color:'blue',fontWeight:700,marginTop:10}}>Choose Payment Method</Text>
+        <Text style={{color:'blue', textAlign:'center'}}>You won't be charged yet</Text>
         <View style={{display:'flex', flexDirection:'column', alignItems:'center', marginTop:10}}>
-            <CustomButton name='Credit/Debit Cart' onPress={onPress} imageIcon={cardIcon}/>
-            <CustomButton name='Credit/Debit Cart' onPress={onPress} imageIcon={paypalIcon}/>
+            <CustomButton name='Credit/Debit Cart' onPress={()=>{navigation.navigate('SuccessFeedback')}} imageIcon={cardIcon} containerStyle={{justifyContent:''}}/>
+            <CustomButton name='PayPal' onPress={()=>{navigation.navigate('FailedFeedback')}} imageIcon={paypalIcon} containerStyle={{justifyContent:''}}/>
         </View>
+        
     </ScrollView>
   )
 }

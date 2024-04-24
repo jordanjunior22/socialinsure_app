@@ -45,7 +45,7 @@ const ProfileDisplay = () => {
     
         <Text style={{marginTop:20, fontSize:12, color:'blue'}}>Editing your profile is disabled, Please contact support on <Text style={{fontWeight:700}}>+1 703 725-8183</Text> or email <Text  style={{fontWeight:700}}>accounts@socialinsure.com</Text></Text>
         
-        <View style={{marginTop:30,flexDirection:'column',gap:10}}>
+        <View style={{marginTop:30,flexDirection:'column'}}>
             <View style={{flexDirection:'row',justifyContent:'space-between', alignItems:'center',backgroundColor:'#18B8A8'}}>
                 <Text style={{color:'white',padding:4}}>User ID</Text>
                 <TextInput
@@ -80,7 +80,7 @@ const ProfileDisplay = () => {
             <View style={{flexDirection:'row',justifyContent:'space-between', alignItems:'center'}}>
                 <Text style={{padding:4}}>Email</Text>
                 <TextInput
-                 style={[styles.input,{padding:4}]}
+                style={[styles.input,{padding:4}]}
                 placeholder="Email"
                 value="flaviusprahlad@socialinsure.org" // Set the initial value for the name
                 editable={false} // Make the input read-only
@@ -90,14 +90,14 @@ const ProfileDisplay = () => {
             <View style={{flexDirection:'row',justifyContent:'space-between', alignItems:'center', backgroundColor:'#18B8A8'}}>
                 <Text style={{color:'white',padding:4}}>Phone Number</Text>
                 <TextInput
-                style={[styles.input,{color:'white',opacity:0.7,padding:4}]}
+                style={[styles.input,{color:'white',padding:4}]}
                 placeholder="Phone Number"
                 value="17037258183" // Set the initial value for the name
                 editable={false} // Make the input read-only
                 />
             </View>
 
-            <View style={{flexDirection:'row', gap:30, alignItems:'center',padding:10}}>
+            <View style={{flexDirection:'row', gap:30, alignItems:'center',padding:10, marginTop:10}}>
 
                 <View style={styles.imageContainer}>
                   <TouchableOpacity onPress={pickImage} >
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
     //   },
       input: {
         textAlign:'right',
-        
+
       },
       imageContainer: {
         position: 'relative', // Necessary to position the icon absolutely within this context

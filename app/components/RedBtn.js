@@ -2,7 +2,7 @@
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet,Image, View } from 'react-native';
 
-const CustomButton = ({ name, onPress, imageIcon='', containerStyle}) => {
+const RedBtn = ({ name, onPress, imageIcon='', containerStyle}) => {
   return (
 
     <TouchableOpacity style={styles.button} onPress={onPress} >
@@ -20,7 +20,7 @@ const CustomButton = ({ name, onPress, imageIcon='', containerStyle}) => {
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: '#DB00FF',
+    backgroundColor: '#FF4D4D',
     padding: 10,
     borderRadius: 2,
     width : '90%',
@@ -43,4 +43,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CustomButton;
+export default RedBtn;
