@@ -17,7 +17,7 @@ const SuccessFeedback = () => {
         style={styles.animation}
       />
       <Text style={styles.successText}>Your transaction is successful!</Text>
-      <CustomButton name='Proceed To Home' containerStyle={{backgroundColor:'#34C759'}} onPress={()=>{navigation.navigate('Home')}}/>
+      <CustomButton name='Proceed To Home' onPress={()=>{navigation.navigate('Home')}}/>
     </View>
   );
 };

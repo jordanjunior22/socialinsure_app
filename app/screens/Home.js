@@ -19,7 +19,7 @@ const Home = () => {
       <StatusBar translucent={false} barStyle="white-content" />
       
       <ScrollView style={styles.container}>
-        <Nav onPress={() => navigation.navigate('Home')} name="Hello John Deo"/>
+        <Nav onPress={() => navigation.navigate('Home')} name="Hello John Deo,"/>
         <Hero balance={100.00} 
               onQuickTopUp={()=>{navigation.navigate('QuickTopUp')}}
               onMyContributions={handleContributions}
