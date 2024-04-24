@@ -24,6 +24,12 @@ const SocialFeatures = () => {
       title: 'Social Health',
       description: 'Everyone deserves healthcare',
     },
+    {
+      id: '3',
+      imageSource: require('../../assets/health.gif'),
+      title: 'Social Health',
+      description: 'Everyone deserves healthcare',
+    },
     // Add more social features as needed
   ];
 
@@ -40,9 +46,9 @@ const SocialFeatures = () => {
   return (
     <View>
       <View style={styles.socialContainerText}>
-        <Text>Social Insure</Text>
+        <Text style={{textTransform: 'uppercase',fontWeight: 'bold',}}>Social Insure</Text>
         <TouchableOpacity onPress={onPress}>
-          <Text>View All &gt;</Text>
+          <Text style={{opacity:0.5}}>View All &gt;</Text>
         </TouchableOpacity>
       </View>
 
@@ -52,7 +58,7 @@ const SocialFeatures = () => {
         keyExtractor={(item) => item.id}
         horizontal={true}
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{ marginTop: 20, gap:5}}
+        contentContainerStyle={{gap:5}}
       />
     </View>
   );

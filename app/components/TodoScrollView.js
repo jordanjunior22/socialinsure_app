@@ -9,9 +9,9 @@ const TodoScrollView = () => {
       };
     const todoButtonsData = [
         { id: '1', text: 'Add Debit Card 💳' },
-        { id: '2', text: 'Enable Auto Top Up' },
-        { id: '3', text: 'Enable Face ID / Fingerprint' },
-        { id: '4', text: 'Add a Profile Picture' },
+        { id: '2', text: 'Enable Auto Top Up 💲' },
+        { id: '3', text: 'Enable FaceID / Fingerprint' },
+        { id: '4', text: 'Add a Profile Picture 🙎🏻‍♂️' },
       ];
       const renderItem = ({ item }) => (
         <CustomButton onPress={onPress} buttonText={item.text} />
@@ -20,7 +20,7 @@ const TodoScrollView = () => {
 
   return (
         <View style={{ marginTop:30, flexDirection: 'column', gap:10}}>
-          <Text style={{ textAlign: 'right' }}>My To-dos</Text>
+          <Text style={{ textAlign: 'right', color:'black', opacity:0.5 }}>My To-dos</Text>
           <FlatList
             data={todoButtonsData}
             keyExtractor={(item) => item.id}

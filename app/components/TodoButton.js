@@ -1,29 +1,45 @@
 import React from 'react';
 import { TouchableOpacity, Text, Image, StyleSheet } from 'react-native';
+import { LinearGradient } from "expo-linear-gradient";
+
 
 const CustomButton = ({ onPress, buttonText}) => {
   return (
+    <LinearGradient
+    colors={['#DB00FF', '#ECECEC']} // Your gradient colors
+    start={{ x: 0, y: 0 }}
+    end={{ x: 0, y: 1 }}
+    style={styles.gradientBorder}
+  >
     <TouchableOpacity onPress={onPress} style={styles.todoButton}>
       <Text>{buttonText}</Text>
       <Image source={require('../../assets/arrow-right.png')} style={styles.iconimage} />
     </TouchableOpacity>
+
+    </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
     todoButton:{
-        borderWidth: 2, borderColor: 'lightgray', borderStyle: 'solid',
         padding:10,
         width:100,
+        height:100,
         flexDirection: 'column',
         justifyContent: 'space-between',
-        backgroundColor: 'lightgray',
+        backgroundColor: 'white',
         borderRadius: 20,
+
        },
        iconimage: {
-        width: 30,
-        height: 30,
-       }
+        width: 20,
+        height: 20,
+        opacity:0.4,
+       },
+       gradientBorder: {
+        borderRadius: 20, // Ensure rounded corners
+        padding: 1, // Border thickness
+      },
 });
 
 export default CustomButton;

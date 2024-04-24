@@ -15,21 +15,21 @@ const FeaturedCampaignsContainer = ({ id,imageSource, title, onPress,Goal,Raised
       <TouchableOpacity style = {styles.socialContainer} onPress={onPress}>
         <Image source={imageSource} style={styles.iconimage} />
         
-        <View style={{padding:10, flexDirection:'row', justifyContent:'space-between', width:'100%'}}>
-            <Text style={{fontSize:12, fontWeight:600, width:'40%'}}>{title}</Text>
-            <Text >{daysLeft} days left</Text>
+        <View style={{padding:5, flexDirection:'row', justifyContent:'space-between', width:'100%'}}>
+            <Text style={{fontSize:12, fontWeight:700}}>{title}</Text>
+            <Text style={{color:'#24FF00',fontSize:12,fontWeight:700}}>{daysLeft} days left</Text>
         </View>
 
-        <ProgressBar progress={progress} width={200} height={10} />
+        <ProgressBar progress={progress} width={240} height={6} />
 
         <View style={styles.figures}>
             <View>
                 <Text>Goal</Text>
-                <Text>USD $ {Goal}</Text>
+                <Text style={{fontWeight:700,color:'#24FF00'}}>USD $ {Goal}</Text>
             </View>
             <View>
                 <Text>Raised</Text>
-                <Text>USD $ {Raised}</Text>
+                <Text style={{fontWeight:700,color:'#24FF00'}}>USD $ {Raised}</Text>
             </View>
         </View>
         <Button name="Contribute" onPress={() => handleContribute(id)}/>
@@ -42,11 +42,14 @@ export default FeaturedCampaignsContainer
 
 const styles = StyleSheet.create({
     socialContainer : {
-      backgroundColor : '#EEECEE',
+      backgroundColor : '#FFFFFF',
       alignItems : 'center',
       borderRadius : 20,
-      marginTop : 10,
       overflow: 'hidden',
+      width:250,
+      height:'fit',
+      borderWidth:1,
+      borderColor:'lightgray'
     },
     iconimage : {
         width : '100%',
@@ -61,4 +64,3 @@ const styles = StyleSheet.create({
       padding:10, 
     }
   })
-  

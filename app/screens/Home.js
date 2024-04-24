@@ -1,69 +1,54 @@
-import { StyleSheet, Text, View, ScrollView, Image,Button,TouchableOpacity } from 'react-native';
+import {StatusBar,Platform, SafeAreaView, StyleSheet, Text, View, ScrollView, Image,Button,TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import TodoScrollView from '../components/TodoScrollView';
 import SocialFeatures from '../components/SocialFeatures';
 import FeaturedCampaings from '../components/FeaturedCampaigns';
-
+import Nav from '../components/Nav';
+import Hero from '../components/Hero';
 
 const Home = () => {
-  const onPress = () => {
+  const handleContributions = () => {
     console.log('Button pressed');
   };
   const navigation = useNavigation();
 
-  const handleImageClick = () => {
-    navigation.navigate('ProfileDisplay');
-  };
+
   return (
-    <ScrollView style={styles.scrollView}>
-      <View style={styles.container}>
+    <SafeAreaView style={styles.safeArea}>
+      <StatusBar translucent={false} barStyle="white-content" />
+      
+      <ScrollView style={styles.container}>
+        <Nav onPress={() => navigation.navigate('Home')} name="Hello John Deo"/>
+        <Hero balance={100.00} 
+              onQuickTopUp={()=>{navigation.navigate('QuickTopUp')}}
+              onMyContributions={handleContributions}
+              />
 
-        <View style={styles.headingSection}>
-          <Text style={styles.heading}>Hello Ted</Text>
-          <TouchableOpacity onPress={handleImageClick}>
-            <Image source={require('../../assets/ted.jpg')} style={styles.image} />
-          </TouchableOpacity>
-        </View>
-        
-        <View style={styles.hero}>
-          <View style={styles.hero_top}>
-            <TouchableOpacity onPress={onPress} style={styles.buttons}>
-              <Text style={styles.buttonText}>+ Quick Top Up</Text>
-            </TouchableOpacity>            
-            <TouchableOpacity onPress={onPress} style={styles.buttons2}>
-              <Text style={styles.buttonText}>My Contributions</Text>
-            </TouchableOpacity>           
-          </View>
-          <View>
-            <Text>My Account Balance</Text>
-            <Text style={{ fontWeight: 'bold',fontSize: 25,}}>$100.00</Text>
-          </View>
-        </View>
+        <TodoScrollView />
+        <SocialFeatures />
+        <FeaturedCampaings />
 
-        <View>
-            <TodoScrollView/>
-        </View>
-        <SocialFeatures/>
-        <FeaturedCampaings/>
-        
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
 export default Home;
 
 const styles = StyleSheet.create({
-  scrollView: {
+  safeArea: {
     flex: 1,
+    backgroundColor:'white'
   },
   container: {
-    padding: 20,
+    flex: 1,
+    padding: 10,
   },
   heading: {
     fontSize: 18,
     fontWeight: 'bold',
+    opacity: 0.7,
   },
   image: {
     width: 50, // Adjust the width and height as needed
@@ -71,20 +56,20 @@ const styles = StyleSheet.create({
 
     borderRadius: 50, 
   },
-  headingSection :{
-    marginTop: 10,
-    flexDirection:'row',
+  headingSection: {
+    flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
   hero :{
     flexDirection:'column',
-    backgroundColor:'lightgray',
+    backgroundColor:'#F9F9F9',
     padding: 20,
     marginTop:20,
     gap:50,
     borderRadius: 20,
-
+    borderColor:'#18B8A8',
+    borderWidth:1
   },
   hero_top:{
     flexDirection:'row',
@@ -94,15 +79,18 @@ const styles = StyleSheet.create({
   },
   buttons:{
     borderRadius:50,
-    backgroundColor: '#DB8D18',
+    backgroundColor: '#18B8A8',
     padding: 10,
-    borderRadius: 20,
+    color:'white',
+    borderRadius: 10,
   },
   buttons2:{
     borderRadius:50,
-    backgroundColor: '#AB2525',
+    borderColor:'#18B8A8',
+    borderWidth: 1,
+    backgroundColor: 'white',
     padding: 10,
-    borderRadius: 20,
+    borderRadius: 10,
   },
   buttonText:{
 
@@ -119,5 +107,22 @@ const styles = StyleSheet.create({
    iconimage: {
     width: 30,
     height: 30,
-   }
+   },
+shadowBox: {
+    backgroundColor: 'white',
+    padding: 20,
+    borderRadius: 20, // Rounded corners
+    overflow: Platform.OS === 'android' ? 'hidden' : 'visible', // Ensures borderRadius works on Android
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000', // Black shadow
+        shadowOffset: { width: 2, height: 2 }, // Offset
+        shadowOpacity: 0.5, // Opacity
+        shadowRadius: 5, // Spread
+      },
+      android: {
+        elevation: 10, // Elevation for shadow effect
+      },
+    }),
+  },
 });

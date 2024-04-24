@@ -3,11 +3,17 @@ import React from 'react'
 
 const SocialFeaturesContainer = ({ imageSource, title, description, onPress }) => {
   return (
-    <View>
+    <View >
       <TouchableOpacity style = {styles.socialContainer} onPress={onPress}>
-        <Image source={imageSource} style={styles.iconimage} />
-        <Text>{title}</Text>
-        <Text style={{opacity:0.5}}>{description}</Text>
+        
+        <View style={{width: '100%',  flexDirection:'row',justifyContent:'center', alignItems:'center', overflow: 'hidden',borderRadius:20,}}>
+          <Image source={imageSource} style={styles.iconimage} />
+        </View>
+
+        <View style={{padding:5}}>
+          <Text style={{textAlign:'center',fontWeight:'bold',color:'white'}}>{title}</Text>
+          <Text style={{opacity:0.7,fontSize:10, textAlign:'center',color:'white'}}>{description}</Text>
+        </View>
       </TouchableOpacity>
     </View>
   )
@@ -15,16 +21,13 @@ const SocialFeaturesContainer = ({ imageSource, title, description, onPress }) =
 
 const styles = StyleSheet.create({
   socialContainer : {
-    backgroundColor : '#EEECEE',
-    padding : 15,
-    width:170,
-    alignItems : 'center',
-    borderRadius : 20,
-    marginTop : 10,
+    backgroundColor : '#18B8A8',
+    width:120,
+    borderRadius:20,
   },
   iconimage : {
-    width: 100,
-    height:100,
+    width:'100%',
+    height:110,
   },
 })
 
