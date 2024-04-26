@@ -25,7 +25,7 @@ const FeaturedCampaignsContainer = ({ id,imageSource, title, onPress,Goal,Raised
         <View style={styles.figures}>
             <View>
                 <Text>Goal</Text>
-                <Text style={{fontWeight:700,color:'#DB00FF'}}>USD $ {Goal}</Text>
+                <Text style={{fontWeight:700,color:'#AB2525'}}>USD $ {Goal}</Text>
             </View>
             <View>
                 <Text>Raised</Text>
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
       width:250,
       height:'fit',
       borderWidth:1,
-      borderColor:'#DB00FF'
+      borderColor:'lightgray'
     },
     iconimage : {
         width : '100%',

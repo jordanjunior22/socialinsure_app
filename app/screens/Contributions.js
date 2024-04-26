@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 
-const Histories = () => {
+const Contributions = () => {
   return (
     <View>
       <Text>Histories</Text>
@@ -9,6 +9,6 @@ const Histories = () => {
   )
 }
 
-export default Histories
+export default Contributions
 
 const styles = StyleSheet.create({})

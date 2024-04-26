@@ -5,7 +5,7 @@ import SubHeadingNoLink from '../components/SubHeadingNoLink';
 import RNPickerSelect from 'react-native-picker-select';
 import axios from 'axios';
 import { useNavigation, useRoute } from '@react-navigation/native';
-
+import CustomButton from '../components/Button'
 
 const Verification = () => {
   const [countries, setCountries] = useState([]);
@@ -18,10 +18,18 @@ const Verification = () => {
   const passportIcon = require('../../assets/passport.png');
   const NICIcon = require('../../assets/id-card.png');
   const DriverIcon = require('../../assets/driver-license.png');
+  const passportIconWhite = require('../../assets/passportWhite.png');
+  const NICIconWhite = require('../../assets/id-cardWhite.png');
+  const DriverIconWhite = require('../../assets/driver-licenseWhite.png');
+
   const iconURL = require('../../assets/close.png')
+
 
   const handleVerificationMethod =(method)=>{
     setVerifMethod(method);
+  }
+  const handleContinue = () =>{
+    navigation.navigate('UploadId',{item,verifMethod,selectedCountry})
   }
 
   useEffect(() => {
@@ -40,6 +48,7 @@ const Verification = () => {
 
   return (
     <View style={styles.container}>
+      <View>
       <NavNoProfile
         Title="Verification"
         onPress={() => {
@@ -63,7 +72,7 @@ const Verification = () => {
 
             {verifMethod === 'National Identity Card' ? (
             <TouchableOpacity onPress={() => {handleVerificationMethod('National Identity Card');}} style={{ flexDirection: 'row', gap: 10,backgroundColor: '#18B8A8', padding: 10, width: '100%', borderRadius: 5, }}>
-                <Image source={NICIcon} style={{ height: 20, width: 20 }} />
+                <Image source={NICIconWhite} style={{ height: 20, width: 20 }} />
                 <Text style={{color:'white',fontWeight:700}}>National Identity Card</Text>
             </TouchableOpacity>
             ):(
@@ -73,16 +82,33 @@ const Verification = () => {
             </TouchableOpacity>
             )}
 
-
+            {verifMethod === 'Passport' ? (
+            <TouchableOpacity onPress={() => {handleVerificationMethod('National Identity Card');}} style={{ flexDirection: 'row', gap: 10,backgroundColor: '#18B8A8', padding: 10, width: '100%', borderRadius: 5, }}>
+                <Image source={passportIconWhite} style={{height:20,width:20}}/>
+                <Text style={{color:'white',fontWeight:700}}>Passport</Text>
+            </TouchableOpacity>
+            ):(
             <TouchableOpacity onPress={()=>{handleVerificationMethod('Passport')}} style={{flexDirection:'row',gap:10,borderWidth:1,borderColor:'#18B8A8',padding: 10,width:"100%",borderRadius:5}}>
-                <Image source={passportIcon} style={{height:20,width:20}}/>
-                <Text>Passport</Text>
+              <Image source={passportIcon} style={{height:20,width:20}}/>
+              <Text>Passport</Text>
             </TouchableOpacity>
+            )}
+
+            {verifMethod === 'Drivers License' ? (
+            <TouchableOpacity onPress={() => {handleVerificationMethod('Drivers License');}} style={{ flexDirection: 'row', gap: 10,backgroundColor: '#18B8A8', padding: 10, width: '100%', borderRadius: 5, }}>
+                <Image source={DriverIconWhite} style={{height:20,width:20}}/>
+                <Text style={{color:'white',fontWeight:700}}>Drivers License</Text>
+            </TouchableOpacity>
+            ):(
             <TouchableOpacity onPress={()=>{handleVerificationMethod('Drivers License')}} style={{flexDirection:'row',gap:10,borderWidth:1,borderColor:'#18B8A8',padding: 10,width:"100%",borderRadius:5}}>
-                <Image source={DriverIcon} style={{height:20,width:20}}/>
-                <Text>Drivers License</Text>
+              <Image source={DriverIcon} style={{height:20,width:20}}/>
+              <Text>Drivers License</Text>
             </TouchableOpacity>
+            )}
+
         </View>
+      </View>
+      <CustomButton name='Continue' onPress={handleContinue}/>
     </View>
   );
 };
@@ -91,7 +117,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
-
+    flexDirection:'column',
+    justifyContent:'space-between',
+    alignItems:'center'
   },
   selectedItem: {
     flexDirection: 'row',

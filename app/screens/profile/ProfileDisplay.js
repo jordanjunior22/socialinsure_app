@@ -111,7 +111,7 @@ const ProfileDisplay = () => {
                 <Text style={{color:'blue',fontWeight:700}}>Change Profile Picture</Text>
             </View>
             
-            <TouchableOpacity onPress={saveProfile} style={{backgroundColor: '#DB00FF',padding:10}}>
+            <TouchableOpacity onPress={saveProfile} style={{backgroundColor: '#24FF00',padding:10}}>
                 <Text style={{textAlign:'center',color:'white'}}>Save</Text>
             </TouchableOpacity>
         </View>

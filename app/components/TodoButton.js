@@ -6,7 +6,7 @@ import { LinearGradient } from "expo-linear-gradient";
 const CustomButton = ({ onPress, buttonText}) => {
   return (
     <LinearGradient
-    colors={['#DB00FF', '#ECECEC']} // Your gradient colors
+    colors={['#AB2525', '#C9FFFA']} // Your gradient colors
     start={{ x: 0, y: 0 }}
     end={{ x: 0, y: 1 }}
     style={styles.gradientBorder}

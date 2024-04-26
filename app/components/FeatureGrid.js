@@ -3,15 +3,18 @@ import React from 'react'
 import Grid from './Grid';
 import { useNavigation } from '@react-navigation/native';
 const socialFeaturesData = [
-    {
-      id: '1',
-      imageSource: require('../../assets/lost.gif'),
-      title: 'Social Well-being',
-      description: 'Give A Token Help A lot More',
-      subReq:'Yes',
-      details:'Social Life allows grieving families to enjoy support from the community. The objective is to bring family members living in the diaspora under an umbrella, in order to reduce donations to $1.25 per adult, and $0.75 per minor relative.— No more crucifying financial burdens after losing a loved one.',
-      Fees:20
-    },
+  {
+    id: '1',
+    imageSource: require('../../assets/lost.gif'),
+    title: 'Social Well-being',
+    description: 'Give A Token Help A lot More',
+    subReq:'Yes',
+    details:'Social Life allows grieving families to enjoy support from the community. The objective is to bring family members living in the diaspora under an umbrella, in order to reduce donations to $1.25 per adult, and $0.75 per minor relative.— No more crucifying financial burdens after losing a loved one.',
+    fees:20,
+    terms:'Social Life allows grieving families to enjoy support from the community. The objective is to bring family members living in the diaspora under an umbrella, in order to reduce donations to $1.25 per adult, and $0.75 per minor relative.— No more crucifying financial burdens after losing a loved one.'
+    ,members:1000,
+    contributions: 19870
+  },
     {
       id: '2',
       imageSource: require('../../assets/health.gif'),
@@ -43,15 +46,21 @@ const socialFeaturesData = [
   ];
 const FeatureGrid = () => {
     const navigation=useNavigation();
+    const user = {
+      id:1,
+      name:'john',
+      isSubsciber:false
+    }
     const handleSocialFeaturePress = (item) => {
-        console.log(`Social Feature pressed has ID: ${item.id}`);
-        if(item.subReq === 'Yes'){
-          navigation.navigate('SubReqFeature', { item });
-        }
-        else{
-            console.log('item still under cons');
-        }
-      };
+      console.log(`Social Feature pressed has ID: ${item.id}`);
+      if(item.subReq === 'Yes' && !user.isSubsciber){
+        navigation.navigate('SubReqFeatureNonMembers', { item });
+      }else{
+        navigation.navigate('SubReqFeatureForMembers', { item });
+      }
+  
+  
+    };
     
   return (
     <View>

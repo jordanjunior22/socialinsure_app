@@ -51,9 +51,9 @@ export default SponsorGrid
 const styles = StyleSheet.create({
     SponsorGridStyles: {
         flex: 1, // Equal space for each item in the row
-        backgroundColor: '#DB00FF',
+        backgroundColor: '#AB2525',
         borderWidth: 1,
-        borderColor: '#DB00FF',
+        borderColor: '#AB2525',
         height: 140, // Consistent height for items
         margin:1,
         borderTopLeftRadius:20,

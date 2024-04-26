@@ -5,17 +5,19 @@ import { useNavigation } from '@react-navigation/native';
 import SubHeadingLink from './SubHeadingLink';
 
 const SocialFeatures = () => {
+  const user = {
+    id:1,
+    name:'john',
+    isSubsciber:true
+  }
   const navigation= useNavigation()
-  const onPress = () => {
-    console.log('Button pressed');
-  };
 
   const handleSocialFeaturePress = (item) => {
     console.log(`Social Feature pressed has ID: ${item.id}`);
-    if(item.subReq === 'Yes'){
-      navigation.navigate('SubReqFeature', { item });
+    if(item.subReq === 'Yes' && !user.isSubsciber){
+      navigation.navigate('SubReqFeatureForNonMembers', { item });
     }else{
-      console.log('item still under cons');
+      navigation.navigate('SubReqFeatureForMembers', { item });
     }
 
 
@@ -28,7 +30,11 @@ const SocialFeatures = () => {
       title: 'Social Well-being',
       description: 'Give A Token Help A lot More',
       subReq:'Yes',
-      details:'Social Life allows grieving families to enjoy support from the community. The objective is to bring family members living in the diaspora under an umbrella, in order to reduce donations to $1.25 per adult, and $0.75 per minor relative.— No more crucifying financial burdens after losing a loved one.'
+      details:'Social Life allows grieving families to enjoy support from the community. The objective is to bring family members living in the diaspora under an umbrella, in order to reduce donations to $1.25 per adult, and $0.75 per minor relative.— No more crucifying financial burdens after losing a loved one.',
+      fees:20,
+      terms:'Social Life allows grieving families to enjoy support from the community. The objective is to bring family members living in the diaspora under an umbrella, in order to reduce donations to $1.25 per adult, and $0.75 per minor relative.— No more crucifying financial burdens after losing a loved one.'
+      ,members:1000,
+      contributions: 19870
     },
     {
       id: '2',
