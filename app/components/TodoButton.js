@@ -13,7 +13,7 @@ const CustomButton = ({ onPress, buttonText}) => {
   >
     <TouchableOpacity onPress={onPress} style={styles.todoButton}>
       <Text>{buttonText}</Text>
-      <Image source={require('../../assets/arrow-right.png')} style={styles.iconimage} />
+      <Image source={require('../../assets/front.png')} style={styles.iconimage} />
     </TouchableOpacity>
 
     </LinearGradient>
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
        iconimage: {
         width: 20,
         height: 20,
-        opacity:0.4,
+
        },
        gradientBorder: {
         borderRadius: 20, // Ensure rounded corners

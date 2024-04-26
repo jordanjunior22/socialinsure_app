@@ -16,9 +16,11 @@ const QuickTopUp = () => {
       }
     const cardIcon = require('../../assets/creditcard.png')
     const paypalIcon = require('../../assets/paypal.png')
+    const iconURL =  require('../../assets/close.png')
+    
   return (
     <ScrollView style={{flex:1,padding:10}}>
-        <Nav onPress={()=>{navigation.navigate('Home')}} Title='Quick Top Up' name="<Back"/>
+        <Nav onPress={()=>{navigation.navigate('Home')}} Title='Quick Top Up' iconURL={iconURL}/>
         <Hero balance={100.00} 
               onMyContributions={handleContributions}
               />

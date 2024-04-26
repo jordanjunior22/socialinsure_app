@@ -6,6 +6,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { SafeAreaView } from 'react-native';
 
+import SubReqFeatureContainer from './app/components/SubReqFeatureContainer';
 
 import Campaigns from './app/screens/Campaigns';
 import Account from './app/screens/Account';
@@ -15,6 +16,9 @@ import ProfileDisplay from './app/screens/profile/ProfileDisplay';
 import QuickTopUp from './app/screens/QuickTopUp';
 import SuccessFeedback from './app/screens/SuccessFeedback';
 import FailedFeedback from './app/screens/FailedFeedback';
+import AllFeatures from './app/screens/AllFeatures';
+import SubReqFeature from './app/screens/SubReqFeature';
+import Verification from './app/screens/Verification';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -39,6 +43,12 @@ function App() {
         <Stack.Screen name="QuickTopUp" component={QuickTopUp} />
         <Stack.Screen name="SuccessFeedback" component={SuccessFeedback} />
         <Stack.Screen name="FailedFeedback" component={FailedFeedback} />
+        <Stack.Screen name="AllFeatures" component={AllFeatures} />
+        <Stack.Screen name="SubReqFeature" component={SubReqFeature} />
+        <Stack.Screen name="SubReqFeatureContainer" component={SubReqFeatureContainer} />
+        <Stack.Screen name="Verification" component={Verification} />
+
+
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -2,7 +2,7 @@ import {StatusBar,Platform, SafeAreaView, StyleSheet, Text, View, ScrollView, Im
 import React from 'react'
 import { useNavigation } from '@react-navigation/native';
 
-const Nav = ({ onPress,Title = '', name='', iconURL=null }) => {
+const NavNoProfile = ({ onPress,Title = '', name='', iconURL=null }) => {
  const navigation = useNavigation();
 
   return (
@@ -18,14 +18,14 @@ const Nav = ({ onPress,Title = '', name='', iconURL=null }) => {
         </TouchableOpacity>
       )}
         <Text style={{fontWeight:700,fontSize:20}}>{Title}</Text>
-        <TouchableOpacity onPress={() => navigation.navigate('ProfileDisplay')}>
+        <View>
             <Image source={require('../../assets/ted.jpg')} style={styles.image} />
-        </TouchableOpacity>
+        </View>
     </View>
   )
 }
 
-export default Nav
+export default NavNoProfile
 
 const styles = StyleSheet.create({
     heading: {
@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
       image: {
         width: 50, // Adjust the width and height as needed
         height: 50,
-    
+        opacity:0,
         borderRadius: 50, 
       },
       headingSection: {

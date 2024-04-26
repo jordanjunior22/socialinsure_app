@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, FlatList } from 'react-native';
 import FeaturedCampaignsContainer from './FeaturedCampaignsContainer';
-
+import SubHeadingLink from './SubHeadingLink';
 const SocialFeatures = () => {
   const onPress = () => {
     console.log('Button pressed');
@@ -45,20 +45,14 @@ const SocialFeatures = () => {
 
   return (
     <View style={{paddingBottom:50}}>
-      <View style={styles.socialContainerText}>
-        <Text style={{textTransform: 'uppercase',fontWeight: 'bold',}}>Featured Campaign</Text>
-        <TouchableOpacity onPress={onPress}>
-          <Text style={{opacity:0.5}}>View All &gt;</Text>
-        </TouchableOpacity>
-      </View>
-
+      <SubHeadingLink Title='Featured Campaign' Cmd='View All >' onPress={onPress}/>
       <FlatList
         data={featuredCampaignsData}
         renderItem={renderFeaturedCampaign}
         keyExtractor={(item) => item.id}
         horizontal={true}
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{gap: 5 }}
+        contentContainerStyle={{gap: 5,marginTop:10 }}
       />
     </View>
   );

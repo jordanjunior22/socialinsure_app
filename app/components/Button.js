@@ -20,11 +20,12 @@ const CustomButton = ({ name, onPress, imageIcon='', containerStyle}) => {
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: '#DB00FF',
-    padding: 10,
+    backgroundColor: '#24FF00',
+    flexDirection: 'row',
     borderRadius: 2,
-    width : '90%',
+    width:'90%',
     marginBottom:10,
+    justifyContent: 'center',
   },
   buttonText: {
     color: '#fff',
@@ -35,10 +36,10 @@ const styles = StyleSheet.create({
     height:20
   },
   innerContainer: {
-    display: 'flex',
+    gap: 10,
+    padding: 10,
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 10,
     justifyContent: 'center',
   },
 });

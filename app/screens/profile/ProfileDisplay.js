@@ -6,7 +6,7 @@ import * as ImagePicker from 'expo-image-picker';
 
 const ProfileDisplay = () => {
     const navigation = useNavigation();
-
+    const iconURL = require('../../../assets/close.png')
     const [selectedImage, setSelectedImage] = useState(null);
 
     const pickImage = async () => {
@@ -41,7 +41,7 @@ const ProfileDisplay = () => {
     
   return (
     <ScrollView style={{flex:1,padding:10}}>
-        <Nav onPress={() => navigation.navigate('Home')} Title='My Profile' name="<Back"/>
+        <Nav onPress={() => navigation.navigate('Home')} Title='My Profile' iconURL={iconURL}/>
     
         <Text style={{marginTop:20, fontSize:12, color:'blue'}}>Editing your profile is disabled, Please contact support on <Text style={{fontWeight:700}}>+1 703 725-8183</Text> or email <Text  style={{fontWeight:700}}>accounts@socialinsure.com</Text></Text>
         

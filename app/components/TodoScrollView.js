@@ -2,8 +2,10 @@ import { StyleSheet, Text, View, FlatList } from 'react-native'
 
 import React from 'react'
 import CustomButton from './TodoButton';
+import { useNavigation } from '@react-navigation/native';
 
 const TodoScrollView = () => {
+    const navigation = useNavigation();
     const onPress = () => {
         console.log('Button pressed');
       };
@@ -20,7 +22,7 @@ const TodoScrollView = () => {
 
   return (
         <View style={{ marginTop:30, flexDirection: 'column', gap:10}}>
-          <Text style={{ textAlign: 'right', color:'black', opacity:0.5 }}>My To-dos</Text>
+          <Text style={{textAlign:'right',color:'#18B8A8',fontWeight:'bold'}} onPress={onPress}>My To-dos &gt;</Text>
           <FlatList
             data={todoButtonsData}
             keyExtractor={(item) => item.id}

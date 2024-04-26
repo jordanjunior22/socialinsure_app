@@ -1,13 +1,13 @@
 import { StyleSheet, Text, View,TouchableOpacity,Image } from 'react-native'
 import React from 'react'
 
-const SocialFeaturesContainer = ({ imageSource, title, description, onPress }) => {
+const SocialFeaturesContainer = ({ imageSource, title, description, onPress, customContainerStyle,customIconImageStyle }) => {
   return (
     <View >
-      <TouchableOpacity style = {styles.socialContainer} onPress={onPress}>
+      <TouchableOpacity style = {customContainerStyle} onPress={onPress}>
         
-        <View style={{width: '100%',  flexDirection:'row',justifyContent:'center', alignItems:'center', overflow: 'hidden',borderRadius:20,}}>
-          <Image source={imageSource} style={styles.iconimage} />
+        <View style={{width: '100%',  flexDirection:'row',justifyContent:'center', alignItems:'center', overflow: 'hidden',borderTopLeftRadius:20, borderTopRightRadius:20}}>
+          <Image source={imageSource} style={customIconImageStyle} />
         </View>
 
         <View style={{padding:5}}>
@@ -20,15 +20,7 @@ const SocialFeaturesContainer = ({ imageSource, title, description, onPress }) =
 }
 
 const styles = StyleSheet.create({
-  socialContainer : {
-    backgroundColor : '#18B8A8',
-    width:120,
-    borderRadius:20,
-  },
-  iconimage : {
-    width:'100%',
-    height:110,
-  },
+
 })
 
 export default SocialFeaturesContainer;

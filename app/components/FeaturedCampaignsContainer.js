@@ -17,7 +17,7 @@ const FeaturedCampaignsContainer = ({ id,imageSource, title, onPress,Goal,Raised
         
         <View style={{padding:5, flexDirection:'row', justifyContent:'space-between', width:'100%'}}>
             <Text style={{fontSize:12, fontWeight:700}}>{title}</Text>
-            <Text style={{color:'#24FF00',fontSize:12,fontWeight:700}}>{daysLeft} days left</Text>
+            <Text style={{color:'blue',fontSize:12,fontWeight:700}}>{daysLeft} days left</Text>
         </View>
 
         <ProgressBar progress={progress} width={240} height={6} />
@@ -25,7 +25,7 @@ const FeaturedCampaignsContainer = ({ id,imageSource, title, onPress,Goal,Raised
         <View style={styles.figures}>
             <View>
                 <Text>Goal</Text>
-                <Text style={{fontWeight:700,color:'#24FF00'}}>USD $ {Goal}</Text>
+                <Text style={{fontWeight:700,color:'#DB00FF'}}>USD $ {Goal}</Text>
             </View>
             <View>
                 <Text>Raised</Text>
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
       width:250,
       height:'fit',
       borderWidth:1,
-      borderColor:'lightgray'
+      borderColor:'#DB00FF'
     },
     iconimage : {
         width : '100%',
