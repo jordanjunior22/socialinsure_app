@@ -6,15 +6,8 @@ import CampaignGrid from '../components/CampainGrid';
 import BottomMargin from '../components/BottomMargin';
 import { useNavigation } from '@react-navigation/native';
 import Grid from '../components/Grid';
-
-
-const AllSponsored = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedFilter, setSelectedFilter] = useState(null);
-  const navigation =useNavigation();
-
-  // Example campaign data
-  const SponsoreData = [
+import NavNoProfile from '../components/NavNoProfile';
+const SponsoreData = [
     {
       id: '1',
       imageSource: require('../../assets/intern.jpg'),
@@ -24,7 +17,8 @@ const AllSponsored = () => {
       daysLeft: 15,
       description: 'Example description 1',
       details: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-      ,date: '01/02/2023'
+      ,date: '01/02/2023',
+      isSponsored:true
     },
     {
         id: '2',
@@ -35,7 +29,8 @@ const AllSponsored = () => {
         daysLeft: 15,
         description: 'Everyone deserves healthcare',
         details: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-        ,date: '01/02/2023'
+        ,date: '01/02/2023',
+        isSponsored:true
       },
       {
         id: '3',
@@ -46,7 +41,8 @@ const AllSponsored = () => {
         daysLeft: 15,
         description: 'Everyone deserves healthcare',
         details: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-        ,date: '01/02/2023'
+        ,date: '01/02/2023',
+        isSponsored:true
       },   
       {
         id: '4',
@@ -57,13 +53,21 @@ const AllSponsored = () => {
         daysLeft: 15,
         description: 'Everyone deserves healthcare',
         details: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-        ,date: '01/02/2023'
+        ,date: '01/02/2023',
+        isSponsored:true
       },     
   ];
 
-  const handleContribute = (item) => {
-    console.log(' Contribute Button:', item.id);
-    navigation.navigate('ContributionPayment', {item})
+const AllSponsored = () => {
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedFilter, setSelectedFilter] = useState(null);
+  const navigation =useNavigation();
+  const iconURL = require('../../assets/close.png')
+  // Example campaign data
+
+
+  const handelback = () => {
+    navigation.navigate('AllFeatures')
     
   };
   const campaignPress = (item) =>{
@@ -93,7 +97,7 @@ const AllSponsored = () => {
   return (
     <SafeAreaView style={styles.container}>
     <ScrollView style={{padding: 10}}>
-      <Nav Title="Sponsored Campaign" />
+      <NavNoProfile Title="Sponsored Campaign" iconURL={iconURL} onPress={handelback}/>
 
       {/* Search Box with Custom Icon */}
       <View style={styles.searchBox}>

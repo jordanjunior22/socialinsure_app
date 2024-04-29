@@ -12,8 +12,14 @@ const CampaignSponsorDetailsContainer = () => {
 
   const navigation = useNavigation();
     const iconURL = require('../../assets/close.png')
-    const handleBack = ()=>{
-      navigation.navigate('Home')
+    const handleBack = (item)=>{
+      if(item.isSponsored){
+        navigation.navigate('AllFeatures')
+      }
+      else{
+        navigation.navigate('Campaigns')
+      }
+
     }
     const handleContribute = (item) =>{
       console.log(`handel contribute of ID ${item.id}`)
@@ -22,7 +28,7 @@ const CampaignSponsorDetailsContainer = () => {
   return (
     <SafeAreaView style={{flex:1,flexDirection:'column',justifyContent:'space-between'}}>
       <View style={{padding:10}}>
-        <NavNoProfile Title='Campaign Details' iconURL={iconURL} onPress={handleBack}/>
+        <NavNoProfile Title='Campaign Details' iconURL={iconURL} onPress={()=>handleBack(item)}/>
         <View style={{height:200,width:'100%'}}>
           <Image source={item.imageSource} style={{width:'100%', height:'100%'}}/>
         </View>

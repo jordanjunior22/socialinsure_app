@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity,Image } from 'react-native';
 import React from 'react';
 
 const Hero = ({ balance, onQuickTopUp, onMyContributions }) => {
@@ -26,10 +26,15 @@ const Hero = ({ balance, onQuickTopUp, onMyContributions }) => {
         )}
       </View>
 
-      <View>
-        <Text style={{ color: 'black', opacity: 0.5 }}>My Account Balance</Text>
-        <Text style={{ fontWeight: 'bold', fontSize: 25, color: '#18B8A8' }}>${balance}</Text>
+      
+      <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
+        <View>
+          <Text style={{ color: 'black', opacity: 0.5 }}>My Account Balance</Text>
+          <Text style={{ fontWeight: 'bold', fontSize: 25, color: '#18B8A8' }}>${balance}</Text>
+        </View>
+          <Image source={require('../../assets/logonobg.png')} style={styles.iconimage}/>
       </View>
+
     </View>
   );
 };
@@ -37,6 +42,11 @@ const Hero = ({ balance, onQuickTopUp, onMyContributions }) => {
 export default Hero;
 
 const styles = StyleSheet.create({
+  iconimage: {
+    width: 50,
+    height: 80,
+    tintColor:'black'
+   },
   hero: {
     flexDirection: 'column',
     backgroundColor: '#F9F9F9',

@@ -4,24 +4,36 @@ import Grid from './Grid';
 import SubHeadingLink from './SubHeadingLink';
 import { useNavigation } from '@react-navigation/native';
 const SponsoreData = [
-    {
-      id: '1',
-      imageSource: require('../../assets/intern.jpg'),
-      title: 'International Basket Market',
-      description: 'Give A Token, Help A Lot More',
-    },
-    {
+  {
+    id: '1',
+    imageSource: require('../../assets/intern.jpg'),
+    title: 'International Basket Market',
+    goal: 10000,
+    raised: 4500,
+    daysLeft: 15,
+    description: 'Example description 1',
+    details: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
+    ,date: '01/02/2023',
+    isSponsored:true
+  },
+  {
       id: '2',
       imageSource: require('../../assets/garden.jpg'),
       title: 'Meza Foundation',
+      goal: 10000,
+      raised: 4500,
+      daysLeft: 15,
       description: 'Everyone deserves healthcare',
+      details: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
+      ,date: '01/02/2023',
+      isSponsored:true
     },
-  ];
+];
 
 const SponsorGrid = () => {
   const navigation=useNavigation();
-    const handleSocialFeaturePress = (id) => {
-        console.log(`Social Feature pressed has ID: ${id}`);
+    const handleSponsorPress = (item) => {
+        navigation.navigate('CampaignSponsorDetailsContainer',{item})
       };
     const handleViewAll = () =>{
       navigation.navigate('AllSponsored');
@@ -39,8 +51,8 @@ const SponsorGrid = () => {
                 key={index}
                 item1={item1}
                 item2={item2}
-                onPress1={()=>{handleSocialFeaturePress(item1.id)}}
-                onPress2={()=>{handleSocialFeaturePress(item2.id)}}
+                onPress1={()=>{handleSponsorPress(item1)}}
+                onPress2={()=>{handleSponsorPress(item2)}}
                 gridStyles={styles.SponsorGridStyles}
                 imageStyles={styles.SponsorImageStyles}
               />

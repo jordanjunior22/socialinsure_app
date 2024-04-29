@@ -6,15 +6,13 @@ import SubHeadingNoLink from '../components/SubHeadingNoLink';
 import SponsorGrid from '../components/SponsorGrid';
 import BottomMargin from '../components/BottomMargin';
 import NavNoProfile from '../components/NavNoProfile';
-import CustomButton from '../components/Button';
 
 const SubReqFeatureForMembers = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const { item } = route.params; 
-  const handleSubsribe = ()=>{
-      console.log("Subscribe Pressed")
-      navigation.navigate('Verification',{item});
+  const handleCampaign = ()=>{
+    console.log("handleCampaign Pressed")
   }
   const iconURL =  require('../../assets/close.png')
 
@@ -36,7 +34,7 @@ const SubReqFeatureForMembers = () => {
           <Text style={{fontSize:16,fontWeight:700}}>${item.contributions}</Text>
           <Text style={{color:'gray'}}>CONTRIBUTIONS</Text>
         </View>
-        <TouchableOpacity style={{backgroundColor:'#24FF00',padding:5,flex:1,flexDirection:'column',justifyContent:'center',alignItems:'center',borderWidth:1,borderColor:'lightgray'}}>
+        <TouchableOpacity onPress={handleCampaign} style={{backgroundColor:'#24FF00',padding:5,flex:1,flexDirection:'column',justifyContent:'center',alignItems:'center',borderWidth:1,borderColor:'lightgray'}}>
           <Text style={{color:'white',fontWeight:700,fontSize:16}}>Campaigns</Text>
         </TouchableOpacity>
       </View>
