@@ -54,11 +54,16 @@ const FeatureGrid = () => {
     const handleSocialFeaturePress = (item) => {
       console.log(`Social Feature pressed has ID: ${item.id}`);
       if(item.subReq === 'Yes' && !user.isSubsciber){
-        navigation.navigate('SubReqFeatureNonMembers', { item });
-      }else{
+        navigation.navigate('SubReqFeatureForNonMembers', { item });
+      }else if(item.subReq === 'Yes' && user.isSubsciber){
         navigation.navigate('SubReqFeatureForMembers', { item });
       }
-  
+      else if(item.subReq === 'No'){
+        navigation.navigate('NoSubReqFeature', { item });
+      }
+      else{
+        throw "fatal error"
+      }
   
     };
     

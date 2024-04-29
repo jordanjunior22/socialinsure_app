@@ -1,8 +1,9 @@
-import { StyleSheet, Text, View,Image,TextInput,TouchableOpacity,ScrollView} from 'react-native'
+import { StyleSheet, Text, View,Image,TextInput,TouchableOpacity,ScrollView, SafeAreaView} from 'react-native'
 import React, { useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import Nav from '../../components/Nav';
 import * as ImagePicker from 'expo-image-picker';
+
 
 const ProfileDisplay = () => {
     const navigation = useNavigation();
@@ -40,7 +41,8 @@ const ProfileDisplay = () => {
 
     
   return (
-    <ScrollView style={{flex:1,padding:10}}>
+    <SafeAreaView style={{flex:1}}>
+    <ScrollView style={{padding:10}}>
         <Nav onPress={() => navigation.navigate('Home')} Title='My Profile' iconURL={iconURL}/>
     
         <Text style={{marginTop:20, fontSize:12, color:'blue'}}>Editing your profile is disabled, Please contact support on <Text style={{fontWeight:700}}>+1 703 725-8183</Text> or email <Text  style={{fontWeight:700}}>accounts@socialinsure.com</Text></Text>
@@ -116,6 +118,7 @@ const ProfileDisplay = () => {
             </TouchableOpacity>
         </View>
     </ScrollView>
+    </SafeAreaView>
   )
 }
 

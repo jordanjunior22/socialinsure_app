@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View,ScrollView } from 'react-native'
+import { StyleSheet, Text, View,SafeAreaView } from 'react-native'
 import React, { useState } from 'react'
 import { useNavigation, useRoute } from '@react-navigation/native';
 import AmountInput from '../components/AmountInput';
@@ -26,8 +26,8 @@ const Payment = () => {
     const iconURL =  require('../../assets/back.png')
     
   return (
-    <ScrollView style={{flex:1,padding:10}}>
-
+    <SafeAreaView style={{flex:1,padding:10}}>
+        <View style={{padding:10}}>
         <NavNoProfile Title='Subscription' onPress={handleGoBack} iconURL={iconURL}/>
         <SocialBanner Title={item.title} Content={item.description}/>
         <View style={{marginTop:20}}><StaticInput amount={item.fees}/></View>
@@ -39,8 +39,10 @@ const Payment = () => {
             <CustomButton name='PayPal' onPress={()=>{navigation.navigate('FailedFeedback')}} imageIcon={paypalIcon} containerStyle={{justifyContent:''}}/>
             <BlackButton name='Use My Balance' onPress={handleMyBalance}/>
         </View>
+        </View>
+
         
-    </ScrollView>
+    </SafeAreaView>
   )
 }
 

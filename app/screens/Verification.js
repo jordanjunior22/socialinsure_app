@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import NavNoProfile from '../components/NavNoProfile';
 import SubHeadingNoLink from '../components/SubHeadingNoLink';
@@ -6,6 +6,7 @@ import RNPickerSelect from 'react-native-picker-select';
 import axios from 'axios';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import CustomButton from '../components/Button'
+import BottomMargin from '../components/BottomMargin';
 
 const Verification = () => {
   const [countries, setCountries] = useState([]);
@@ -47,7 +48,8 @@ const Verification = () => {
   }, []); // Empty dependency array to run only once when component mounts
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={{flex:1}}>
+    <View style={{padding:10,flexDirection:'column',alignItems:'center'}}>
       <View>
       <NavNoProfile
         Title="Verification"
@@ -108,8 +110,10 @@ const Verification = () => {
 
         </View>
       </View>
+      <BottomMargin/>
       <CustomButton name='Continue' onPress={handleContinue}/>
     </View>
+    </SafeAreaView>
   );
 };
 

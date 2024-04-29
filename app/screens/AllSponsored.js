@@ -5,63 +5,60 @@ import Nav from '../components/Nav';
 import CampaignGrid from '../components/CampainGrid';
 import BottomMargin from '../components/BottomMargin';
 import { useNavigation } from '@react-navigation/native';
+import Grid from '../components/Grid';
 
 
-const Campaigns = () => {
+const AllSponsored = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedFilter, setSelectedFilter] = useState(null);
   const navigation =useNavigation();
 
   // Example campaign data
-  const campaignData = [
+  const SponsoreData = [
     {
       id: '1',
-      imageSource: require('../../assets/ted.jpg'),
-      title: 'Solidarity For John Deo',
+      imageSource: require('../../assets/intern.jpg'),
+      title: 'International Basket Market',
       goal: 10000,
       raised: 4500,
       daysLeft: 15,
       description: 'Example description 1',
-      featureType: 'Social Wellbeing',
       details: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
       ,date: '01/02/2023'
     },
     {
-      id: '2',
-      imageSource: require('../../assets/pah.jpg'),
-      title: 'Health Contribution',
-      goal: 10000,
-      raised: 8000,
-      daysLeft: 15,
-      description: 'Example description 2',
-      featureType: 'Social Health',
-      details: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-      ,date: '01/02/2023'
-    },
-    {
-      id: '3',
-      imageSource: require('../../assets/pah.jpg'),
-      title: 'Medical Assistance Fund',
-      goal: 20000,
-      raised: 10000,
-      daysLeft: 10,
-      description: 'Example description 3',
-      featureType: 'Medical Aid',
-      details: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-      ,date: '01/02/2023'
-    },
-    {
-      id: '4',
-      imageSource: require('../../assets/ted.jpg'),
-      title: 'Solidarity For Jane Doe',
-      goal: 15000,
-      raised: 6000,
-      daysLeft: 5,
-      description: 'Example description 4',
-      featureType: 'Social Wellbeing',
-      details: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-      ,date: '01/02/2023'
-    },
+        id: '2',
+        imageSource: require('../../assets/garden.jpg'),
+        title: 'Meza Foundation',
+        goal: 10000,
+        raised: 4500,
+        daysLeft: 15,
+        description: 'Everyone deserves healthcare',
+        details: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
+        ,date: '01/02/2023'
+      },
+      {
+        id: '3',
+        imageSource: require('../../assets/garden.jpg'),
+        title: 'Meza Foundation',
+        goal: 10000,
+        raised: 4500,
+        daysLeft: 15,
+        description: 'Everyone deserves healthcare',
+        details: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
+        ,date: '01/02/2023'
+      },   
+      {
+        id: '4',
+        imageSource: require('../../assets/garden.jpg'),
+        title: 'Meza Foundation',
+        goal: 10000,
+        raised: 4500,
+        daysLeft: 15,
+        description: 'Everyone deserves healthcare',
+        details: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
+        ,date: '01/02/2023'
+      },     
   ];
 
   const handleContribute = (item) => {
@@ -76,7 +73,7 @@ const Campaigns = () => {
 
   // Extract unique feature types for filtering
   const uniqueFeatureTypes = Array.from(
-    new Set(campaignData.map((data) => data.featureType))
+    new Set(SponsoreData.map((data) => data.featureType))
   );
 
   // Filter items for the picker
@@ -86,7 +83,7 @@ const Campaigns = () => {
   }));
 
   // Filtering based on both search term and selected filter
-  const filteredCampaigns = campaignData
+  const filteredCampaigns = SponsoreData
     .filter(
       (campaign) =>
         campaign.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
@@ -96,7 +93,7 @@ const Campaigns = () => {
   return (
     <SafeAreaView style={styles.container}>
     <ScrollView style={{padding: 10}}>
-      <Nav Title="All Campaigns" />
+      <Nav Title="Sponsored Campaign" />
 
       {/* Search Box with Custom Icon */}
       <View style={styles.searchBox}>
@@ -115,17 +112,6 @@ const Campaigns = () => {
         </View>
       </View>
 
-      {/* Filter Row */}
-      <View style={styles.filterRow}>
-        <Text style={styles.filterLabel}>Filter</Text>
-        <RNPickerSelect
-          onValueChange={(value) => setSelectedFilter(value)}
-          items={filterItems}
-          style={pickerSelectStyles}
-          placeholder={{ label: 'Select a Feature', value: null }}
-          useNativeAndroidPickerStyle={false}
-        />
-      </View>
 
       {/* Display Campaigns */}
       <View>
@@ -136,15 +122,14 @@ const Campaigns = () => {
             const item2 = filteredCampaigns[index + 1]; // Ensure there's a second item
 
             return (
-              <CampaignGrid
+              <Grid
                 key={index}
                 item1={item1}
                 item2={item2}
-                onPress1={() => handleContribute(item1)}
-                onPress2={() => handleContribute(item2)}
-                gridStyles={styles.FeatureGridStyle}
-                handleCampaignPress1={() =>campaignPress(item1)}
-                handleCampaignPress2={() =>campaignPress(item2)}
+                onPress1={() => campaignPress(item1)}
+                onPress2={() => campaignPress(item2)}
+                gridStyles={styles.SponsorGridStyles}
+                imageStyles={styles.SponsorImageStyles}
               />
             );
           }
@@ -158,7 +143,7 @@ const Campaigns = () => {
   );
 };
 
-export default Campaigns;
+export default AllSponsored;
 
 const styles = StyleSheet.create({
   container: {
@@ -200,6 +185,20 @@ const styles = StyleSheet.create({
   FeatureGridStyle: {
     margin: 1,
   },
+  SponsorGridStyles: {
+    flex: 1, // Equal space for each item in the row
+    backgroundColor: '#AB2525',
+    borderWidth: 1,
+    borderColor: '#AB2525',
+    height: 140, // Consistent height for items
+    margin:1,
+    borderTopLeftRadius:20,
+    borderTopRightRadius:20,
+  },
+  SponsorImageStyles:{
+    resizeMode: 'cover', width: '100%', height: 70 
+
+  }
 });
 
 const pickerSelectStyles = {

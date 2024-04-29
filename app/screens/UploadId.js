@@ -1,9 +1,10 @@
-import { StyleSheet, Text, TouchableOpacity, View,Image } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View,Image, SafeAreaView, ScrollView } from 'react-native'
 import React, { useState } from 'react'
 import NavNoProfile from '../components/NavNoProfile'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import CustomButton from '../components/Button'
 import * as ImagePicker from 'expo-image-picker';
+import BottomMargin from '../components/BottomMargin'
 
 const UploadId = () => {
     const route = useRoute();
@@ -42,7 +43,8 @@ const UploadId = () => {
         navigation.navigate('Verification',{item,verifMethod,selectedCountry})
     }
   return (
-    <View style={{flex:1,padding:10, flexDirection:'column', justifyContent:'space-between', alignItems:'center',backgroundColor:'#F9F9F9'}}>
+    <SafeAreaView style={{flex:1}}>
+    <View style={{padding:10, flexDirection:'column', justifyContent:'space-between', alignItems:'center',backgroundColor:'#F9F9F9'}}>
         <View style={{width:'100%'}}>
             <NavNoProfile Title="Upload Document" onPress={goBack} iconURL={iconURL}/>
             <Text style={{textAlign:'center', marginTop:30}}>Upload a Photo of your <Text style={{fontWeight:700}}>{verifMethod}</Text> </Text>
@@ -58,9 +60,11 @@ const UploadId = () => {
             )}
 
         </View>
+        <BottomMargin/>
         <CustomButton name='Continue' onPress={handleContinue}/>
 
     </View>
+    </SafeAreaView>
   )
 }
 

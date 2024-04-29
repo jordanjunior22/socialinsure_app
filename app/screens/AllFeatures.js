@@ -15,15 +15,16 @@ export default function AllFeatures() {
     const Title = 'Social Insure'
     const Content = 'Social Insure liaises you with a blend of healthier life-Social Well-being, Social Kids, Social Patron, Social Entrepreneur, and Social Commune.'
   return (
-    <ScrollView style={{ flex: 1 ,padding: 10,}}>
+    <SafeAreaView style={{ flex: 1}}>
+    <ScrollView style={{padding: 10}}>
         <Nav onPress={() => navigation.navigate('Home')} iconURL={iconURL} Title="Products & Services" />
         <SocialBanner Title={Title} Content={Content}/>
         <SubHeadingNoLink heading='FEATURES & SERVICES'/>
         <FeatureGrid/>
-        <SubHeadingLink Title='SPONSORED SERVICES' Cmd='View All >'/>
         <SponsorGrid/>
         <BottomMargin/>
     </ScrollView>
+    </SafeAreaView>
   );
 }
 

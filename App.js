@@ -15,12 +15,16 @@ import QuickTopUp from './app/screens/QuickTopUp';
 import SuccessFeedback from './app/screens/SuccessFeedback';
 import FailedFeedback from './app/screens/FailedFeedback';
 import AllFeatures from './app/screens/AllFeatures';
-import SubReqFeatureNonMembers from './app/screens/SubReqFeatureNonMembers';
+import SubReqFeatureForNonMembers from './app/screens/SubReqFeatureNonMembers';
 import Verification from './app/screens/Verification';
 import UploadId from './app/screens/UploadId';
 import Terms from './app/screens/Terms';
 import Payment from './app/screens/Payment';
 import SubReqFeatureForMembers from './app/screens/SubReqFeatureForMembers';
+import NoSubReqFeature from './app/screens/NoSubReqFeature';
+import CampaignSponsorDetailsContainer from './app/components/CampaignSponsorDetailsContainer';
+import ContributionPayment from './app/screens/ContributionPayment';
+import AllSponsored from './app/screens/AllSponsored';
 
 
 const Stack = createNativeStackNavigator();
@@ -30,6 +34,7 @@ const MainTabNavigator = () => {
   return (
     <Tab.Navigator
     screenOptions={({ route }) => ({
+      tabBarHideOnKeyboard:true,
       tabBarStyle: {
         paddingVertical: 10, // Apply padding to the entire tab bar
       },
@@ -82,16 +87,20 @@ function App() {
         <Stack.Screen name="SuccessFeedback" component={SuccessFeedback} />
         <Stack.Screen name="FailedFeedback" component={FailedFeedback} />
         <Stack.Screen name="AllFeatures" component={AllFeatures} />
-        <Stack.Screen name="SubReqFeatureNonMembers" component={SubReqFeatureNonMembers} />
+        <Stack.Screen name="SubReqFeatureForNonMembers" component={SubReqFeatureForNonMembers} />
         <Stack.Screen name="Verification" component={Verification} />
         <Stack.Screen name="UploadId" component={UploadId} />
         <Stack.Screen name="Terms" component={Terms} />
         <Stack.Screen name="Payment" component={Payment} />
         <Stack.Screen name="SubReqFeatureForMembers" component={SubReqFeatureForMembers} />
-
+        <Stack.Screen name="NoSubReqFeature" component={NoSubReqFeature} />
+        <Stack.Screen name="CampaignSponsorDetailsContainer" component={CampaignSponsorDetailsContainer} />
+        <Stack.Screen name="ContributionPayment" component={ContributionPayment} />
+        <Stack.Screen name="AllSponsored" component={AllSponsored} />
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
-//SubReqFeatureForMembers
+//AllSponsored
+
 export default App;

@@ -1,7 +1,8 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import Grid from './Grid';
-
+import SubHeadingLink from './SubHeadingLink';
+import { useNavigation } from '@react-navigation/native';
 const SponsoreData = [
     {
       id: '1',
@@ -18,12 +19,17 @@ const SponsoreData = [
   ];
 
 const SponsorGrid = () => {
+  const navigation=useNavigation();
     const handleSocialFeaturePress = (id) => {
         console.log(`Social Feature pressed has ID: ${id}`);
       };
+    const handleViewAll = () =>{
+      navigation.navigate('AllSponsored');
+    }
 
   return (
     <View>
+        <SubHeadingLink Title='SPONSORED SERVICES' Cmd='View All >' onPress={handleViewAll}/>
         {SponsoreData.map((_, index) => {
           if (index % 2 === 0) { // Every second index creates a new row
             const item1 = SponsoreData[index];
@@ -58,6 +64,7 @@ const styles = StyleSheet.create({
         margin:1,
         borderTopLeftRadius:20,
         borderTopRightRadius:20,
+
       },
       SponsorImageStyles:{
         resizeMode: 'cover', width: '100%', height: 70 

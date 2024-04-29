@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ScrollView, StyleSheet, Text, View, Alert } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, Alert, SafeAreaView } from 'react-native';
 import SocialBanner from '../components/SocialBanner';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import NavNoProfile from '../components/NavNoProfile';
@@ -28,7 +28,7 @@ const Terms = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView}>
         <NavNoProfile iconURL={iconURL} Title='Terms & Condition' onPress={handleGoBack} />
         <SocialBanner Title={item.title} Content={item.description} />
@@ -49,7 +49,7 @@ const Terms = () => {
       <View style={styles.buttonContainer}>
         <CustomButton name='Accept Terms & Conditions' onPress={handleAccept} />
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
