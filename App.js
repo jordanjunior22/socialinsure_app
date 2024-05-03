@@ -25,7 +25,10 @@ import NoSubReqFeature from './app/screens/NoSubReqFeature';
 import CampaignSponsorDetailsContainer from './app/components/CampaignSponsorDetailsContainer';
 import ContributionPayment from './app/screens/ContributionPayment';
 import AllSponsored from './app/screens/AllSponsored';
-
+import PaymentSettings from './app/screens/PaymentSettings';
+import CardDetails from './app/screens/CardDetails';
+import Intro from './app/screens/Intro';
+import Splash from './app/screens/Splash';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -77,10 +80,13 @@ const MainTabNavigator = () => {
   );
 };
 function App() {
+  //Intro
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false}}>
         {/* Login screen */}
+        <Stack.Screen name="Splash" component={Splash} />
+        <Stack.Screen name="Intro" component={Intro} />
         <Stack.Screen name="Main" component={MainTabNavigator} />
         <Stack.Screen name="ProfileDisplay" component={ProfileDisplay} />
         <Stack.Screen name="QuickTopUp" component={QuickTopUp} />
@@ -97,10 +103,13 @@ function App() {
         <Stack.Screen name="CampaignSponsorDetailsContainer" component={CampaignSponsorDetailsContainer} />
         <Stack.Screen name="ContributionPayment" component={ContributionPayment} />
         <Stack.Screen name="AllSponsored" component={AllSponsored} />
+        <Stack.Screen name="PaymentSettings" component={PaymentSettings} />
+        <Stack.Screen name="CardDetails" component={CardDetails} />
+
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
-//AllSponsored
+//SignUp
 
 export default App;

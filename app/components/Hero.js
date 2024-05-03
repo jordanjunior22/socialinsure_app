@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
   iconimage: {
     width: 50,
     height: 80,
-    tintColor:'black'
+    tintColor:'#18B8A8'
    },
   hero: {
     flexDirection: 'column',
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
   },
   buttons: {
     borderRadius: 50,
-    backgroundColor: '#24FF00',
+    backgroundColor: '#AB2525',
     padding: 10,
     color: 'white',
     borderRadius: 10,
@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
   },
   placeholderButton: {
     borderRadius: 50,
-    backgroundColor: '#18B8A8',
+    backgroundColor: '#AB2525',
     padding: 10,
     borderRadius: 10,
     opacity: 0.5, // To indicate it's not interactive
