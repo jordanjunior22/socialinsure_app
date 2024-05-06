@@ -1,75 +1,105 @@
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  TouchableOpacity,
+  Alert,
+  ActivityIndicator,
+} from 'react-native';
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Alert } from 'react-native';
-import auth from '@react-native-firebase/auth';
-import { GoogleSignin, GoogleSigninButton, statusCodes } from '@react-native-google-signin/google-signin';
-
-GoogleSignin.configure({
-  webClientId: 'YOUR_WEB_CLIENT_ID', // Replace with your Google OAuth client ID
-});
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
+import { firebase } from '../../firebase';
 
 const SignUp = () => {
+  const navigation = useNavigation(); // For navigation handling
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [isLoading, setIsLoading] = useState(false); // Loading state
 
-  const handleEmailSignUp = async () => {
+  const registerUser = async (email, password, firstName, lastName) => {
+    setIsLoading(true); // Set loading state to true
     try {
-      const userCredential = await auth().createUserWithEmailAndPassword(email, password);
-      Alert.alert('Sign-Up Successful', `Welcome, ${userCredential.user.email}!`);
-    } catch (error) {
-      console.error('Error signing up with email:', error);
-      Alert.alert('Sign-Up Error', error.message);
-    }
-  };
+      // Firebase authentication and Firestore logic
+      await firebase.auth().createUserWithEmailAndPassword(email, password);
+      const user = firebase.auth().currentUser;
 
-  const handleGoogleSignIn = async () => {
-    try {
-      await GoogleSignin.hasPlayServices();
-      const { idToken } = await GoogleSignin.signIn();
-      const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-      await auth().signInWithCredential(googleCredential);
-      Alert.alert('Google Sign-In Successful', 'Welcome!');
-    } catch (error) {
-      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-        Alert.alert('Google Sign-In Cancelled');
-      } else {
-        console.error('Google Sign-In Error:', error);
-        Alert.alert('Google Sign-In Error', error.message);
+      if (user) {
+        await user.sendEmailVerification({
+          handleCodeInApp: true,
+          url: 'https://social-insure-d86ce.firebaseapp.com',
+        });
+
+        await firebase.firestore().collection('users').doc(user.uid).set({
+          firstName,
+          lastName,
+          email,
+        });
+
+        Alert.alert('Verification Email Sent', 'Please check your email to verify your account.');
+        setIsLoading(false); // Set loading state to false
+        navigation.navigate('Login')
       }
+    } catch (error) {
+      setIsLoading(false); // Set loading state to false on error
+      Alert.alert('Error', error.message);
     }
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Sign Up</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        value={email}
-        onChangeText={setEmail}
-        keyboardType="email-address"
-        autoCapitalize="none"
-        autoCorrect={false}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        secureTextEntry
-        value={password}
-        onChangeText={setPassword}
-      />
-      <TouchableOpacity style={styles.signUpButton} onPress={handleEmailSignUp}>
-        <Text style={styles.buttonText}>Sign Up with Email</Text>
-      </TouchableOpacity>
+    <SafeAreaView style={styles.container}>
+      {isLoading ? ( // Conditionally render activity indicator
+        <ActivityIndicator size="large" color="#18B8A8" /> // Customize as needed
+      ) : (
+        <>
+          <Text style={styles.title}>Sign Up</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="First Name"
+            value={firstName}
+            onChangeText={setFirstName}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Last Name"
+            value={lastName}
+            onChangeText={setLastName}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Email"
+            value={email}
+            onChangeText={setEmail}
+            keyboardType="email-address"
+            autoCapitalize="none"
+            autoCorrect={false}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Password"
+            secureTextEntry
+            value={password}
+            onChangeText={setPassword}
+          />
+          <TouchableOpacity
+            style={styles.signUpButton}
+            onPress={() => registerUser(email, password, firstName, lastName)}
+          >
+            <Text style={styles.buttonText}>Sign Up</Text>
+          </TouchableOpacity>
 
-      <Text style={styles.orText}>OR</Text>
-
-      <GoogleSigninButton
-        style={styles.googleSignInButton}
-        size={GoogleSigninButton.Size.Wide}
-        color={GoogleSigninButton.Color.Dark}
-        onPress={handleGoogleSignIn}
-      />
-    </View>
+          <Text
+            style={styles.loginText}
+            onPress={() => navigation.navigate('Login')}
+          >
+            Already have an account? Login
+          </Text>
+        </>
+      )}
+    </SafeAreaView>
   );
 };
 
@@ -78,36 +108,38 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    padding: 20,
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
+    marginBottom: 20,
   },
   input: {
-    width: '80%',
+    width: '90%',
     height: 40,
-    padding: 10,
     borderWidth: 1,
-    borderColor: 'gray',
+    borderColor: '#ccc',
     borderRadius: 5,
-    marginVertical: 10,
+    padding: 10,
+    marginBottom: 15,
   },
   signUpButton: {
-    backgroundColor: 'blue',
-    padding: 15,
+    backgroundColor: '#18B8A8',
+    padding: 10,
     borderRadius: 5,
+    width: '90%',
   },
   buttonText: {
     color: 'white',
+    fontWeight: 'bold',
     textAlign: 'center',
   },
-  orText: {
-    fontSize: 18,
-    marginVertical: 10,
-  },
-  googleSignInButton: {
-    width: 192, // Adjust size as needed
-    height: 48,
+  loginText: {
+    fontSize: 14,
+    color: '#18B8A8',
+    marginTop: 20,
+    textDecorationLine: 'underline',
   },
 });
 

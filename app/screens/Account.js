@@ -4,6 +4,7 @@ import NavNoProfile from '../components/NavNoProfile';
 import AccountButtons from '../components/AccountButtons';
 import BottomMargin from '../components/BottomMargin';
 import { useNavigation } from '@react-navigation/native';
+import {firebase} from '../../firebase'
 
 const Account = () => {
   const navigation = useNavigation();
@@ -64,6 +65,7 @@ const Account = () => {
           <AccountButtons name="Social Insure Support" onPress={() => handleButtonPress('Social Insure Support')} />
           <AccountButtons name="App Settings" onPress={() => handleButtonPress('App Settings')} />
           <AccountButtons name="About" onPress={() => handleButtonPress('About')} />
+          <AccountButtons name="Sign Out" onPress={() => {firebase.auth().signOut()}} />
         </View>
       </ScrollView>
     </SafeAreaView>

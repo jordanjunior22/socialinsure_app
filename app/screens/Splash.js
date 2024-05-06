@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, Image, Animated } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { CommonActions } from '@react-navigation/native';
 
 const Splash = () => {
   const navigation = useNavigation();
@@ -15,7 +16,13 @@ const Splash = () => {
 
  
     const timeout = setTimeout(() => {
-      navigation.navigate('Intro');
+      // navigation.navigate('Intro');
+      navigation.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [{ name: 'Intro' }],
+          })
+        );
     }, 3000); 
 
     return () => clearTimeout(timeout);

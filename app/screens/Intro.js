@@ -41,13 +41,11 @@ const Intro = () => {
     const slideIndex = Math.round(contentOffsetX / width);
     setCurrentSlide(slideIndex);
   };
-const handleOnpress=()=>{
-    navigation.dispatch(
-        CommonActions.reset({
-          index: 0,
-          routes: [{ name: 'Main' }],
-        })
-      );
+const handleLogin=()=>{
+    navigation.navigate('Login');
+}
+const handleSignUp=()=>{
+  navigation.navigate('SignUp');
 }
   return (
     <SafeAreaView style={styles.container}>
@@ -83,11 +81,11 @@ const handleOnpress=()=>{
 
       {/* Column layout for buttons */}
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.signUpButton} onPress={handleOnpress}>
-          <Text style={styles.buttonText1}>Sign Up</Text>
+        <TouchableOpacity style={styles.signUpButton} onPress={handleSignUp}>
+          <Text style={styles.buttonText1}>Create An Account</Text>
         </TouchableOpacity>
         
-        <TouchableOpacity style={styles.loginButton} onPress={handleOnpress}>
+        <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
       </View>
