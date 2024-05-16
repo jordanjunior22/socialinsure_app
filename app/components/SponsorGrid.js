@@ -8,32 +8,24 @@ const SponsoreData = [
     id: '1',
     imageSource: require('../../assets/intern.jpg'),
     title: 'International Basket Market',
-    goal: 10000,
-    raised: 4500,
-    daysLeft: 15,
     description: 'Example description 1',
     details: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-    ,date: '01/02/2023',
-    isSponsored:true
+    ,website:'https://www.google.com'
   },
   {
       id: '2',
       imageSource: require('../../assets/garden.jpg'),
       title: 'Meza Foundation',
-      goal: 10000,
-      raised: 4500,
-      daysLeft: 15,
       description: 'Everyone deserves healthcare',
       details: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-      ,date: '01/02/2023',
-      isSponsored:true
+      ,website:'https://www.google.com'
     },
 ];
 
 const SponsorGrid = () => {
   const navigation=useNavigation();
     const handleSponsorPress = (item) => {
-        navigation.navigate('CampaignSponsorDetailsContainer',{item})
+        navigation.navigate('Sponsored',{item})
       };
     const handleViewAll = () =>{
       navigation.navigate('AllSponsored');

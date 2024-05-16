@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect, useContext } from 'react';
 import { View, Text, StyleSheet, ScrollView, Dimensions, TouchableOpacity, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { CommonActions } from '@react-navigation/native';
+import { UserContext } from '../../context/UserContext';
 
 const { width } = Dimensions.get('window');
 
@@ -33,7 +35,10 @@ const features = [
   },
 ];
 
+
+
 const Intro = () => {
+  const {setUser} = useContext(UserContext)
   const [currentSlide, setCurrentSlide] = useState(0);
   const navigation=useNavigation();
   const handleScroll = (event) => {
@@ -47,6 +52,28 @@ const handleLogin=()=>{
 const handleSignUp=()=>{
   navigation.navigate('SignUp');
 }
+
+useEffect(() => {
+  const checkLoggedInUser = async () => {
+    try {
+      const storedUser = await AsyncStorage.getItem('user');
+      if (storedUser) {
+        const parsedUser = JSON.parse(storedUser); // Parse JSON string to object
+        setUser(parsedUser); 
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 0,
+            routes: [{ name: 'Main' }],
+          })
+        );
+      } 
+    } catch (error) {
+      console.log('Error:', error.message);
+    }
+  };
+  checkLoggedInUser();
+}, []);
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView

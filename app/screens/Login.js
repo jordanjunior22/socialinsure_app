@@ -1,29 +1,32 @@
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
-import React, { useState } from 'react';
+import React, { useState,useEffect, useContext } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { firebase } from '../../firebase';
+import { UserContext } from '../../context/UserContext';
+
 
 const Login = () => {
+  const {login,user} = useContext(UserContext);
   const navigation = useNavigation(); // For navigation handling
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false); // State to track if login is in progress
 
   const loginUser = async (email, password) => {
-    setIsLoading(true); // Start loading indicator
+    setIsLoading(true);
     try {
       const credentials = await firebase.auth().signInWithEmailAndPassword(email, password);
       if(credentials.user.emailVerified){
+        login(credentials.user.email,navigation);
         return
       }else{
         Alert.alert("This User is not verified.Please check your email to verify your account.");
       }
-
     } catch (error) {
       Alert.alert("Login failed", error.message);
     } finally {
-      setIsLoading(false); // Stop loading indicator
+      setIsLoading(false); 
     }
   };
 

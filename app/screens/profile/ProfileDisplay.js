@@ -1,16 +1,23 @@
-import { StyleSheet, Text, View,Image,TextInput,TouchableOpacity,ScrollView, SafeAreaView} from 'react-native'
-import React, { useState } from 'react'
+import { StyleSheet, Text, View,Image,TextInput,TouchableOpacity,ScrollView, SafeAreaView,Alert, ActivityIndicator} from 'react-native'
+import React, { useState,useContext } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import Nav from '../../components/Nav';
 import * as ImagePicker from 'expo-image-picker';
-
+import { UserContext } from '../../../context/UserContext';
+import axios from 'axios';
 
 const ProfileDisplay = () => {
+  const [isLoading, setIsLoading] = useState(false);
+    const BACKEND_URL = 'http://172.20.10.4:3000/api';
     const navigation = useNavigation();
     const iconURL = require('../../../assets/close.png')
     const [selectedImage, setSelectedImage] = useState(null);
+    const {user} = useContext(UserContext);
+  console.log("users from storage PROFILE SCREEN",user);  
 
-    const pickImage = async () => {
+
+  const defaultProfileImage = user?.imageUrl && user.imageUrl !== '' ? { uri: user.imageUrl } : require('../../../assets/profile.png');
+  const pickImage = async () => {
       // Ask for permissions if needed
       const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
       if (status !== 'granted') {
@@ -34,10 +41,38 @@ const ProfileDisplay = () => {
       }
     };
 
-    const saveProfile = () => {
-        
-
-      };
+    const saveProfile = async () => {
+      setIsLoading(true);
+      if (selectedImage) {
+        const formData = new FormData();
+        formData.append('image', {
+          uri: selectedImage, 
+          name: 'profile.jpg', // Example name, can be anything
+          type: 'image/jpeg', // Example type, change based on image type
+        });
+        formData.append('userId', user?._id);
+    
+        try {
+          const response = await axios.post(`${BACKEND_URL}/uploadprofile`, formData, {
+            headers: {
+              'Content-Type': 'multipart/form-data', // Required for file uploads
+            },
+          });
+    
+          if (response.status === 200) {
+            setIsLoading(false);
+            Alert.alert('Profile picture updated successfully!');
+          } else {
+            Alert.alert('Failed to update profile picture.');
+          }
+        } catch (error) {
+          console.error(error);
+          Alert.alert('An error occurred while updating profile picture.');
+        }
+      } else {
+        Alert.alert('Please select an image to upload.');
+      }
+    };
 
     
   return (
@@ -51,9 +86,9 @@ const ProfileDisplay = () => {
             <View style={{flexDirection:'row',justifyContent:'space-between', alignItems:'center',backgroundColor:'#18B8A8'}}>
                 <Text style={{color:'white',padding:4}}>User ID</Text>
                 <TextInput
-                style={[styles.input,{color:'white',opacity:0.7,padding:4}]}
+                style={[styles.input,{color:'white',opacity:0.9,padding:4}]}
                 placeholder="User ID"
-                value="00000000001" // Set the initial value for the name
+                value={user?._id} // Set the initial value for the name
                 editable={false} // Make the input read-only
                 
                 />
@@ -63,7 +98,7 @@ const ProfileDisplay = () => {
                 <TextInput
                 style={[styles.input,{padding:4}]}
                 placeholder="Association Code"
-                value="00000000001" // Set the initial value for the name
+                value="00000000000" // Set the initial value for the name
                 editable={false} // Make the input read-only
                 />
             </View>
@@ -71,9 +106,9 @@ const ProfileDisplay = () => {
             <View style={{flexDirection:'row',justifyContent:'space-between', alignItems:'center',backgroundColor:'#18B8A8'}}>
                 <Text style={{color:'white',padding:4}}>Name</Text>
                 <TextInput
-                style={[styles.input,{color:'white',opacity:0.7,padding:4}]}
+                style={[styles.input,{color:'white',opacity:0.9,padding:4}]}
                 placeholder="Name"
-                value="Flavius Prahlad" // Set the initial value for the name
+                value={user?.firstName} // Set the initial value for the name
                 editable={false} // Make the input read-only
                 />
             </View>
@@ -84,7 +119,7 @@ const ProfileDisplay = () => {
                 <TextInput
                 style={[styles.input,{padding:4}]}
                 placeholder="Email"
-                value="flaviusprahlad@socialinsure.org" // Set the initial value for the name
+                value={user?.email} // Set the initial value for the name
                 editable={false} // Make the input read-only
                 />
             </View>
@@ -94,7 +129,7 @@ const ProfileDisplay = () => {
                 <TextInput
                 style={[styles.input,{color:'white',padding:4}]}
                 placeholder="Phone Number"
-                value="17037258183" // Set the initial value for the name
+                value={user?.phoneNumber} // Set the initial value for the name
                 editable={false} // Make the input read-only
                 />
             </View>
@@ -103,7 +138,9 @@ const ProfileDisplay = () => {
 
                 <View style={styles.imageContainer}>
                   <TouchableOpacity onPress={pickImage} >
-                    <Image source={ selectedImage ?{uri: selectedImage}: require('../../../assets/ted.jpg')} style={styles.image}/>
+                    
+                  <Image source={selectedImage ? { uri: selectedImage } : defaultProfileImage} style={styles.image} />
+                    
                     <View style={styles.iconContainer}>
                       <Image source={require('../../../assets/camera.png')} style={styles.icon}/>
                     </View>
@@ -123,7 +160,7 @@ const ProfileDisplay = () => {
 }
 
 export default ProfileDisplay
-
+//user.email
 const styles = StyleSheet.create({
     // image: {
     //     width: 30,
@@ -154,5 +191,6 @@ const styles = StyleSheet.create({
       icon:{
         width:60,
         height:60,
+        tintColor:'gray'
       }
 })

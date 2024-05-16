@@ -7,12 +7,13 @@ import FeaturedCampaings from '../components/FeaturedCampaigns';
 import Nav from '../components/Nav';
 import Hero from '../components/Hero';
 
-
 const Home = () => {
-  const handleContributions = () => {
-    console.log('Button pressed');
-  };
   const navigation = useNavigation();
+
+  const handleContributions = () => {
+    navigation.navigate('Contributions')
+  };
+
 
 
   return (

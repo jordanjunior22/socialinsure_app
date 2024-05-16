@@ -12,7 +12,7 @@ const SubReqFeatureForMembers = () => {
   const route = useRoute();
   const { item } = route.params; 
   const handleCampaign = ()=>{
-    console.log("handleCampaign Pressed")
+    navigation.navigate("Campaigns")
   }
   const iconURL =  require('../../assets/close.png')
 

@@ -6,6 +6,7 @@ import AmountInput from '../components/AmountInput';
 import CustomButton from '../components/Button';
 import SocialBanner from '../components/SocialBanner'
 import BlackButton from '../components/BlackButton';
+import ButtonFull from '../components/ButtonFull';
 
 const ContributionPayment = () => {
   const [amount, setAmount] = useState('');
@@ -34,8 +35,8 @@ const ContributionPayment = () => {
         <Text style={{textAlign:'center',color:'blue',fontWeight:700,marginTop:10}}>Choose Payment Method</Text>
         <Text style={{color:'blue', textAlign:'center'}}>You won't be charged yet</Text>
         <View style={{display:'flex', flexDirection:'column', alignItems:'center', marginTop:10}}>
-            <CustomButton name='Credit/Debit Cart' onPress={()=>{navigation.navigate('SuccessFeedback')}} imageIcon={cardIcon} containerStyle={{justifyContent:''}}/>
-            <CustomButton name='PayPal' onPress={()=>{navigation.navigate('FailedFeedback')}} imageIcon={paypalIcon} containerStyle={{justifyContent:''}}/>
+            <ButtonFull name='Credit/Debit Cart' onPress={()=>{navigation.navigate('SuccessFeedback')}} imageIcon={cardIcon} containerStyle={{justifyContent:''}}/>
+            <ButtonFull name='PayPal' onPress={()=>{navigation.navigate('FailedFeedback')}} imageIcon={paypalIcon} containerStyle={{justifyContent:''}}/>
             <BlackButton name='Use My Balance' onPress={handleMyBalance}/>
         </View>
         

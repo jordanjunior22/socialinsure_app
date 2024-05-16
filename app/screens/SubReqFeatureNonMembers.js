@@ -8,6 +8,7 @@ import SponsorGrid from '../components/SponsorGrid';
 import BottomMargin from '../components/BottomMargin';
 import ButtonFull from '../components/ButtonFull';
 import NavNoProfile from '../components/NavNoProfile';
+
 const SubReqFeatureForNonMembers = () => {
   const navigation = useNavigation();
   const route = useRoute();

@@ -6,6 +6,7 @@ import NavNoProfile from '../components/NavNoProfile';
 import SubHeadingNoLink from '../components/SubHeadingNoLink';
 import Checkbox from '../components/Checkbox';
 import CustomButton from '../components/Button';
+import ButtonFull from '../components/ButtonFull';
 
 const Terms = () => {
   const route = useRoute();
@@ -47,7 +48,7 @@ const Terms = () => {
         />
       </ScrollView>
       <View style={styles.buttonContainer}>
-        <CustomButton name='Accept Terms & Conditions' onPress={handleAccept} />
+        <ButtonFull name='Accept Terms & Conditions' onPress={handleAccept} />
       </View>
     </SafeAreaView>
   );

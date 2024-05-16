@@ -72,19 +72,9 @@ const AllSponsored = () => {
   };
   const campaignPress = (item) =>{
     console.log('Campaign Press:', item.id);
-    navigation.navigate('CampaignSponsorDetailsContainer', {item})
+    navigation.navigate('Sponsored', {item})
   }
 
-  // Extract unique feature types for filtering
-  const uniqueFeatureTypes = Array.from(
-    new Set(SponsoreData.map((data) => data.featureType))
-  );
-
-  // Filter items for the picker
-  const filterItems = uniqueFeatureTypes.map((type) => ({
-    label: type,
-    value: type,
-  }));
 
   // Filtering based on both search term and selected filter
   const filteredCampaigns = SponsoreData

@@ -1,0 +1,32 @@
+require('dotenv').config(); // Load environment variables
+const express = require('express'); // Import Express
+const mongoose = require('mongoose'); // Import Mongoose
+const bodyParser = require('body-parser'); // Import Body Parser
+const app = express(); // Initialize the Express app
+const cors = require('cors')
+
+
+const userRoutes = require('./routes/UserRoutes'); // Import user routes
+const VerficationRoutes = require('./routes/VerificationRoutes'); // Import user routes
+
+
+
+
+app.use(cors());
+app.use(bodyParser.json()); 
+
+// Connect to MongoDB
+const mongoURI = process.env.MONGO_URL;
+mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log('Connected to MongoDB'))
+  .catch((err) => console.error('Error connecting to MongoDB:', err));
+
+// Use user routes after middleware
+app.use('/api', userRoutes); // Apply routes to the Express app
+app.use('/api', VerficationRoutes); 
+
+// Start the server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`); 
+});

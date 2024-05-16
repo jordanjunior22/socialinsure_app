@@ -12,8 +12,7 @@ const NoSubReqFeature = () => {
   const route = useRoute();
   const { item } = route.params; 
   const handleCampaign = ()=>{
-      console.log("Campaign Pressed")
-    //   navigation.navigate('Verification',{item});
+    navigation.navigate('Campaigns');
   }
   const iconURL =  require('../../assets/close.png')
 

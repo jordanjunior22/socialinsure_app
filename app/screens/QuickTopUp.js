@@ -5,14 +5,14 @@ import { useNavigation } from '@react-navigation/native';
 import Hero from '../components/Hero';
 import AmountInput from '../components/AmountInput';
 import CustomButton from '../components/Button';
-
+import ButtonFull from '../components/ButtonFull'
 
 const QuickTopUp = () => {
   const [amount, setAmount] = useState('');
 
     const navigation = useNavigation();
     const handleContributions = () => {
-        console.log('Button pressed');
+        navigation.navigate('Contributions')
       };
       const handleChangeAmount = (text) => {
         setAmount(text)
@@ -33,8 +33,8 @@ const QuickTopUp = () => {
         <Text style={{textAlign:'center',color:'blue',fontWeight:700,marginTop:10}}>Choose Payment Method</Text>
         <Text style={{color:'blue', textAlign:'center'}}>You won't be charged yet</Text>
         <View style={{display:'flex', flexDirection:'column', alignItems:'center', marginTop:10}}>
-            <CustomButton name='Credit/Debit Cart' onPress={()=>{navigation.navigate('SuccessFeedback')}} imageIcon={cardIcon} containerStyle={{justifyContent:''}}/>
-            <CustomButton name='PayPal' onPress={()=>{navigation.navigate('FailedFeedback')}} imageIcon={paypalIcon} containerStyle={{justifyContent:''}}/>
+            <ButtonFull name='Credit/Debit Cart' onPress={()=>{navigation.navigate('SuccessFeedback')}} imageIcon={cardIcon} containerStyle={{justifyContent:''}}/>
+            <ButtonFull name='PayPal' onPress={()=>{navigation.navigate('FailedFeedback')}} imageIcon={paypalIcon} containerStyle={{justifyContent:''}}/>
         </View>
         
     </ScrollView>

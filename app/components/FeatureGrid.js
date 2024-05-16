@@ -1,7 +1,10 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useContext,useEffect,useState } from 'react'
 import Grid from './Grid';
 import { useNavigation } from '@react-navigation/native';
+import { UserContext } from '../../context/UserContext';
+import axios from 'axios';
+
 const socialFeaturesData = [
   {
     id: '1',
@@ -45,18 +48,32 @@ const socialFeaturesData = [
     // Add more social features as needed
   ];
 const FeatureGrid = () => {
+  const BACKEND_URL = "http://172.20.10.4:3000/api";
     const navigation=useNavigation();
-    const user = {
-      id:1,
-      name:'john',
-      isSubsciber:false
-    }
+    const {user} = useContext(UserContext);
+    const userId = user._id;
+    const [verification, setVerification] = useState(null);
+
+    useEffect(() => {
+      const fetchVerificationData = async () => {
+        try {
+          const response = await axios.get(`${BACKEND_URL}/verification/${userId}`);
+          setVerification(response.data);
+        } catch (error) {
+          console.error('Error fetching verification data:', error);
+        }
+      };
+  
+      fetchVerificationData(); // Fetch verification data when component mounts
+    }, [userId]); // Run effect when userId changes
     const handleSocialFeaturePress = (item) => {
       console.log(`Social Feature pressed has ID: ${item.id}`);
-      if(item.subReq === 'Yes' && !user.isSubsciber){
+      if(item.subReq === 'Yes' && !user.isAWellBeingSubscriber && (verification.status === 'Not Started' || verification.status === 'Rejected')){
         navigation.navigate('SubReqFeatureForNonMembers', { item });
-      }else if(item.subReq === 'Yes' && user.isSubsciber){
+      }else if(item.subReq === 'Yes' && user.isAWellBeingSubscriber && verification.status === 'Approved'){
         navigation.navigate('SubReqFeatureForMembers', { item });
+      }else if(item.subReq === 'Yes' && !user.isAWellBeingSubscriber && verification.status === 'Pending'){
+        navigation.navigate('PendingMembers');
       }
       else if(item.subReq === 'No'){
         navigation.navigate('NoSubReqFeature', { item });

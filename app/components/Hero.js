@@ -1,7 +1,10 @@
 import { StyleSheet, Text, View, TouchableOpacity,Image } from 'react-native';
-import React from 'react';
+import React, { useContext } from 'react';
+import { UserContext } from '../../context/UserContext';
 
 const Hero = ({ balance, onQuickTopUp, onMyContributions }) => {
+  const {user} = useContext(UserContext);
+
   return (
     <View style={styles.hero}>
       <View style={styles.hero_top}>
@@ -30,7 +33,7 @@ const Hero = ({ balance, onQuickTopUp, onMyContributions }) => {
       <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
         <View>
           <Text style={{ color: 'black', opacity: 0.5 }}>My Account Balance</Text>
-          <Text style={{ fontWeight: 'bold', fontSize: 25, color: '#18B8A8' }}>${balance}</Text>
+          <Text style={{ fontWeight: 'bold', fontSize: 25, color: '#18B8A8' }}>${user.balance}</Text>
         </View>
           <Image source={require('../../assets/logonobg.png')} style={styles.iconimage}/>
       </View>

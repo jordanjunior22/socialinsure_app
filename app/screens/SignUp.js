@@ -12,6 +12,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { firebase } from '../../firebase';
 
+const BACKEND_URL = 'http://172.20.10.4:3000/api';
+
 const SignUp = () => {
   const navigation = useNavigation(); // For navigation handling
   const [email, setEmail] = useState('');
@@ -20,34 +22,59 @@ const SignUp = () => {
   const [lastName, setLastName] = useState('');
   const [isLoading, setIsLoading] = useState(false); // Loading state
 
-  const registerUser = async (email, password, firstName, lastName) => {
+  const registerUser = async (email, password, firstName, lastName, phoneNumber, imageUrl, isAWellBeingSubscriber, isVerified, balance, isBlackListed,emailVerified) => {
     setIsLoading(true); // Set loading state to true
     try {
-      // Firebase authentication and Firestore logic
-      await firebase.auth().createUserWithEmailAndPassword(email, password);
-      const user = firebase.auth().currentUser;
-
+      console.log('Starting user registration'); // Debugging
+      const userCredential = await firebase.auth().createUserWithEmailAndPassword(email, password);
+      const user = userCredential.user;
+  
       if (user) {
-        await user.sendEmailVerification({
-          handleCodeInApp: true,
-          url: 'https://social-insure-d86ce.firebaseapp.com',
+        console.log('Firebase registration successful'); // Debugging
+        const response = await fetch(`${BACKEND_URL}/register`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            firstName,
+            lastName,
+            email,
+            phoneNumber,
+            imageUrl,
+            isAWellBeingSubscriber,
+            isVerified,
+            balance,
+            isBlackListed,
+            emailVerified
+          }),
         });
-
-        await firebase.firestore().collection('users').doc(user.uid).set({
-          firstName,
-          lastName,
-          email,
-        });
-
-        Alert.alert('Verification Email Sent', 'Please check your email to verify your account.');
-        setIsLoading(false); // Set loading state to false
-        navigation.navigate('Login')
+  
+        if (response.ok) {
+          console.log('Backend registration successful'); // Debugging
+          Alert.alert('Verification Email Sent', 'Please check your email to verify your account.');
+          setIsLoading(false); // Set loading state to false
+          navigation.navigate('Login');
+          
+          await user.sendEmailVerification({
+            handleCodeInApp: true,
+            url: 'https://social-insure-d86ce.firebaseapp.com',
+          });
+    
+        } else {
+          const error = await response.json();
+          console.error('Backend error:', error); // Debugging
+          Alert.alert('Error', error);
+          setIsLoading(false);
+        }
       }
     } catch (error) {
-      setIsLoading(false); // Set loading state to false on error
+      console.error('Error:', error); // Debugging
       Alert.alert('Error', error.message);
+      setIsLoading(false);
     }
   };
+  
 
   return (
     <SafeAreaView style={styles.container}>

@@ -42,6 +42,7 @@ const Verification = () => {
           value: country.cca3, // Unique identifier
           flag: country.flags.png, // Country flag URL
         }));
+        countryItems.sort((a, b) => a.label.localeCompare(b.label));
         setCountries(countryItems);
       })
       .catch((error) => console.error('Error fetching countries:', error));
