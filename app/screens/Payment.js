@@ -92,8 +92,8 @@ const Payment = () => {
         setLoading(false);
         
       }
-
     };
+
     useEffect(() => {
       initializePaymentSheet();
     }, []);

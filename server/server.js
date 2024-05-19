@@ -23,7 +23,7 @@ mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
 
 // Use user routes after middleware
 app.use('/api', userRoutes); // Apply routes to the Express app
-app.use('/api', VerficationRoutes); 
+app.use('/api', VerficationRoutes);
 
 // Start the server
 const PORT = process.env.PORT || 3000;
