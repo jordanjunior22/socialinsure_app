@@ -4,22 +4,18 @@ import NavNoProfile from './NavNoProfile'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import ProgressBar from 'react-native-progress/Bar'
 import ButtonFull from './ButtonFull'
+import Button from '../components/Button';
+
 const CampaignSponsorDetailsContainer = () => {
 
   const route=useRoute();
-  const {item} = route.params;
+  const {item,isAWellBeingSubscriber,paymentId} = route.params;
   const progress = item.raised / item.goal;
 
   const navigation = useNavigation();
     const iconURL = require('../../assets/close.png')
     const handleBack = (item)=>{
-      if(item.isSponsored){
-        navigation.navigate('AllFeatures')
-      }
-      else{
-        navigation.navigate('Campaigns')
-      }
-
+      navigation.goBack()
     }
     const handleContribute = (item) =>{
       console.log(`handel contribute of ID ${item.id}`)
@@ -30,7 +26,10 @@ const CampaignSponsorDetailsContainer = () => {
       <View style={{padding:10}}>
         <NavNoProfile Title='Campaign Details' iconURL={iconURL} onPress={()=>handleBack(item)}/>
         <View style={{height:200,width:'100%'}}>
-          <Image source={item.imageSource} style={{width:'100%', height:'100%'}}/>
+        {typeof item.imageSource === 'string' ? (
+            <Image source={{ uri: item.imageSource }} style={{width:'100%', height:'100%'}} />
+          ) : ''}
+          
         </View>
         <Text style={{fontWeight:700, backgroundColor:'#18B8A8',color:'white',padding:10,borderBottomRightRadius: 10,borderBottomLeftRadius: 10,}}>{item.title}</Text>
         <Text style={{fontSize:10}}>{item.details}</Text>
@@ -51,7 +50,13 @@ const CampaignSponsorDetailsContainer = () => {
           </View>
         </View>
         <View style={{flexDirection:'column', alignItems:'center',marginTop:10}}>
-        <ButtonFull name='Contribute' onPress={()=>{handleContribute(item)}}/>
+        {item.subReq === 'Yes' && isAWellBeingSubscriber && paymentId !== '' ? (
+        <ButtonFull name="Contributed" disabled={true} />
+        ) : item.subReq === 'Yes' && !isAWellBeingSubscriber ? (
+          <ButtonFull name="Members Only" disabled={true} />
+        ) : (
+        <ButtonFull name="Contribute" onPress={handleContribute} />
+        )}
         </View>
       </View>
     </SafeAreaView>

@@ -8,8 +8,9 @@ const cors = require('cors')
 
 const userRoutes = require('./routes/UserRoutes'); // Import user routes
 const VerficationRoutes = require('./routes/VerificationRoutes'); // Import user routes
-
-
+const ContributionRoutes = require('./routes/ContributionRoutes')
+const FeaturesRoutes = require('./routes/FeaturesRoutes')
+const CampaignRoutes = require('./routes/CampaignRoutes')
 
 
 app.use(cors());
@@ -24,6 +25,9 @@ mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
 // Use user routes after middleware
 app.use('/api', userRoutes); // Apply routes to the Express app
 app.use('/api', VerficationRoutes);
+app.use('/api', ContributionRoutes);
+app.use('/api', FeaturesRoutes); //CampaignRoutes
+app.use('/api', CampaignRoutes);
 
 // Start the server
 const PORT = process.env.PORT || 3000;

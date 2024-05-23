@@ -1,14 +1,13 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import { BACKEND_URL } from '../config';
 // Create a Context for user information
 export const UserContext = createContext();
 
 // Context Provider component
 export function UserContextProvider({ children}) {
   const [user, setUser] = useState(null);
-  const BACKEND_URL = "http://172.20.10.4:3000/api";
 
 
   // Function to log in

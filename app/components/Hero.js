@@ -33,7 +33,7 @@ const Hero = ({ balance, onQuickTopUp, onMyContributions }) => {
       <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
         <View>
           <Text style={{ color: 'black', opacity: 0.5 }}>My Account Balance</Text>
-          <Text style={{ fontWeight: 'bold', fontSize: 25, color: '#18B8A8' }}>${user.balance}</Text>
+          <Text style={{ fontWeight: 'bold', fontSize: 25, color: '#18B8A8' }}>${user?.balance}</Text>
         </View>
           <Image source={require('../../assets/logonobg.png')} style={styles.iconimage}/>
       </View>

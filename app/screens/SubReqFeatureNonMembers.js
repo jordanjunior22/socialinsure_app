@@ -22,7 +22,7 @@ const SubReqFeatureForNonMembers = () => {
   return (
     <SafeAreaView style={{flex:1}}>
     <ScrollView style={{padding:10}}>
-      <NavNoProfile Title={item.title} iconURL={iconURL} onPress={()=>{navigation.navigate('AllFeatures')}}/>
+      <NavNoProfile Title={item.title} iconURL={iconURL} onPress={()=>{navigation.goBack()}}/>
       <SocialBanner Title={item.title} Content={item.description}/>
       <SubHeadingNoLink heading='Details'/>
       <Text style={{color:'#AB2525',fontWeight:700}}>{item.description}</Text>

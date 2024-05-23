@@ -5,10 +5,9 @@ import Nav from '../../components/Nav';
 import * as ImagePicker from 'expo-image-picker';
 import { UserContext } from '../../../context/UserContext';
 import axios from 'axios';
-
+import { BACKEND_URL } from '../../../config';
 const ProfileDisplay = () => {
   const [isLoading, setIsLoading] = useState(false);
-    const BACKEND_URL = 'http://172.20.10.4:3000/api';
     const navigation = useNavigation();
     const iconURL = require('../../../assets/close.png')
     const [selectedImage, setSelectedImage] = useState(null);

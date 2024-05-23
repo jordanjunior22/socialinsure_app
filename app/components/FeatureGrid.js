@@ -4,6 +4,7 @@ import Grid from './Grid';
 import { useNavigation } from '@react-navigation/native';
 import { UserContext } from '../../context/UserContext';
 import axios from 'axios';
+import { BACKEND_URL } from '../../config';
 
 const socialFeaturesData = [
   {
@@ -48,13 +49,25 @@ const socialFeaturesData = [
     // Add more social features as needed
   ];
 const FeatureGrid = () => {
-  const BACKEND_URL = "http://172.20.10.4:3000/api";
     const navigation=useNavigation();
     const {user} = useContext(UserContext);
     const userId = user._id;
     const [verification, setVerification] = useState(null);
+    const [Features, setFeatures] = useState([])
 
     useEffect(() => {
+
+      const fetchAllFeatureData = async () =>{
+        try{
+          if(userId){
+            const FeatureResponse = await axios.get(`${BACKEND_URL}/features`);
+            setFeatures(FeatureResponse.data);
+          }
+  
+        }catch(error){
+          console.error("Fetch Features error :",error);
+        }
+      }
       const fetchVerificationData = async () => {
         try {
           const response = await axios.get(`${BACKEND_URL}/verification/${userId}`);
@@ -63,7 +76,7 @@ const FeatureGrid = () => {
           console.error('Error fetching verification data:', error);
         }
       };
-  
+      fetchAllFeatureData();
       fetchVerificationData(); // Fetch verification data when component mounts
     }, [userId]); // Run effect when userId changes
     const handleSocialFeaturePress = (item) => {
@@ -86,10 +99,10 @@ const FeatureGrid = () => {
     
   return (
     <View>
-        {socialFeaturesData.map((_, index) => {
+        {Features.map((_, index) => {
           if (index % 2 === 0) { // Every second index creates a new row
-            const item1 = socialFeaturesData[index];
-            const item2 = socialFeaturesData[index + 1]; // Ensure there's a second item
+            const item1 = Features[index];
+            const item2 = Features[index + 1]; // Ensure there's a second item
             return (
               <Grid
                 key={index}

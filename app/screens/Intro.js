@@ -38,7 +38,7 @@ const features = [
 
 
 const Intro = () => {
-  const {setUser} = useContext(UserContext)
+  const {setUser,login} = useContext(UserContext)
   const [currentSlide, setCurrentSlide] = useState(0);
   const navigation=useNavigation();
   const handleScroll = (event) => {
@@ -59,7 +59,8 @@ useEffect(() => {
       const storedUser = await AsyncStorage.getItem('user');
       if (storedUser) {
         const parsedUser = JSON.parse(storedUser); // Parse JSON string to object
-        setUser(parsedUser); 
+        login(parsedUser.email,navigation);
+        //setUser(parsedUser);
         navigation.dispatch(
           CommonActions.reset({
             index: 0,

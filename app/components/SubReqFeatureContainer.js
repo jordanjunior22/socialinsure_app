@@ -19,7 +19,7 @@ const SubReqFeatureContainer = () => {
 
   return (
     <ScrollView style={{flex:1,padding:10}}>
-      <NavNoProfile Title={item.title} iconURL={iconURL} onPress={()=>{navigation.navigate('AllFeatures')}}/>
+      <NavNoProfile Title={item.title} iconURL={iconURL} onPress={()=>{navigation.goBack()}}/>
       <SocialBanner Title={item.title} Content={item.description}/>
       <SubHeadingNoLink heading='Details'/>
       <Text style={{color:'#DB00FF',fontWeight:700}}>{item.description}</Text>

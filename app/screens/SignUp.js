@@ -11,8 +11,7 @@ import React, { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import { firebase } from '../../firebase';
-
-const BACKEND_URL = 'http://172.20.10.4:3000/api';
+import { BACKEND_URL } from '../../config';
 
 const SignUp = () => {
   const navigation = useNavigation(); // For navigation handling

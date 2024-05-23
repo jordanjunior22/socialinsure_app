@@ -30,7 +30,7 @@ const Nav = ({ onPress,Title = '', name='', iconURL=null }) => {
             </View>
           </TouchableOpacity>
 
-          {user.imageUrl ? (
+          {user?.imageUrl ? (
           <TouchableOpacity onPress={() => navigation.navigate('ProfileDisplay')}>
             <Image source={{ uri: user?.imageUrl }} style={styles.image} />
           </TouchableOpacity>

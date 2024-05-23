@@ -15,6 +15,9 @@ const FeaturedCampaignsContainerGrid = ({
   handleContribute,
   containerStyle,
   imageStyle,
+  subReq,
+  isAWellBeingSubscriber,
+  paymentId,
 }) => {
   const progress = Raised / Goal;
 
@@ -24,10 +27,11 @@ const FeaturedCampaignsContainerGrid = ({
         style={containerStyle ? containerStyle : styles.socialContainer}
         onPress={onPress}
       >
+        {typeof imageSource === 'string' ? (
         <Image
-          source={imageSource}
+          source={{uri:imageSource}}
           style={imageStyle ? imageStyle : styles.iconImage}
-        />
+        />):''}
 
         <View
           style={{
@@ -61,7 +65,13 @@ const FeaturedCampaignsContainerGrid = ({
           </View>
         </View>
 
+        {subReq === 'Yes' && isAWellBeingSubscriber && paymentId !== '' ? (
+        <Button name="Contributed" disabled={true} />
+      ) : subReq === 'Yes' && !isAWellBeingSubscriber ? (
+        <Button name="Members Only" disabled={true} />
+      ) : (
         <Button name="Contribute" onPress={handleContribute} />
+      )}
       </TouchableOpacity>
     </View>
   );

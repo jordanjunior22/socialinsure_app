@@ -105,7 +105,7 @@ router.post('/stripe-payment', async (req, res) => {
         const amountInCents = amount * 100;
         
         console.log(amount)
-        console.log(amountInCents)
+        //console.log(amountInCents)
         
 
         const customer = await stripe.customers.create();

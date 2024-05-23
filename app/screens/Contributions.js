@@ -1,41 +1,65 @@
 import { SafeAreaView, ScrollView, StyleSheet, Text, View, Image, TextInput } from 'react-native';
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import ContributionContainer from '../components/ContributionContainer';
 import NavNoProfile from '../components/NavNoProfile';
 import { useNavigation } from '@react-navigation/native';
+import { UserContext } from '../../context/UserContext';
+import axios from 'axios';
+import { BACKEND_URL } from '../../config';
 
 const myContributions = [
   {
     id: 1,
-    title: 'Solidarity for John Doe',
-    contribution: 100,
-    date: '01/07/20',
+    campaign_title: 'Solidarity for John Doe',
+    amount: 100,
+    createdAt: '01/07/20',
   },
   {
     id: 2,
-    title: 'Solidarity for Felix',
-    contribution: 50,
-    date: '01/07/22',
+    campaign_title: 'Solidarity for Felix',
+    amount: 50,
+    createdAt: '01/07/22',
   },
   {
     id: 3,
-    title: 'Health Funding for Jim',
-    contribution: 300,
-    date: '01/07/24',
+    campaign_title: 'Health Funding for Jim',
+    amount: 300,
+    createdAt: '01/07/24',
   },
 ];
 
 const Contributions = () => {
   const [searchTerm, setSearchTerm] = useState('');
+  const [Contributions, setContributions] = useState([])
+  const {user} = useContext(UserContext)
   const iconURL = require('../../assets/back.png');
   const navigation = useNavigation();
+  const userId = user?._id
+
+  useEffect(()=>{
+    const fetchAllContributions = async () =>{
+      try{
+        if(userId){
+          const ContributionResponse = await axios.get(`${BACKEND_URL}/contributions/${userId}`);
+          setContributions(ContributionResponse.data);
+        }
+        
+      }catch(error){
+        console.error("Fetch Features error :",error);
+      }
+    }
+    fetchAllContributions();
+  },[userId])
+
+  console.log(filteredContributions)
 
   // Filter contributions by title based on the search term
-  const filteredContributions = myContributions.filter((contribution) =>
-    contribution.title.toLowerCase().includes(searchTerm.toLowerCase()) // Case-insensitive matching
+  const filteredContributions = Contributions.filter((contribution) =>
+    contribution.campaign_title && contribution.campaign_title.toLowerCase().includes(searchTerm.toLowerCase())
   );
+  
   const handleBack = () =>{
-    navigation.navigate('Home');
+    navigation.goBack();
   }
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -58,10 +82,11 @@ const Contributions = () => {
         <View style={{ flexDirection: 'column', gap: 10 }}>
           {filteredContributions.map((contribution) => (
             <ContributionContainer
-              key={contribution.id} // Ensure each element has a unique key
-              title={contribution.title} // Passing data to the component
-              contribution={contribution.contribution}
-              date={contribution.date}
+              key={contribution._id} // Ensure each element has a unique key
+              title={contribution.campaign_title} // Passing data to the component
+              contribution={contribution.amount}
+              date={contribution.createdAt}
+              paymentId={contribution.paymentId}
             />
           ))}
         </View>

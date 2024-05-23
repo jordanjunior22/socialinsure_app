@@ -77,7 +77,7 @@ router.get('/user/:email', async (req, res) => {
   const email = req.params.email; // Get the email from the URL parameter
   console.log("email recieved from front ",email);
   try {
-    const user = await User.findOne({ email }); // Find a user by email
+    const user = await User.findOne({ email }); // Find a user by email 
     if (user) {
       res.status(200).json(user); // Return the user data if found
     } else {
@@ -85,6 +85,39 @@ router.get('/user/:email', async (req, res) => {
     }
   } catch (error) {
     res.status(500).json({ message: 'Error finding user.', error: error.message }); // Handle errors
+  }
+});
+
+router.put('/user/:userId/update', async (req, res) => {
+  const userId = req.params.userId;
+  const updateParams = req.body;
+  //iam trying to update the balance in mongo db but i need to get current balance, do and arithmetic before i update
+  // console.log(userId)
+  // console.log(updateParams)
+
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found.' });
+    }
+    const currentBalance = Number(user.balance); 
+    const updatedBalance = (currentBalance + Number(updateParams.balance));
+
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { balance: updatedBalance },
+      { new: true }
+    );
+
+    if (updatedUser) {
+      res.status(200).json({ user: updatedUser, message: 'updated successfully.' });
+      console.log("success");
+    } else {
+      res.status(404).json({ message: 'User not found.' });
+    }
+
+  } catch (error) {
+    res.status(500).json({ message: 'Error updating phone number.', error: error.message });
   }
 });
 
@@ -115,7 +148,7 @@ router.post('/uploadprofile', upload.single('image'), async (req, res) => {
     }
 
     // Update the user's imageUrl with the new Cloudinary URL
-    const updatedUser = await User.findByIdAndUpdate(
+    const updatedUser = await User.findByIdAndUpdate( 
       userId,
       { imageUrl },
       { new: true }

@@ -3,6 +3,7 @@ import React from 'react';
 import ProgressBar from 'react-native-progress/Bar';
 import Button from '../components/Button';
 
+
 const FeaturedCampaignsContainer = ({
   id,
   imageSource,
@@ -15,19 +16,22 @@ const FeaturedCampaignsContainer = ({
   handleContribute,
   containerStyle,
   imageStyle,
+  subReq,
+  isAWellBeingSubscriber,
+  paymentId,
 }) => {
   const progress = Raised / Goal;
-
+  console.log("button",subReq)
   return (
     <View>
       <TouchableOpacity
         style={containerStyle ? containerStyle : styles.socialContainer}
         onPress={onPress}
       >
-        <Image
-          source={imageSource}
-          style={imageStyle ? imageStyle : styles.iconImage}
-        />
+
+          {typeof imageSource === 'string' ? (
+            <Image source={{ uri: imageSource }} style={imageStyle ? imageStyle : styles.iconImage} />
+          ) : ''}
 
         <View
           style={{
@@ -60,7 +64,13 @@ const FeaturedCampaignsContainer = ({
           </View>
         </View>
 
+        {subReq === 'Yes' && isAWellBeingSubscriber && paymentId !== '' ? (
+        <Button name="Contributed" disabled={true} />
+      ) : subReq === 'Yes' && !isAWellBeingSubscriber ? (
+        <Button name="Members Only" disabled={true} />
+      ) : (
         <Button name="Contribute" onPress={handleContribute} />
+      )}
       </TouchableOpacity>
     </View>
   );

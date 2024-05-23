@@ -5,36 +5,55 @@ import { useNavigation } from '@react-navigation/native';
 import SubHeadingLink from './SubHeadingLink';
 import { UserContext } from '../../context/UserContext';
 import axios from 'axios';
+import { BACKEND_URL } from '../../config';
 
 const SocialFeatures = () => {
-  const BACKEND_URL = "http://172.20.10.4:3000/api";
   const [verification, setVerification] = useState(null);
+  const [Features, setFeatures] = useState([])
   const {user} = useContext(UserContext)
   const navigation= useNavigation()
-  const userId = user._id;
+  const userId = user?._id;
 
   useEffect(() => {
+    const fetchAllFeatureData = async () =>{
+      try{
+        if(userId){
+          const FeatureResponse = await axios.get(`${BACKEND_URL}/features`);
+          setFeatures(FeatureResponse.data);
+        }
+
+      }catch(error){
+        console.error("Fetch Features error :",error);
+      }
+    }
+
     const fetchVerificationData = async () => {
       try {
-        const response = await axios.get(`${BACKEND_URL}/verification/${userId}`);
-        setVerification(response.data);
+        if (userId) {
+          const response = await axios.get(`${BACKEND_URL}/verification/${userId}`);
+          setVerification(response.data);
+        }
       } catch (error) {
         console.error('Error fetching verification data:', error);
       }
     };
 
+    fetchAllFeatureData();
     fetchVerificationData(); // Fetch verification data when component mounts
   }, [userId]); // Run effect when userId changes
+  
 
+   //console.log(Features)
   //console.log(verification)
+
 
   const handleSocialFeaturePress = (item) => {
     console.log(`Social Feature pressed has ID: ${item.id}`);
-    if(item.subReq === 'Yes' && !user.isAWellBeingSubscriber && (verification.status === 'Not Started' || verification.status === 'Rejected')){
+    if(item.subReq === 'Yes' && !user.isAWellBeingSubscriber && (verification?.status === 'Not Started' || verification?.status === 'Rejected')){
       navigation.navigate('SubReqFeatureForNonMembers', { item });
-    }else if(item.subReq === 'Yes' && user.isAWellBeingSubscriber && verification.status === 'Approved'){
+    }else if(item.subReq === 'Yes' && user.isAWellBeingSubscriber && verification?.status === 'Approved'){
       navigation.navigate('SubReqFeatureForMembers', { item });
-    }else if(item.subReq === 'Yes' && !user.isAWellBeingSubscriber && verification.status === 'Pending'){
+    }else if(item.subReq === 'Yes' && !user.isAWellBeingSubscriber && verification?.status === 'Pending'){
       navigation.navigate('PendingMembers');
     }
     else if(item.subReq === 'No'){
@@ -79,7 +98,7 @@ const SocialFeatures = () => {
     },
     // Add more social features as needed
   ];
-
+const firstThreeFeatures = Features.slice(0, 3);
   const renderSocialFeature = ({ item }) => (
     <SocialFeaturesContainer
       imageSource={item.imageSource}
@@ -100,9 +119,9 @@ const SocialFeatures = () => {
     <View>
       <SubHeadingLink Title='Social Insure' Cmd='View All >' onPress={()=>{navigation.navigate('AllFeatures')}}/>
       <FlatList
-        data={socialFeaturesData}
+        data={firstThreeFeatures}
         renderItem={renderSocialFeature}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item._id}
         horizontal={true}
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{gap:5,marginTop:10}}

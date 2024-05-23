@@ -10,12 +10,13 @@ import BlackButton from '../components/BlackButton';
 import { CardField, useStripe } from '@stripe/stripe-react-native';
 import { UserContext } from '../../context/UserContext';
 import axios from 'axios'
+import { BACKEND_URL } from '../../config';
+
 
 const Payment = () => {
     const route = useRoute();
     const { item, verifMethod, selectedCountry, selectedImage } = route.params;
     const {user} = useContext(UserContext)
-    const BACKEND_URL = "http://172.20.10.4:3000/api";
     const SubscriptionFee = item.fees;
     const navigation = useNavigation();
     const feature = item.title;

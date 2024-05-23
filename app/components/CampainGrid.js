@@ -3,7 +3,7 @@ import {View, StyleSheet} from 'react-native';
 import FeaturedCampaignsContainer from './FeaturedCampaignsContainer';
 import FeaturedCampaignsContainerGrid from './FeaturedCampainsContainerGrid';
 
-export default function CampaignGrid({ item1, item2,handleCampaignPress1,handleCampaignPress2, onPress1, onPress2, gridStyles,containerStyle,imageStyle }) {
+export default function CampaignGrid({ item1, item2,handleCampaignPress1,handleCampaignPress2, onPress1, onPress2, gridStyles,containerStyle,imageStyle,subReq1,subReq2,isAWellBeingSubscriber,paymentId }) {
 //FeaturedCampaignsContainer = ({ id,imageSource,description, title, onPress,Goal,Raised,daysLeft,handleContribute  })
   return (
     <View style={styles.row}>
@@ -20,6 +20,9 @@ export default function CampaignGrid({ item1, item2,handleCampaignPress1,handleC
           containerStyle={containerStyle}
           imageStyle={imageStyle}
           onPress={handleCampaignPress1}
+          subReq={subReq1}
+          isAWellBeingSubscriber={isAWellBeingSubscriber}
+          paymentId={paymentId}
         />
       </View>
       {item2 && ( // Check if item2 exists before rendering
@@ -35,6 +38,9 @@ export default function CampaignGrid({ item1, item2,handleCampaignPress1,handleC
             containerStyle={containerStyle}
             imageStyle={imageStyle}
             onPress={handleCampaignPress2}
+            subReq={subReq2}
+            isAWellBeingSubscriber={isAWellBeingSubscriber}
+            paymentId={paymentId}
           />
         </View>
       )}

@@ -1,17 +1,64 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Image, ScrollView, SafeAreaView } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import Nav from '../components/Nav';
 import CampaignGrid from '../components/CampainGrid';
 import BottomMargin from '../components/BottomMargin';
 import { useNavigation} from '@react-navigation/native';
-
+import { UserContext } from '../../context/UserContext';
+import axios from 'axios';
+import { BACKEND_URL } from '../../config';
 
 const Campaigns = () => {
   const [searchTerm, setSearchTerm] = useState('');
+  const [campaign, setCampaign] = useState([]);
+  const [contribution, setContribution] = useState([])
+  const [features, setFeatures] = useState([])
   const [selectedFilter, setSelectedFilter] = useState(null);
   const navigation =useNavigation();
+  const {user} = useContext(UserContext)
+  const userId = user?._id;
+  const isAWellBeingSubscriber = false;
+  const paymentId = contribution.paymentId;
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        if (userId) {
+          const campaignResponse = await axios.get(`${BACKEND_URL}/campaign`);
+          setCampaign(campaignResponse.data);
+
+          const contributionResponse = await axios.get(`${BACKEND_URL}/contributions/${userId}`);
+          setContribution(contributionResponse.data);
+
+          const featureResponse = await axios.get(`${BACKEND_URL}/features`);
+          setFeatures(featureResponse.data); 
+          
+        }
+      } catch (error) {
+        console.error("Fetch data error:", error);
+      }
+    };
+
+    fetchData();
+  }, [userId, contribution.paymentId]);
+
+
+  const calculateDaysLeft = (createdAt, endAt) => {
+    const startDate = new Date(createdAt);
+    const endDate = new Date(endAt);
+    const timeDifference = endDate.getTime() - startDate.getTime();
+    return Math.ceil(timeDifference / (1000 * 3600 * 24));
+  };
+  const campaignsWithDaysLeft = campaign.map(campaign => {
+      const daysLeft = calculateDaysLeft(campaign.createdAt, campaign.endAt);
+      return { ...campaign, daysLeft }; // Add 'daysLeft' property to each campaign object
+  });
+
+  const filteredCampaign = campaignsWithDaysLeft.map(campaign => {
+    const subReq = features.find(feature => feature._id === campaign.feature_id)?.subReq || false;
+    return { ...campaign, subReq }; // Add 'subReq' property to each campaign object
+  }); 
   const campaignData = [
     {
       id: '1',
@@ -75,7 +122,7 @@ const Campaigns = () => {
 
   // Extract unique feature types for filtering
   const uniqueFeatureTypes = Array.from(
-    new Set(campaignData.map((data) => data.featureType))
+    new Set(filteredCampaign.map((data) => data.featureType))
   );
 
   // Filter items for the picker
@@ -85,7 +132,7 @@ const Campaigns = () => {
   }));
 
   // Filtering based on both search term and selected filter
-  const filteredCampaigns = campaignData
+  const filteredCampaigns = filteredCampaign
     .filter(
       (campaign) =>
         campaign.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
@@ -144,6 +191,10 @@ const Campaigns = () => {
                 gridStyles={styles.FeatureGridStyle}
                 handleCampaignPress1={() =>campaignPress(item1)}
                 handleCampaignPress2={() =>campaignPress(item2)}
+                subReq1={item1.subReq}
+                subReq2={item2.subReq}
+                isAWellBeingSubscriber={isAWellBeingSubscriber}
+                paymentId={paymentId}
               />
             );
           }

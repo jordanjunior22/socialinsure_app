@@ -1,52 +1,81 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, FlatList } from 'react-native';
 import FeaturedCampaignsContainer from './FeaturedCampaignsContainer';
-import FeaturedCampaignsContainerGrid from './FeaturedCampainsContainerGrid';
 import SubHeadingLink from './SubHeadingLink';
 import { useNavigation } from '@react-navigation/native';
+import { UserContext } from '../../context/UserContext';
+import axios from 'axios';
+import { BACKEND_URL } from '../../config';
+
 const SocialFeatures = () => {
   const navigation = useNavigation();
+  const [campaign, setCampaign] = useState([]);
+  const [contribution, setContribution] = useState([])
+  const [features, setFeatures] = useState([])
+  const {user} = useContext(UserContext)
+  const userId = user?._id;
+  const isAWellBeingSubscriber = false;
+  const paymentId = contribution.paymentId;
+
   const onPress = () => {
     navigation.navigate('Campaigns');
   };
+  //console.log("isAWellBeingSubscriber",isAWellBeingSubscriber)
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        if (userId) {
+          const campaignResponse = await axios.get(`${BACKEND_URL}/campaign`);
+          setCampaign(campaignResponse.data);
+
+          const contributionResponse = await axios.get(`${BACKEND_URL}/contributions/${userId}`);
+          setContribution(contributionResponse.data);
+
+          const featureResponse = await axios.get(`${BACKEND_URL}/features`);
+          setFeatures(featureResponse.data); 
+          
+        }
+      } catch (error) {
+        console.error("Fetch data error:", error);
+      }
+    };
+
+    fetchData();
+  }, [userId, contribution.paymentId]);
+
+
 
   const handleCampaignPress = (item) => {
-    navigation.navigate('CampaignSponsorDetailsContainer', {item})
+    navigation.navigate('CampaignSponsorDetailsContainer', {item,isAWellBeingSubscriber,paymentId})
   };
+
   const handleContributePress = (item) => {
-    console.log('contribute Button for ID :',item.id);
+    console.log('contribute Button for ID :',item._id);
     navigation.navigate('ContributionPayment', {item})
   }
-  const campaignData = [
-    {
-      id: '1',
-      imageSource: require('../../assets/ted.jpg'),
-      title: 'Solidarity For John Deo',
-      goal: 10000,
-      raised: 4500,
-      daysLeft: 15,
-      description:'let use all kljas oiwuer oiuwer ipuiewo iuoweroiw owiuer oiouwre',
-      featureType: 'Social Wellbeing',
-      details: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-      ,date: '01/02/2023'
-    },
-    {
-      id: '2',
-      imageSource: require('../../assets/pah.jpg'),
-      title: 'Health Contribution',
-      goal: 10000,
-      raised: 8000,
-      daysLeft: 15,
-      description:'let use all kljas oiwuer oiuwer ipuiewo iuoweroiw owiuer oiouwre',
-      featureType: 'Social Health',
-      details: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-      ,date: '01/02/2023'
-    },
-  ];
+  
+const calculateDaysLeft = (createdAt, endAt) => {
+    const startDate = new Date(createdAt);
+    const endDate = new Date(endAt);
+    const timeDifference = endDate.getTime() - startDate.getTime();
+    return Math.ceil(timeDifference / (1000 * 3600 * 24));
+};
+const campaignsWithDaysLeft = campaign.map(campaign => {
+    const daysLeft = calculateDaysLeft(campaign.createdAt, campaign.endAt);
+    return { ...campaign, daysLeft }; // Add 'daysLeft' property to each campaign object
+});
+
+const filteredCampaign = campaignsWithDaysLeft.slice(0, 2).map(campaign => {
+  const subReq = features.find(feature => feature._id === campaign.feature_id)?.subReq || false;
+  return { ...campaign, subReq }; // Add 'subReq' property to each campaign object
+}); 
+
+
+//console.log("Campaigns with days left:", campaignsWithDaysLeft);
 
   const renderFeaturedCampaign = ({ item }) => (
     <FeaturedCampaignsContainer
-      id={item.id}
+      id={item._id}
       imageSource={item.imageSource}
       title={item.title}
       onPress={() => handleCampaignPress(item)}
@@ -54,6 +83,10 @@ const SocialFeatures = () => {
       Raised={item.raised}
       daysLeft={item.daysLeft}
       handleContribute={()=>handleContributePress(item)}
+
+      subReq={item.subReq}
+      isAWellBeingSubscriber={isAWellBeingSubscriber}
+      paymentId={paymentId}
     />
   );
 
@@ -61,9 +94,9 @@ const SocialFeatures = () => {
     <View style={{paddingBottom:50}}>
       <SubHeadingLink Title='Featured Campaign' Cmd='View All >' onPress={onPress}/>
       <FlatList
-        data={campaignData}
+        data={filteredCampaign}
         renderItem={renderFeaturedCampaign}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item._id}
         horizontal={true}
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={{gap: 5,marginTop:10 }}
