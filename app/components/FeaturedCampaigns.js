@@ -14,7 +14,7 @@ const SocialFeatures = () => {
   const [features, setFeatures] = useState([])
   const {user} = useContext(UserContext)
   const userId = user?._id;
-  const isAWellBeingSubscriber = false;
+  const isAWellBeingSubscriber = user?.isAWellBeingSubscriber;
   const paymentId = contribution.paymentId;
 
   const onPress = () => {

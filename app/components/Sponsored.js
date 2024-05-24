@@ -14,12 +14,13 @@ const Sponsored = () => {
   const navigation = useNavigation();
     const iconURL = require('../../assets/close.png')
     const handleBack = (item)=>{
-      if(item.isSponsored){
-        navigation.navigate('AllFeatures')
-      }
-      else{
-        navigation.navigate('Campaigns')
-      }
+      // if(item.isSponsored){
+      //   navigation.navigate('AllFeatures')
+      // }
+      // else{
+      //   navigation.navigate('Campaigns')
+      // }
+      navigation.goBack();
 
     }
     const handleLearnMore = (item) => {

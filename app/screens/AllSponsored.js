@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Image, ScrollView, SafeAreaView } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import Nav from '../components/Nav';
@@ -7,6 +7,10 @@ import BottomMargin from '../components/BottomMargin';
 import { useNavigation } from '@react-navigation/native';
 import Grid from '../components/Grid';
 import NavNoProfile from '../components/NavNoProfile';
+import { UserContext } from '../../context/UserContext';
+import axios from 'axios';
+import { BACKEND_URL } from '../../config';
+
 const SponsoreData = [
     {
       id: '1',
@@ -63,7 +67,24 @@ const AllSponsored = () => {
   const [selectedFilter, setSelectedFilter] = useState(null);
   const navigation =useNavigation();
   const iconURL = require('../../assets/close.png')
-  // Example campaign data
+  const {user} = useContext(UserContext)
+  const userId = user?._id;
+  const [sponsorData,setsponsorData] = useState([]);
+
+  useEffect(()=>{
+    const fetchAllSponsorData = async () =>{
+      try{
+        if(userId){
+          const SponsorResponse = await axios.get(`${BACKEND_URL}/sponsor`);
+          setsponsorData(SponsorResponse.data);
+        }
+
+      }catch(error){
+        console.error("Fetch Features error :",error);
+      }
+    }
+    fetchAllSponsorData();
+  },[userId])
 
 
   const handelback = () => {
@@ -77,7 +98,7 @@ const AllSponsored = () => {
 
 
   // Filtering based on both search term and selected filter
-  const filteredCampaigns = SponsoreData
+  const filteredCampaigns = sponsorData
     .filter(
       (campaign) =>
         campaign.title.toLowerCase().includes(searchTerm.toLowerCase()) &&

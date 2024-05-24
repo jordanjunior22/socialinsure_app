@@ -23,7 +23,7 @@ const NotificationList = () => {
   const iconURL = require('../../assets/close.png');
   const navigation = useNavigation();
   const handleBack = () => {
-    navigation.navigate('Home');
+    navigation.goBack();
   };
 
   return (

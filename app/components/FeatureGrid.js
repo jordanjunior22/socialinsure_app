@@ -68,6 +68,7 @@ const FeatureGrid = () => {
           console.error("Fetch Features error :",error);
         }
       }
+      
       const fetchVerificationData = async () => {
         try {
           const response = await axios.get(`${BACKEND_URL}/verification/${userId}`);

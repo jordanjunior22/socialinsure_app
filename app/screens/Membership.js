@@ -14,9 +14,11 @@ const Membership = () => {
         navigation.navigate('Penalty')
     }
     const iconUrl = require('../../assets/back.png');
+    
     const TotalCampaigns = 30;
     const TotalContributions = 28;
     const MissedContributions = 3;
+
     const isMemeber = true;
     if(isMemeber && (MissedContributions < 3)){
         return (

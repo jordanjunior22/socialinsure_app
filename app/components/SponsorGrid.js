@@ -1,8 +1,12 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Grid from './Grid';
 import SubHeadingLink from './SubHeadingLink';
 import { useNavigation } from '@react-navigation/native';
+import { UserContext } from '../../context/UserContext';
+import { BACKEND_URL } from '../../config';
+import axios from 'axios';
+
 const SponsoreData = [
   {
     id: '1',
@@ -24,6 +28,25 @@ const SponsoreData = [
 
 const SponsorGrid = () => {
   const navigation=useNavigation();
+  const {user} = useContext(UserContext)
+  const userId = user?._id;
+  const [sponsorData,setsponsorData] = useState([]);
+
+  useEffect(()=>{
+    const fetchAllSponsorData = async () =>{
+      try{
+        if(userId){
+          const SponsorResponse = await axios.get(`${BACKEND_URL}/sponsor`);
+          setsponsorData(SponsorResponse.data);
+        }
+
+      }catch(error){
+        console.error("Fetch Features error :",error);
+      }
+    }
+    fetchAllSponsorData();
+  },[userId])
+
     const handleSponsorPress = (item) => {
         navigation.navigate('Sponsored',{item})
       };
@@ -34,10 +57,10 @@ const SponsorGrid = () => {
   return (
     <View>
         <SubHeadingLink Title='SPONSORED SERVICES' Cmd='View All >' onPress={handleViewAll}/>
-        {SponsoreData.map((_, index) => {
+        {sponsorData.map((_, index) => {
           if (index % 2 === 0) { // Every second index creates a new row
-            const item1 = SponsoreData[index];
-            const item2 = SponsoreData[index + 1]; // Ensure there's a second item
+            const item1 = sponsorData[index];
+            const item2 = sponsorData[index + 1]; // Ensure there's a second item
             return (
               <Grid
                 key={index}

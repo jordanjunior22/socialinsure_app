@@ -26,6 +26,7 @@ const ContributionPayment = () => {
     const campaign_id = item._id;
     const fullName = user.firstName + ' ' + user.lastName;
     const [paymentID,setPayamentID] = useState('');
+    const balance = user?.balance;
 
     const handleChangeAmount = (text) => {
       setAmount(text)
@@ -46,6 +47,15 @@ const ContributionPayment = () => {
       amount : amount,
       email : email,
       paymentId: paymentID
+    }
+    const ContributionDataHandleBalance = {
+      campaign_id: campaign_id,
+      campaign_title: title,
+      user_id : user_id,
+      fullName : fullName,
+      amount : amount,
+      email : email,
+      paymentId: 'PaidWithBalance'
     }
     const updateParams = {
       amount : amount,
@@ -164,8 +174,48 @@ const ContributionPayment = () => {
     }
 
 
-    const handleMyBalance = () => {
-        console.log('Handle Balance arithmetics');
+    const handleMyBalance = async () => {
+      setLoading(true);
+        if(amount<balance){
+          try{
+            const Contributionresponse = await fetch(`${BACKEND_URL}/contributions_handlebalance`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(ContributionDataHandleBalance),
+            });
+            if(Contributionresponse.status === 201){
+              try{
+                const CampaignUpdateResponse = await fetch(`${BACKEND_URL}/campaign/${user_id}/update`, {
+                  method: 'PUT',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify(updateParams),
+                });
+                console.log(CampaignUpdateResponse);
+                if(CampaignUpdateResponse){
+                  setLoading(false);
+                  Alert.alert('Success', 'Your Contribution was recieved');
+                  navigation.navigate('Intro');
+                }
+  
+              }catch(error){
+                console.error("error",error);
+                Alert.alert(`Error code: ${error.code}`, error.message);
+                setLoading(false);
+              }
+  
+            }
+          }catch(error){
+            console.error("error",error);
+            Alert.alert(`Error code: ${error.code}`, error.message);
+            setLoading(false);
+          }
+        }else{
+          Alert.alert("Payment Failed","You have insufficient funds")
+        }
     };
 
 
@@ -185,7 +235,7 @@ const ContributionPayment = () => {
         <Text style={{color:'blue', textAlign:'center'}}>You won't be charged yet</Text>
         <View style={{display:'flex', flexDirection:'column', alignItems:'center', marginTop:10}}>
             <ButtonFull name='Credit/Debit Cart' onPress={openPaymentSheet} imageIcon={cardIcon} containerStyle={{justifyContent:''}}/>
-            <ButtonFull name='PayPal' onPress={()=>{navigation.navigate('FailedFeedback')}} imageIcon={paypalIcon} containerStyle={{justifyContent:''}}/>
+            {/* <ButtonFull name='PayPal' onPress={()=>{navigation.navigate('FailedFeedback')}} imageIcon={paypalIcon} containerStyle={{justifyContent:''}}/> */}
             <BlackButton name='Use My Balance' onPress={handleMyBalance}/>
         </View>
 

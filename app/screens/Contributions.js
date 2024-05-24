@@ -62,8 +62,7 @@ const Contributions = () => {
     navigation.goBack();
   }
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <ScrollView style={{ padding: 10 }}>
+    <SafeAreaView style={{ flex: 1,padding: 10 }}>
         <NavNoProfile Title="All Contributions" iconURL={iconURL} onPress={handleBack}/>
 
         <View style={styles.searchBox}>
@@ -78,6 +77,7 @@ const Contributions = () => {
             />
           </View>
         </View>
+        <ScrollView>
 
         <View style={{ flexDirection: 'column', gap: 10 }}>
           {filteredContributions.map((contribution) => (

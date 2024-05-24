@@ -11,6 +11,7 @@ const VerficationRoutes = require('./routes/VerificationRoutes'); // Import user
 const ContributionRoutes = require('./routes/ContributionRoutes')
 const FeaturesRoutes = require('./routes/FeaturesRoutes')
 const CampaignRoutes = require('./routes/CampaignRoutes')
+const SponsorRoutes = require('./routes/SponsorRoutes')
 
 
 app.use(cors());
@@ -28,6 +29,7 @@ app.use('/api', VerficationRoutes);
 app.use('/api', ContributionRoutes);
 app.use('/api', FeaturesRoutes); //CampaignRoutes
 app.use('/api', CampaignRoutes);
+app.use('/api', SponsorRoutes)
 
 // Start the server
 const PORT = process.env.PORT || 3000;
