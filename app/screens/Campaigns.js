@@ -44,14 +44,17 @@ const Campaigns = () => {
   }, [userId, contribution.paymentId]);
 
 
-  const calculateDaysLeft = (createdAt, endAt) => {
-    const startDate = new Date(createdAt);
+  const calculateDaysLeft = (endAt) => {
     const endDate = new Date(endAt);
-    const timeDifference = endDate.getTime() - startDate.getTime();
+    const currentDate = new Date();
+    if (endDate < currentDate) {
+        return 0; 
+    }
+    const timeDifference = endDate.getTime() - currentDate.getTime();
     return Math.ceil(timeDifference / (1000 * 3600 * 24));
-  };
+};
   const campaignsWithDaysLeft = campaign.map(campaign => {
-      const daysLeft = calculateDaysLeft(campaign.createdAt, campaign.endAt);
+      const daysLeft = calculateDaysLeft(campaign.endAt);
       return { ...campaign, daysLeft }; // Add 'daysLeft' property to each campaign object
   });
 

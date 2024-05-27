@@ -49,6 +49,9 @@ const Contributions = () => {
       }
     }
     fetchAllContributions();
+    const intervalId = setInterval(fetchAllContributions, 1 * 60 * 1000); // 1 minutes
+    return () => clearInterval(intervalId);
+
   },[userId])
 
   console.log(filteredContributions)

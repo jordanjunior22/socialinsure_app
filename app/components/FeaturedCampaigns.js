@@ -41,6 +41,8 @@ const SocialFeatures = () => {
     };
 
     fetchData();
+    const intervalId = setInterval(fetchData, 1 * 60 * 1000); // 1 minutes
+    return () => clearInterval(intervalId);
   }, [userId, contribution.paymentId]);
 
 
@@ -54,16 +56,19 @@ const SocialFeatures = () => {
     navigation.navigate('ContributionPayment', {item})
   }
   
-const calculateDaysLeft = (createdAt, endAt) => {
-    const startDate = new Date(createdAt);
+  const calculateDaysLeft = (endAt) => {
     const endDate = new Date(endAt);
-    const timeDifference = endDate.getTime() - startDate.getTime();
+    const currentDate = new Date();
+    if (endDate < currentDate) {
+        return 0; 
+    }
+    const timeDifference = endDate.getTime() - currentDate.getTime();
     return Math.ceil(timeDifference / (1000 * 3600 * 24));
 };
-const campaignsWithDaysLeft = campaign.map(campaign => {
-    const daysLeft = calculateDaysLeft(campaign.createdAt, campaign.endAt);
-    return { ...campaign, daysLeft }; // Add 'daysLeft' property to each campaign object
-});
+  const campaignsWithDaysLeft = campaign.map(campaign => {
+      const daysLeft = calculateDaysLeft(campaign.endAt);
+      return { ...campaign, daysLeft }; // Add 'daysLeft' property to each campaign object
+  });
 
 const filteredCampaign = campaignsWithDaysLeft.slice(0, 2).map(campaign => {
   const subReq = features.find(feature => feature._id === campaign.feature_id)?.subReq || false;

@@ -3,7 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import LottieView from 'lottie-react-native';
 // Import your Lottie animation JSON file
 import successAnimation from '../../assets/lotti/success.json';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation,CommonActions } from '@react-navigation/native';
 import CustomButton from '../components/Button';
 
 const SuccessFeedback = () => {
@@ -17,7 +17,13 @@ const SuccessFeedback = () => {
         style={styles.animation}
       />
       <Text style={styles.successText}>Your transaction is successful!</Text>
-      <CustomButton name='Proceed To Home' onPress={()=>{navigation.navigate('Home')}}/>
+      <CustomButton name='Done' onPress={()=>{            
+              navigation.dispatch(
+              CommonActions.reset({
+                index: 0,
+                routes: [{ name: 'Splash' }],
+              })
+            );}}/>
     </View>
   );
 };

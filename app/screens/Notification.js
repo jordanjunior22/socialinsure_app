@@ -1,16 +1,19 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, FlatList } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import NavNoProfile from '../components/NavNoProfile';
 import { useNavigation } from '@react-navigation/native';
+import { BACKEND_URL } from '../../config';
+import axios from 'axios';
+
 // Sample data for multiple notifications
-const notificationsData = [
-  { id: '1', title: 'System Update', message: 'A new system update is available. Please update to the latest version.' },
-  { id: '2', title: 'Promotion', message: 'Special offer! Get 20% off on your next purchase.' },
-  { id: '3', title: 'Reminder', message: 'Don’t forget about your appointment tomorrow at 3 PM.' },
-  { id: '4', title: 'Welcome', message: 'Welcome to our service! We are glad to have you.' },
-  { id: '5', title: 'Alert', message: 'Security alert! Please change your password.' },
-];
+// const notificationsData = [
+//   { id: '1', title: 'System Update', message: 'A new system update is available. Please update to the latest version.' },
+//   { id: '2', title: 'Promotion', message: 'Special offer! Get 20% off on your next purchase.' },
+//   { id: '3', title: 'Reminder', message: 'Don’t forget about your appointment tomorrow at 3 PM.' },
+//   { id: '4', title: 'Welcome', message: 'Welcome to our service! We are glad to have you.' },
+//   { id: '5', title: 'Alert', message: 'Security alert! Please change your password.' },
+// ];
 
 const NotificationItem = ({ title, message }) => (
   <View style={styles.notificationBox}>
@@ -20,6 +23,19 @@ const NotificationItem = ({ title, message }) => (
 );
 
 const NotificationList = () => {
+  const [notificationsData,setnotificationsData]= useState([])
+  useEffect(()=>{
+    const fetchData = async () => {
+    try{
+      const notificationResponse = await axios.get(`${BACKEND_URL}/notifications`);
+      setnotificationsData(notificationResponse.data);
+    }catch(error){
+      console.error("Notification Error : ",error);
+    }
+    }
+  fetchData();
+  },[])
+  
   const iconURL = require('../../assets/close.png');
   const navigation = useNavigation();
   const handleBack = () => {
@@ -31,7 +47,7 @@ const NotificationList = () => {
       <NavNoProfile Title='Notifications' iconURL={iconURL} onPress={handleBack}/>
       <FlatList
         data={notificationsData}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item._id}
         renderItem={({ item }) => <NotificationItem title={item.title} message={item.message} />}
       />
     </SafeAreaView>

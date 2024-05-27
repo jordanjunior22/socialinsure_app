@@ -10,7 +10,7 @@ import { CardField, useStripe } from '@stripe/stripe-react-native';
 import { BACKEND_URL } from '../../config';
 
 const QuickTopUp = () => {
-  const [amount, setAmount] = useState(1);
+  const [amount, setAmount] = useState(0);
   const {user} = useContext(UserContext)
   const [paymentID,setPayamentID] = useState('');
   const { initPaymentSheet, presentPaymentSheet } = useStripe();
@@ -59,6 +59,7 @@ const QuickTopUp = () => {
     }
 
     const initializePaymentSheet = async () => {
+      setLoading(true);
       const {
         paymentIntent,
         ephemeralKey,
@@ -85,10 +86,10 @@ const QuickTopUp = () => {
     };
 
     useEffect(() => {
-
-      initializePaymentSheet();
-
-    }, [amount]);
+      if(amount>0){
+        initializePaymentSheet();
+      }
+    }, []);
 
   
     const openPaymentSheet = async () => {
@@ -100,9 +101,7 @@ const QuickTopUp = () => {
         return;
       }
       if (error) {
-        setLoading(false);
         Alert.alert(`Error code: ${error.code}`, error.message);
-        
       }else{
         setLoading(true);
         try{
@@ -114,13 +113,9 @@ const QuickTopUp = () => {
             body: JSON.stringify(updateParams),
           });
           if(response.status === 200){
-            Alert.alert('Success', 'Your order is confirmed!');
-            navigation.dispatch(
-              CommonActions.reset({
-                index: 0,
-                routes: [{ name: 'Splash' }],
-              })
-            );
+            Alert.alert('Success', 'You have successfully Top-Up Your account');
+            navigation.navigate('SuccessFeedback');
+
             setLoading(false);
           }else{
             Alert.alert('Balance Error','An error occured updating your balance. Contact Support');
@@ -157,8 +152,14 @@ const QuickTopUp = () => {
         <Text style={{textAlign:'center',color:'blue',fontWeight:700,marginTop:10}}>Choose Payment Method</Text>
         <Text style={{color:'blue', textAlign:'center'}}>You won't be charged yet</Text>
         <View style={{display:'flex', flexDirection:'column', alignItems:'center', marginTop:10}}>
-            <ButtonFull name='Credit/Debit Cart' onPress={openPaymentSheet} imageIcon={cardIcon} containerStyle={{justifyContent:''}}/>
-            <ButtonFull name='PayPal' onPress={()=>{navigation.navigate('FailedFeedback')}} imageIcon={paypalIcon} containerStyle={{justifyContent:''}}/>
+        <ButtonFull 
+          name={loading ? 'Initializing...' : 'Credit/Debit Cart'}
+          onPress={openPaymentSheet} 
+          imageIcon={cardIcon} 
+          containerStyle={{justifyContent:''}}
+          loading={loading} // Pass the loading state to the ButtonFull component
+        />           
+        {/* <ButtonFull name='PayPal' onPress={()=>{navigation.navigate('FailedFeedback')}} imageIcon={paypalIcon} containerStyle={{justifyContent:''}}/> */}
         </View>
         
     </ScrollView>

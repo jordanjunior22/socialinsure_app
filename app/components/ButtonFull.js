@@ -1,17 +1,24 @@
 import React from 'react';
-import { TouchableOpacity, Text, StyleSheet, Image, View } from 'react-native';
+import { TouchableOpacity, Text, StyleSheet, Image, View,ActivityIndicator } from 'react-native';
 
-const ButtonFull = ({ name, onPress, imageIcon = '', containerStyle, disabled = false }) => {
+const ButtonFull = ({ name, onPress, imageIcon = '', containerStyle, disabled = false,loading }) => {
   return (
     <TouchableOpacity
       style={[styles.button, disabled && styles.disabledButton]}
       onPress={onPress}
       disabled={disabled}
     >
-      <View style={[styles.innerContainer, containerStyle]}>
-        {imageIcon && <Image source={imageIcon} style={styles.image} />}
-        <Text style={[styles.buttonText, { fontWeight: 700 }]}>{name}</Text>
-      </View>
+      {loading ? (
+        <ActivityIndicator color="#fff" /> // Display loading indicator when loading is true
+      ) : (
+        <>
+        <View style={[styles.innerContainer, containerStyle]}>
+          {imageIcon && <Image source={imageIcon} style={styles.image} />}
+          <Text style={[styles.buttonText, { fontWeight: 700 }]}>{name}</Text>
+        </View>
+        </>
+      )}
+
     </TouchableOpacity>
   );
 };

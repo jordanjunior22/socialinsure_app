@@ -21,7 +21,7 @@ const FeaturedCampaignsContainer = ({
   paymentId,
 }) => {
   const progress = Raised / Goal;
-  console.log("button",subReq)
+  //console.log("button",subReq)
   return (
     <View>
       <TouchableOpacity

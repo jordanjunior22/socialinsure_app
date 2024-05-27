@@ -1,20 +1,21 @@
 import { StyleSheet, Text, View, FlatList } from 'react-native'
 
-import React from 'react'
+import React, { useContext } from 'react'
 import CustomButton from './TodoButton';
 import { useNavigation } from '@react-navigation/native';
+import { UserContext } from '../../context/UserContext';
 
 const TodoScrollView = () => {
   const navigation = useNavigation();
-
-  const creditCardData = false; //for id 1
-  const imageUrl = false; //for id 2
+  const {user} = useContext(UserContext);
+  const phoneNumber = user?.phoneNumber; //for id 1
+  const imageUrl = user?.imageUrl; //for id 2
 
   const onPress = (id) => {
       console.log(`Button pressed for action: ${id}`);
       switch (id) {
           case '1':
-              navigation.navigate('PaymentSettings');
+              navigation.navigate('ProfileDisplay');
               break;
           case '2':
               navigation.navigate('ProfileDisplay');
@@ -25,12 +26,12 @@ const TodoScrollView = () => {
   };
 
   const todoButtonsData = [
-      { id: '1', text: 'Add Debit Card 💳' },
-      { id: '2', text: 'Add a Profile Picture 🙎🏻‍♂️' },
+      { id: '1', text: 'Add a Profile Picture 🙎🏻‍♂️' },
+      { id: '2', text: 'Add a Phone Number ' },
   ];
 
   const filteredButtons = todoButtonsData.filter(item => {
-      return (item.id === '1' && !creditCardData) || (item.id === '2' && !imageUrl);
+      return (item.id === '1' && !imageUrl) || (item.id === '2' && !phoneNumber);
   });
 
   if (filteredButtons.length === 0) {

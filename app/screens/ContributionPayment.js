@@ -116,11 +116,9 @@ const ContributionPayment = () => {
       if(amount>0){
         initializePaymentSheet();
       }
-    }, [amount]);
-
+    }, []); 
   
     const openPaymentSheet = async () => {
-
       const { error } = await presentPaymentSheet();
 
       if (loading) {
@@ -128,7 +126,10 @@ const ContributionPayment = () => {
         return;
       }
       if (error) {
-        Alert.alert(`Error code: ${error.code}`, error.message);
+        Alert.alert('Error', 'An Error Occured, Please Try again');
+        navigation.goBack()
+        console.log("error occured")
+
         setLoading(false);
       }else{
         setLoading(true);
@@ -176,7 +177,7 @@ const ContributionPayment = () => {
 
     const handleMyBalance = async () => {
       setLoading(true);
-        if(amount<balance){
+        if(amount<=balance){
           try{
             const Contributionresponse = await fetch(`${BACKEND_URL}/contributions_handlebalance`, {
               method: 'POST',
@@ -198,7 +199,7 @@ const ContributionPayment = () => {
                 if(CampaignUpdateResponse){
                   setLoading(false);
                   Alert.alert('Success', 'Your Contribution was recieved');
-                  navigation.navigate('Intro');
+                  navigation.navigate('Contributions');
                 }
   
               }catch(error){
@@ -234,7 +235,7 @@ const ContributionPayment = () => {
         <Text style={{textAlign:'center',color:'blue',fontWeight:700,marginTop:10}}>Choose Payment Method</Text>
         <Text style={{color:'blue', textAlign:'center'}}>You won't be charged yet</Text>
         <View style={{display:'flex', flexDirection:'column', alignItems:'center', marginTop:10}}>
-            <ButtonFull name='Credit/Debit Cart' onPress={openPaymentSheet} imageIcon={cardIcon} containerStyle={{justifyContent:''}}/>
+            <ButtonFull name={loading ? 'Initializing...' : 'Credit/Debit Cart'} onPress={openPaymentSheet} imageIcon={cardIcon} containerStyle={{justifyContent:''}} loading={loading}/>
             {/* <ButtonFull name='PayPal' onPress={()=>{navigation.navigate('FailedFeedback')}} imageIcon={paypalIcon} containerStyle={{justifyContent:''}}/> */}
             <BlackButton name='Use My Balance' onPress={handleMyBalance}/>
         </View>

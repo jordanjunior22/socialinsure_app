@@ -12,7 +12,7 @@ const ContributionRoutes = require('./routes/ContributionRoutes')
 const FeaturesRoutes = require('./routes/FeaturesRoutes')
 const CampaignRoutes = require('./routes/CampaignRoutes')
 const SponsorRoutes = require('./routes/SponsorRoutes')
-
+const NotificationRoutes = require('./routes/NotificationRoutes')
 
 app.use(cors());
 app.use(bodyParser.json()); 
@@ -29,7 +29,9 @@ app.use('/api', VerficationRoutes);
 app.use('/api', ContributionRoutes);
 app.use('/api', FeaturesRoutes); //CampaignRoutes
 app.use('/api', CampaignRoutes);
-app.use('/api', SponsorRoutes)
+app.use('/api', SponsorRoutes) //NotificationRoutes
+app.use('/api', NotificationRoutes) 
+
 
 // Start the server
 const PORT = process.env.PORT || 3000;

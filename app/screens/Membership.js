@@ -1,12 +1,24 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import NavNoProfile from '../components/NavNoProfile'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useNavigation } from '@react-navigation/native'
 import ButtonFull from '../components/ButtonFull'
+import { UserContext } from '../../context/UserContext';
+import { BACKEND_URL } from '../../config'
+
+import axios from 'axios'
 
 const Membership = () => {
-    const navigation = useNavigation()
+    const navigation = useNavigation();
+    const {user} = useContext(UserContext)
+    const [compaigns, setCampaign] = useState([])
+    const [contributions,setContributions] = useState([])
+    const [filteredCampaigns, setFilteredCampaigns] = useState([]);
+    const [filteredContribution,setFilteredContribution] = useState([]);
+    const isMemeber = user?.isAWellBeingSubscriber; 
+    const userId = user?._id;
+
     const goBack = () =>{
         navigation.navigate('Account')
     }
@@ -15,11 +27,36 @@ const Membership = () => {
     }
     const iconUrl = require('../../assets/back.png');
     
-    const TotalCampaigns = 30;
-    const TotalContributions = 28;
-    const MissedContributions = 3;
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                if (userId) {
+                    const campaignResponse = await axios.get(`${BACKEND_URL}/campaign`);
+                    setCampaign(campaignResponse.data);
+                    const ContributionResponse = await axios.get(`${BACKEND_URL}/contributions/${userId}`);
+                    setContributions(ContributionResponse.data);
+                    const filtered = campaignResponse.data.filter(campaign => campaign.feature_id === "664c9a60ff37a060cd82674f"); 
+                    setFilteredCampaigns(filtered);
 
-    const isMemeber = true;
+                    const foundCampaigns = filtered.filter(campaign => 
+                        contributions.some(contribution => contribution.campaign_id === campaign._id)
+                    );
+                    setFilteredContribution(foundCampaigns);
+                }
+            } catch(error) {
+                console.error(error)
+            }
+        }
+        fetchData();
+    }, [userId]);
+    
+    
+    const TotalCampaigns = filteredCampaigns?.length;
+    const TotalContributions = filteredContribution?.length;
+    const MissedContributions = TotalCampaigns-TotalContributions;
+    console.log(MissedContributions);  
+
+
     if(isMemeber && (MissedContributions < 3)){
         return (
             <SafeAreaView style={{flex:1,padding:10}}>
@@ -32,7 +69,7 @@ const Membership = () => {
             </SafeAreaView>
           )
     }
-    if(!isMemeber){
+    if(!isMemeber){ 
         return (
             <SafeAreaView style={{flex:1,padding:10}}>
                 <NavNoProfile Title='Membership' iconURL={iconUrl} onPress={goBack}/>
