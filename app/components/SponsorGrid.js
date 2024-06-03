@@ -56,7 +56,7 @@ const SponsorGrid = () => {
 
   return (
     <View>
-        <SubHeadingLink Title='SPONSORED SERVICES' Cmd='View All >' onPress={handleViewAll}/>
+        <SubHeadingLink Title='Sponsored Services' Cmd='View All >' onPress={handleViewAll}/>
         {sponsorData.map((_, index) => {
           if (index % 2 === 0) { // Every second index creates a new row
             const item1 = sponsorData[index];
@@ -84,9 +84,9 @@ export default SponsorGrid
 const styles = StyleSheet.create({
     SponsorGridStyles: {
         flex: 1, // Equal space for each item in the row
-        backgroundColor: '#AB2525',
+        backgroundColor: '#27AE60',
         borderWidth: 1,
-        borderColor: '#AB2525',
+        borderColor: 'gray',
         height: 140, // Consistent height for items
         margin:1,
         borderTopLeftRadius:20,

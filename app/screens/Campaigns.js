@@ -19,7 +19,6 @@ const Campaigns = () => {
   const {user} = useContext(UserContext)
   const userId = user?._id;
   const isAWellBeingSubscriber = user?.isAWellBeingSubscriber;
-  const paymentId = contribution.paymentId;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -42,7 +41,7 @@ const Campaigns = () => {
 
     fetchData();
   }, [userId, contribution.paymentId]);
-
+  console.log(contribution)
 
   const calculateDaysLeft = (endAt) => {
     const endDate = new Date(endAt);
@@ -61,7 +60,16 @@ const Campaigns = () => {
   const filteredCampaign = campaignsWithDaysLeft.map(campaign => {
     const subReq = features.find(feature => feature._id === campaign.feature_id)?.subReq || false;
     return { ...campaign, subReq }; // Add 'subReq' property to each campaign object
-  }); 
+  });
+
+  const filteredCampaignWithPayment = filteredCampaign.map(campaign =>{
+    const matchedContribution = contribution.find(contribution => contribution.campaign_id === campaign._id);
+    const paymentId = matchedContribution ? contribution.paymentId : '';
+    return { ...campaign, paymentId };
+  })
+
+  console.log("campaogns",filteredCampaignWithPayment);
+  //console.log(filteredCampaign);
   const campaignData = [
     {
       id: '1',
@@ -114,18 +122,30 @@ const Campaigns = () => {
   ];
 
   const handleContribute = (item) => {
-    console.log(' Contribute Button:', item.id);
-    navigation.navigate('ContributionPayment', {item})
+    //console.log(' Contribute Button:', item._id);
+    const currentDate = new Date();
+    const endDate = new Date(item.endAt);
+
+    if (endDate < currentDate) {
+        alert("This campaign has already ended. You can no longer contribute.");
+    }else{
+        navigation.navigate('ContributionPayment', {item})
+    }
     
-  };
+};
   const campaignPress = (item) =>{
-    console.log('Campaign Press:', item.id);
-    navigation.navigate('CampaignSponsorDetailsContainer', {item})
+    const currentDate = new Date();
+    const endDate = new Date(item.endAt);
+    if (endDate < currentDate) {
+      alert("This campaign has already ended. You can no longer contribute.");
+  }else{
+    navigation.navigate('CampaignSponsorDetailsContainer', {item,isAWellBeingSubscriber})
+  }
   }
 
   // Extract unique feature types for filtering
   const uniqueFeatureTypes = Array.from(
-    new Set(filteredCampaign.map((data) => data.featureType))
+    new Set(filteredCampaignWithPayment.map((data) => data.featureType))
   );
 
   // Filter items for the picker
@@ -135,7 +155,7 @@ const Campaigns = () => {
   }));
 
   // Filtering based on both search term and selected filter
-  const filteredCampaigns = filteredCampaign
+  const filteredCampaigns = filteredCampaignWithPayment
     .filter(
       (campaign) =>
         campaign.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
@@ -194,10 +214,11 @@ const Campaigns = () => {
                 gridStyles={styles.FeatureGridStyle}
                 handleCampaignPress1={() =>campaignPress(item1)}
                 handleCampaignPress2={() =>campaignPress(item2)}
-                subReq1={item1.subReq}
-                subReq2={item2.subReq}
+                subReq1={item1?.subReq}
+                subReq2={item2?.subReq}
                 isAWellBeingSubscriber={isAWellBeingSubscriber}
-                paymentId={paymentId}
+                paymentId1={item1?.paymentId}
+                paymentId2={item2?.paymentId}
               />
             );
           }
@@ -259,18 +280,20 @@ const pickerSelectStyles = {
   inputIOS: {
     color: 'white',
     borderWidth: 1,
-    borderRadius: 5,
-    backgroundColor: '#AB2525',
+    borderRadius: 4,
+    backgroundColor: '#27AE60',
     paddingVertical: 3,
     paddingHorizontal: 12,
+    borderColor:'gray',
   },
   inputAndroid: {
     color: 'white',
     borderWidth: 1,
-    borderRadius: 5,
-    backgroundColor: '#AB2525',
+    borderRadius: 4,
+    backgroundColor: '#27AE60',
     paddingVertical: 3,
     paddingHorizontal: 12,
+    borderColor:'gray'
   },
   placeholder: {
     color: 'white',

@@ -82,7 +82,7 @@ const ProfileDisplay = () => {
         <Text style={{marginTop:20, fontSize:12, color:'blue'}}>Editing your profile is disabled, Please contact support on <Text style={{fontWeight:700}}>+1 703 725-8183</Text> or email <Text  style={{fontWeight:700}}>accounts@socialinsure.com</Text></Text>
         
         <View style={{marginTop:30,flexDirection:'column'}}>
-            <View style={{flexDirection:'row',justifyContent:'space-between', alignItems:'center',backgroundColor:'#18B8A8'}}>
+            <View style={{flexDirection:'row',justifyContent:'space-between', alignItems:'center',backgroundColor:'#27AE60'}}>
                 <Text style={{color:'white',padding:4}}>User ID</Text>
                 <TextInput
                 style={[styles.input,{color:'white',opacity:0.9,padding:4}]}
@@ -149,7 +149,7 @@ const ProfileDisplay = () => {
                 <Text style={{color:'blue',fontWeight:700}}>Change Profile Picture</Text>
             </View>
             
-            <TouchableOpacity onPress={saveProfile} style={{backgroundColor: '#24FF00',padding:10}}>
+            <TouchableOpacity onPress={saveProfile} style={{backgroundColor: '#FF5733',padding:10}}>
                 <Text style={{textAlign:'center',color:'white'}}>Save</Text>
             </TouchableOpacity>
         </View>

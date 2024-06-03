@@ -14,6 +14,10 @@ const CampaignSchema = new Schema({
     type: Number,
     required: true,
   },
+  fees: {
+    type: Number,
+    required: false,
+  },
   description: {
     type: String,
     required: true,

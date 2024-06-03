@@ -9,16 +9,16 @@ import Button from '../components/Button';
 const CampaignSponsorDetailsContainer = () => {
 
   const route=useRoute();
-  const {item,isAWellBeingSubscriber,paymentId} = route.params;
+  const {item,isAWellBeingSubscriber} = route.params;
   const progress = item.raised / item.goal;
-
+  //console.log("item here",item)
+  //console.log("payment_",item?.paymentId) 
   const navigation = useNavigation();
     const iconURL = require('../../assets/close.png')
-    const handleBack = (item)=>{
+    const handleBack = ()=>{
       navigation.goBack()
     }
-    const handleContribute = (item) =>{
-      console.log(`handel contribute of ID ${item.id}`)
+    const handleContribute = () =>{
       navigation.navigate('ContributionPayment', {item})
     }
   return (
@@ -31,7 +31,7 @@ const CampaignSponsorDetailsContainer = () => {
           ) : ''}
           
         </View>
-        <Text style={{fontWeight:700, backgroundColor:'#18B8A8',color:'white',padding:10,borderBottomRightRadius: 10,borderBottomLeftRadius: 10,}}>{item.title}</Text>
+        <Text style={{fontWeight:700, backgroundColor:'black',color:'white',padding:10,borderBottomRightRadius: 10,borderBottomLeftRadius: 10,}}>{item.title}</Text>
         <Text style={{fontSize:10}}>{item.details}</Text>
       </View>
 
@@ -41,16 +41,16 @@ const CampaignSponsorDetailsContainer = () => {
           <View>
             <Text>{item.date}</Text>
             <Text>Goal</Text>
-            <Text style={{color:'#AB2525',fontWeight:700}}>${item.goal}</Text>
+            <Text style={{color:'black',fontWeight:700}}>${item.goal}</Text>
           </View>
           <View>
-            <Text style={{textAlign:'right',color:'blue',fontWeight:700}}>{item.daysLeft} days left</Text>
+            <Text style={{color: 'white', fontSize: 10,backgroundColor:'darkred',padding:3,borderRadius:5,marginTop:5}}>{item.daysLeft} days left</Text>
             <Text style={{textAlign:'right'}}>Raised</Text>
-            <Text style={{textAlign:'right',color:'#24FF00',fontWeight:700}}>${item.raised}</Text>
+            <Text style={{textAlign:'right',color:'#27AE60',fontWeight:700}}>${item.raised}</Text>
           </View>
         </View>
         <View style={{flexDirection:'column', alignItems:'center',marginTop:10}}>
-        {item.subReq === 'Yes' && isAWellBeingSubscriber && paymentId !== '' ? (
+        {item.subReq === 'Yes' && isAWellBeingSubscriber && item.paymentId !== ''? (
         <ButtonFull name="Contributed" disabled={true} />
         ) : item.subReq === 'Yes' && !isAWellBeingSubscriber ? (
           <ButtonFull name="Members Only" disabled={true} />

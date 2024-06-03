@@ -127,10 +127,10 @@ export default FeatureGrid
 const styles = StyleSheet.create({
     FeatureGridStyle: {
         flex: 1, // Equal space for each item in the row
-        backgroundColor: '#18B8A8',
+        backgroundColor: 'black',
         borderRadius: 20,
         borderWidth: 1,
-        borderColor: '#18B8A8',
+        borderColor: 'gray',
         height: 140, // Consistent height for items
         margin:1
       },

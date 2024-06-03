@@ -48,12 +48,12 @@ const SocialFeatures = () => {
 
 
   const handleSocialFeaturePress = (item) => {
-    console.log(`Social Feature pressed has ID: ${item.id}`);
-    if(item.subReq === 'Yes' && !user.isAWellBeingSubscriber && (verification?.status === 'Not Started' || verification?.status === 'Rejected')){
+    console.log(`Social Feature pressed has ID: ${item._id}`);
+    if(item.subReq === 'Yes' && !user?.isAWellBeingSubscriber && (verification?.status === 'Not Started' || verification?.status === 'Rejected')){
       navigation.navigate('SubReqFeatureForNonMembers', { item });
-    }else if(item.subReq === 'Yes' && user.isAWellBeingSubscriber && verification?.status === 'Approved'){
+    }else if(item.subReq === 'Yes' && user?.isAWellBeingSubscriber && verification?.status === 'Approved'){
       navigation.navigate('SubReqFeatureForMembers', { item });
-    }else if(item.subReq === 'Yes' && !user.isAWellBeingSubscriber && verification?.status === 'Pending'){
+    }else if(item.subReq === 'Yes' && !user?.isAWellBeingSubscriber && verification?.status === 'Pending'){
       navigation.navigate('PendingMembers');
     }
     else if(item.subReq === 'No'){
@@ -106,7 +106,7 @@ const firstThreeFeatures = Features.slice(0, 3);
       description={item.description}
       onPress={() => handleSocialFeaturePress(item)}
       customContainerStyle={{    
-          backgroundColor : '#18B8A8',
+          backgroundColor : 'black',
           width:120,
           borderRadius:20,}}
       customIconImageStyle={{    

@@ -3,6 +3,7 @@ import React, {useContext, useEffect, useState } from 'react'
 
 import Nav from '../components/Nav'
 import { useNavigation, useRoute } from '@react-navigation/native';
+import StaticInput from '../components/StaticInput'
 import AmountInput from '../components/AmountInput';
 import CustomButton from '../components/Button';
 import SocialBanner from '../components/SocialBanner'
@@ -27,7 +28,8 @@ const ContributionPayment = () => {
     const fullName = user.firstName + ' ' + user.lastName;
     const [paymentID,setPayamentID] = useState('');
     const balance = user?.balance;
-
+    const fees_per_person = item.fees;
+    console.log("item at checkout",item)
     const handleChangeAmount = (text) => {
       setAmount(text)
     };
@@ -107,30 +109,23 @@ const ContributionPayment = () => {
 
       
       if (!error) {
-        setLoading(false);
-        
+        setLoading(true);
       }
     };
 
     useEffect(() => {
-      if(amount>0){
+      if(amount){
         initializePaymentSheet();
       }
+
     }, []); 
   
     const openPaymentSheet = async () => {
       const { error } = await presentPaymentSheet();
 
-      if (loading) {
-        console.log("Payment sheet is not initialized yet");
-        return;
-      }
       if (error) {
-        Alert.alert('Error', 'An Error Occured, Please Try again');
-        navigation.goBack()
-        console.log("error occured")
-
-        setLoading(false);
+        Alert.alert('Error', error);
+        console.error("error occured",error)
       }else{
         setLoading(true);
         try{
@@ -177,7 +172,7 @@ const ContributionPayment = () => {
 
     const handleMyBalance = async () => {
       setLoading(true);
-        if(amount<=balance){
+        if(amount>0 && amount<=balance){
           try{
             const Contributionresponse = await fetch(`${BACKEND_URL}/contributions_handlebalance`, {
               method: 'POST',
@@ -214,9 +209,14 @@ const ContributionPayment = () => {
             Alert.alert(`Error code: ${error.code}`, error.message);
             setLoading(false);
           }
+        }else if(amount<=0){
+            Alert.alert("Payment Failed","You have not input an amount")
+            setLoading(false);
         }else{
           Alert.alert("Payment Failed","You have insufficient funds")
+          setLoading(false);
         }
+        
     };
 
 
@@ -230,27 +230,40 @@ const ContributionPayment = () => {
     <ScrollView style={{padding:10}}>
         <Nav onPress={()=>{navigation.navigate('Home')}} Title='Contribute' iconURL={iconURL}/>
         <SocialBanner Title={item.title} />
-        <View style={{marginTop:20}}><AmountInput value={amount} onChangeAmount={handleChangeAmount} editable={true}/></View>
+        <View style={{marginTop:20}}>
+          {item.feature_id === '664c9a60ff37a060cd82674f' ? (
+              <StaticInput amount={fees_per_person}/> 
+          ) : (
+              <AmountInput value={amount} onChangeAmount={handleChangeAmount} editable={true} />
+          )}
+        </View>
         <View style={{width:'100%',height:1,backgroundColor:'lightgray',marginTop:20}}></View>
         <Text style={{textAlign:'center',color:'blue',fontWeight:700,marginTop:10}}>Choose Payment Method</Text>
         <Text style={{color:'blue', textAlign:'center'}}>You won't be charged yet</Text>
         <View style={{display:'flex', flexDirection:'column', alignItems:'center', marginTop:10}}>
-            <ButtonFull name={loading ? 'Initializing...' : 'Credit/Debit Cart'} onPress={openPaymentSheet} imageIcon={cardIcon} containerStyle={{justifyContent:''}} loading={loading}/>
+        <ButtonFull 
+          name='Credit/Debit Cart'
+          onPress={openPaymentSheet} 
+          imageIcon={cardIcon} 
+          containerStyle={{justifyContent:''}}
+          disabled={!loading} 
+        /> 
             {/* <ButtonFull name='PayPal' onPress={()=>{navigation.navigate('FailedFeedback')}} imageIcon={paypalIcon} containerStyle={{justifyContent:''}}/> */}
             <BlackButton name='Use My Balance' onPress={handleMyBalance}/>
         </View>
 
     </ScrollView>
     {loading && (
-                <View style={styles.overlay}>
-                    <ActivityIndicator size="large" color="black" />
-                </View>
+            <View style={styles.overlay}>
+              <ActivityIndicator size="large" color="black" />
+            </View>
             )}
     </SafeAreaView>
   )
 }
 
 export default ContributionPayment
+
 
 const styles = StyleSheet.create({
   overlay: {

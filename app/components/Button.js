@@ -18,7 +18,7 @@ const CustomButton = ({ name, onPress, imageIcon = '', containerStyle, disabled 
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: '#24FF00',
+    backgroundColor: '#FF5733',
     flexDirection: 'row',
     borderRadius: 2,
     width: '90%',

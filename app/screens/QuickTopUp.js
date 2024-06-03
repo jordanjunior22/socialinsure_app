@@ -15,7 +15,7 @@ const QuickTopUp = () => {
   const [paymentID,setPayamentID] = useState('');
   const { initPaymentSheet, presentPaymentSheet } = useStripe();
   const balance = amount;
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false); 
 
   console.log(amount)
   const user_id = user._id;
@@ -59,7 +59,6 @@ const QuickTopUp = () => {
     }
 
     const initializePaymentSheet = async () => {
-      setLoading(true);
       const {
         paymentIntent,
         ephemeralKey,
@@ -80,29 +79,22 @@ const QuickTopUp = () => {
 
       
       if (!error) {
-        setLoading(false);
-        
+        setLoading(true);
       }
     };
 
-    useEffect(() => {
-      if(amount>0){
-        initializePaymentSheet();
-      }
-    }, []);
 
   
     const openPaymentSheet = async () => {
 
       const { error } = await presentPaymentSheet();
 
-      if (loading) {
-        console.log("Payment sheet is not initialized yet");
-        return;
-      }
       if (error) {
         Alert.alert(`Error code: ${error.code}`, error.message);
+        console.log(error);
+
       }else{
+        console.log(error);
         setLoading(true);
         try{
           const response = await fetch(`${BACKEND_URL}/user/${user._id}/update`, {
@@ -112,6 +104,7 @@ const QuickTopUp = () => {
             },
             body: JSON.stringify(updateParams),
           });
+          
           if(response.status === 200){
             Alert.alert('Success', 'You have successfully Top-Up Your account');
             navigation.navigate('SuccessFeedback');
@@ -129,6 +122,11 @@ const QuickTopUp = () => {
       }
 
     }
+    useEffect(() => {
+        if(amount){
+          initializePaymentSheet();
+        }
+    }, []);
 
     const handleContributions = () => {
         navigation.navigate('Contributions')
@@ -139,7 +137,9 @@ const QuickTopUp = () => {
     const cardIcon = require('../../assets/creditcard.png')
     const paypalIcon = require('../../assets/paypal.png')
     const iconURL =  require('../../assets/close.png')
-    
+    console.log(loading);
+
+
   return (
     <SafeAreaView style={{flex:1}}>
     <ScrollView style={{padding:10}}>
@@ -153,11 +153,12 @@ const QuickTopUp = () => {
         <Text style={{color:'blue', textAlign:'center'}}>You won't be charged yet</Text>
         <View style={{display:'flex', flexDirection:'column', alignItems:'center', marginTop:10}}>
         <ButtonFull 
-          name={loading ? 'Initializing...' : 'Credit/Debit Cart'}
+          name='Credit/Debit Cart'
           onPress={openPaymentSheet} 
           imageIcon={cardIcon} 
           containerStyle={{justifyContent:''}}
-          loading={loading} // Pass the loading state to the ButtonFull component
+          disabled={loading} 
+          
         />           
         {/* <ButtonFull name='PayPal' onPress={()=>{navigation.navigate('FailedFeedback')}} imageIcon={paypalIcon} containerStyle={{justifyContent:''}}/> */}
         </View>

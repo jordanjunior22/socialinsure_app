@@ -22,11 +22,11 @@ const NoSubReqFeature = () => {
       <NavNoProfile Title={item.title} iconURL={iconURL} onPress={()=>{navigation.goBack()}}/>
       <SocialBanner Title={item.title} Content={item.description}/>
       <SubHeadingNoLink heading='DetailS'/>
-      <Text style={{color:'#AB2525',fontWeight:700}}>{item.description}</Text>
+      <Text style={{color:'#27AE60',fontWeight:700}}>{item.description}</Text>
       <Text style={{opacity:0.5}}>{item.details}</Text>
   
       <View style={styles.info}>
-        <TouchableOpacity onPress={handleCampaign} style={{backgroundColor:'#24FF00',padding:10,flex:1,flexDirection:'column',justifyContent:'center',alignItems:'center'}}>
+        <TouchableOpacity onPress={handleCampaign} style={{backgroundColor:'#FF5733',padding:10,flex:1,flexDirection:'column',justifyContent:'center',alignItems:'center'}}>
           <Text style={{color:'white',fontWeight:700,fontSize:16}}>Campaigns</Text>
         </TouchableOpacity>
       </View>
@@ -44,8 +44,6 @@ const styles = StyleSheet.create({
   info:{
     flex:1,
     flexDirection:'row',
-    gap:10,
     marginTop:20,
-    marginBottom:20
   }
 })

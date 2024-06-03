@@ -73,14 +73,14 @@ const MainTabNavigator = () => {
               style={{
                 width: 24,
                 height: 24,
-                tintColor: focused ? '#AB2525' : 'black',
+                tintColor: focused ? '#18B8A8' : 'black',
 
               }}
             />
           );
         },
         tabBarLabel: ({ focused, color }) => (
-          <Text style={{ color: focused ? '#AB2525' : 'gray' }}>{route.name}</Text>
+          <Text style={{ color: focused ? '#18B8A8' : 'gray' }}>{route.name}</Text>
         ),
       })}
     >

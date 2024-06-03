@@ -13,6 +13,8 @@ const FeaturesRoutes = require('./routes/FeaturesRoutes')
 const CampaignRoutes = require('./routes/CampaignRoutes')
 const SponsorRoutes = require('./routes/SponsorRoutes')
 const NotificationRoutes = require('./routes/NotificationRoutes')
+const MissedContributionRoutes = require('./routes/MissedContributionRoutes')
+
 
 app.use(cors());
 app.use(bodyParser.json()); 
@@ -31,6 +33,7 @@ app.use('/api', FeaturesRoutes); //CampaignRoutes
 app.use('/api', CampaignRoutes);
 app.use('/api', SponsorRoutes) //NotificationRoutes
 app.use('/api', NotificationRoutes) 
+app.use('/api', MissedContributionRoutes)
 
 
 // Start the server

@@ -5,6 +5,11 @@ import { UserContext } from '../../context/UserContext';
 const Hero = ({ balance, onQuickTopUp, onMyContributions }) => {
   const {user} = useContext(UserContext);
 
+  const formattedBalance = Number(user?.balance).toLocaleString(undefined, {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 2,
+  });
   return (
     <View style={styles.hero}>
       <View style={styles.hero_top}>
@@ -20,7 +25,7 @@ const Hero = ({ balance, onQuickTopUp, onMyContributions }) => {
         
         {onMyContributions ? (
           <TouchableOpacity onPress={onMyContributions} style={styles.buttons2}>
-            <Text style={{ color: '#18B8A8' }}>My Contributions</Text>
+            <Text style={{ color: 'black' }}>My Contributions</Text>
           </TouchableOpacity>
         ) : (
           <View style={styles.placeholderButton2}>
@@ -32,10 +37,10 @@ const Hero = ({ balance, onQuickTopUp, onMyContributions }) => {
       
       <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}>
         <View>
-          <Text style={{ color: 'black', opacity: 0.5 }}>My Account Balance</Text>
-          <Text style={{ fontWeight: 'bold', fontSize: 25, color: '#18B8A8' }}>${user?.balance}</Text>
+          <Text style={{ color: 'white'}}>Total Balance</Text>
+          <Text style={{ fontWeight: 'bold', fontSize: 40, color: 'white' }}>{formattedBalance}</Text>
         </View>
-          <Image source={require('../../assets/logonobg.png')} style={styles.iconimage}/>
+        <Image source={require('../../assets/logonobg.png')} style={styles.iconimage}/>
       </View>
 
     </View>
@@ -48,14 +53,14 @@ const styles = StyleSheet.create({
   iconimage: {
     width: 50,
     height: 80,
-    tintColor:'#18B8A8'
+    tintColor:'white'
    },
   hero: {
     flexDirection: 'column',
-    backgroundColor: '#F9F9F9',
-    padding: 20,
+    backgroundColor: '#18B8A8',
+    padding:15,
     marginTop: 20,
-    gap: 50,
+    gap: 10,
     borderRadius: 20,
     borderColor: '#18B8A8',
     borderWidth: 1,
@@ -67,10 +72,12 @@ const styles = StyleSheet.create({
   },
   buttons: {
     borderRadius: 50,
-    backgroundColor: '#AB2525',
+    backgroundColor: 'black',
     padding: 10,
     color: 'white',
     borderRadius: 10,
+    borderColor: 'white',
+    borderWidth: 0.5,
   },
   buttons2: {
     borderRadius: 50,
@@ -79,6 +86,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     padding: 10,
     borderRadius: 10,
+    borderColor: 'black',
+    borderWidth: 0.5,
   },
   placeholderButton: {
     borderRadius: 50,

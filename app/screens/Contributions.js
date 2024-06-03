@@ -7,92 +7,75 @@ import { UserContext } from '../../context/UserContext';
 import axios from 'axios';
 import { BACKEND_URL } from '../../config';
 
-const myContributions = [
-  {
-    id: 1,
-    campaign_title: 'Solidarity for John Doe',
-    amount: 100,
-    createdAt: '01/07/20',
-  },
-  {
-    id: 2,
-    campaign_title: 'Solidarity for Felix',
-    amount: 50,
-    createdAt: '01/07/22',
-  },
-  {
-    id: 3,
-    campaign_title: 'Health Funding for Jim',
-    amount: 300,
-    createdAt: '01/07/24',
-  },
-];
-
 const Contributions = () => {
   const [searchTerm, setSearchTerm] = useState('');
-  const [Contributions, setContributions] = useState([])
-  const {user} = useContext(UserContext)
+  const [contributions, setContributions] = useState([]);
+  const { user } = useContext(UserContext);
   const iconURL = require('../../assets/back.png');
   const navigation = useNavigation();
-  const userId = user?._id
+  const userId = user?._id;
 
-  useEffect(()=>{
-    const fetchAllContributions = async () =>{
-      try{
-        if(userId){
-          const ContributionResponse = await axios.get(`${BACKEND_URL}/contributions/${userId}`);
-          setContributions(ContributionResponse.data);
+  useEffect(() => {
+    const fetchAllContributions = async () => {
+      try {
+        if (userId) {
+          const contributionResponse = await axios.get(`${BACKEND_URL}/contributions/${userId}`);
+          setContributions(contributionResponse.data);
         }
-        
-      }catch(error){
-        console.error("Fetch Features error :",error);
+      } catch (error) {
+        console.error("Fetch Contribution error:", error);
       }
-    }
+    };
+
     fetchAllContributions();
-    const intervalId = setInterval(fetchAllContributions, 1 * 60 * 1000); // 1 minutes
+    const intervalId = setInterval(fetchAllContributions, 1 * 60 * 1000); // Fetch every 1 minute
     return () => clearInterval(intervalId);
-
-  },[userId])
-
-  console.log(filteredContributions)
+  }, [userId]);
 
   // Filter contributions by title based on the search term
-  const filteredContributions = Contributions.filter((contribution) =>
+  const filteredContributions = contributions.filter((contribution) =>
     contribution.campaign_title && contribution.campaign_title.toLowerCase().includes(searchTerm.toLowerCase())
   );
-  
-  const handleBack = () =>{
+
+  const handleBack = () => {
     navigation.goBack();
-  }
+  };
+
   return (
-    <SafeAreaView style={{ flex: 1,padding: 10 }}>
-        <NavNoProfile Title="All Contributions" iconURL={iconURL} onPress={handleBack}/>
+    <SafeAreaView style={{ flex: 1, padding: 10 }}>
+      <NavNoProfile Title="All Contributions" iconURL={iconURL} onPress={handleBack} />
 
-        <View style={styles.searchBox}>
-          <View style={styles.searchInputWrapper}>
-            <Image source={require('../../assets/search.png')} style={styles.searchIcon} />
-            <TextInput
-              style={styles.searchInput}
-              placeholder="Search Contributions..."
-              placeholderTextColor="gray"
-              value={searchTerm}
-              onChangeText={(text) => setSearchTerm(text)} // Update the search term
-            />
+      <View style={styles.searchBox}>
+        <View style={styles.searchInputWrapper}>
+          <Image source={require('../../assets/search.png')} style={styles.searchIcon} />
+          <TextInput
+            style={styles.searchInput}
+            placeholder="Search Contributions..."
+            placeholderTextColor="gray"
+            value={searchTerm}
+            onChangeText={(text) => setSearchTerm(text)} // Update the search term
+          />
+        </View>
+      </View>
+
+      <ScrollView>
+        {filteredContributions.length === 0 ? (
+          <View style={styles.noContributionsContainer}>
+            <Text style={styles.noContributionsText}>No contributions found.</Text>
           </View>
-        </View>
-        <ScrollView>
-
-        <View style={{ flexDirection: 'column', gap: 10 }}>
-          {filteredContributions.map((contribution) => (
-            <ContributionContainer
-              key={contribution._id} // Ensure each element has a unique key
-              title={contribution.campaign_title} // Passing data to the component
-              contribution={contribution.amount}
-              date={contribution.createdAt}
-              paymentId={contribution.paymentId}
-            />
-          ))}
-        </View>
+        ) : (
+          <View style={{ flexDirection: 'column', gap: 10 }}>
+            {filteredContributions.map((contribution) => (
+              <ContributionContainer
+                key={contribution._id} // Ensure each element has a unique key
+                title={contribution.campaign_title} // Passing data to the component
+                contribution={contribution.amount}
+                date={contribution.createdAt}
+                paymentId={contribution.paymentId}
+              />
+            ))}
+          </View>
+        )}
       </ScrollView>
     </SafeAreaView>
   );
@@ -122,5 +105,14 @@ const styles = StyleSheet.create({
     flex: 1,
     height: 40,
     paddingHorizontal: 10,
+  },
+  noContributionsContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 20,
+  },
+  noContributionsText: {
+    fontSize: 18,
+    color: 'gray',
   },
 });

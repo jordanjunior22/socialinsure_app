@@ -4,7 +4,7 @@ import React from 'react'
 const SubHeadingNoLink = ({heading}) => {
   return (
     <View>
-        <Text style={{textTransform: 'uppercase',fontWeight: 'bold',marginTop: 20}}>{heading}</Text>
+        <Text style={{marginTop: 20,fontSize:18}}>{heading}</Text>
     </View>
   )
 }

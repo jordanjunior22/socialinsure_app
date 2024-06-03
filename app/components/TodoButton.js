@@ -6,13 +6,13 @@ import { LinearGradient } from "expo-linear-gradient";
 const CustomButton = ({ onPress, buttonText}) => {
   return (
     <LinearGradient
-    colors={['#AB2525', '#C9FFFA']} // Your gradient colors
+    colors={['black', '#C9FFFA']} // Your gradient colors
     start={{ x: 0, y: 0 }}
     end={{ x: 0, y: 1 }}
     style={styles.gradientBorder}
   >
     <TouchableOpacity onPress={onPress} style={styles.todoButton}>
-      <Text>{buttonText}</Text>
+      <Text style={{fontWeight:'bold'}}>{buttonText}</Text>
       <Image source={require('../../assets/front.png')} style={styles.iconimage} />
     </TouchableOpacity>
 
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
        iconimage: {
         width: 20,
         height: 20,
-
+        tintColor:'#18B8A8'
        },
        gradientBorder: {
         borderRadius: 20, // Ensure rounded corners

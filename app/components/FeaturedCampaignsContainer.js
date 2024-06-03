@@ -39,10 +39,11 @@ const FeaturedCampaignsContainer = ({
             flexDirection: 'row',
             justifyContent: 'space-between',
             width: '100%',
+            alignItems:'center'
           }}
         >
           <Text style={{ fontSize: 12, fontWeight: '700' }}>{title}</Text>
-          <Text style={{ color: 'blue', fontSize: 12, fontWeight: '700' }}>
+          <Text style={{ color: 'white', fontSize: 10,backgroundColor:'darkred',padding:3,borderRadius:5}}>
             {daysLeft} days left
           </Text>
         </View>
@@ -52,13 +53,13 @@ const FeaturedCampaignsContainer = ({
         <View style={styles.figures}>
           <View>
             <Text>Goal</Text>
-            <Text style={{ fontWeight: '700', color: '#AB2525' }}>
+            <Text style={{ fontWeight: '700', color: 'black' }}>
               USD $ {Goal}
             </Text>
           </View>
           <View>
             <Text>Raised</Text>
-            <Text style={{ fontWeight: '700', color: '#24FF00' }}>
+            <Text style={{ fontWeight: '700', color: '#27AE60' }}>
               USD $ {Raised}
             </Text>
           </View>

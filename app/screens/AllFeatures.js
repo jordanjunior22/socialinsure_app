@@ -19,7 +19,7 @@ export default function AllFeatures() {
     <ScrollView style={{padding: 10}}>
         <Nav onPress={() => navigation.navigate('Home')} iconURL={iconURL} Title="Products & Services" />
         <SocialBanner Title={Title} Content={Content}/>
-        <SubHeadingNoLink heading='FEATURES & SERVICES'/>
+        <SubHeadingNoLink heading='Features & Services'/>
         <FeatureGrid/>
         <SponsorGrid/>
         <BottomMargin/>

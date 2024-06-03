@@ -43,7 +43,7 @@ const FeaturedCampaignsContainerGrid = ({
           }}
         >
           <Text style={{ fontSize: 12, fontWeight: '700' }}>{title}</Text>
-          <Text style={{ color: 'blue', fontSize: 12, fontWeight: '700' }}>
+          <Text style={{color: 'white', fontSize: 10,backgroundColor:'darkred',padding:3,borderRadius:5}}>
             {daysLeft} days left
           </Text>
         </View>
@@ -53,13 +53,13 @@ const FeaturedCampaignsContainerGrid = ({
         <View style={styles.figures}>
           <View>
             <Text style={{ fontSize: 10}}>Goal</Text>
-            <Text style={{ fontWeight: '700', color: '#AB2525',fontSize: 10 }}>
+            <Text style={{ fontWeight: '700', color: 'black',fontSize: 10 }}>
               USD $ {Goal}
             </Text>
           </View>
           <View>
             <Text style={{ fontSize: 10}}>Raised</Text>
-            <Text style={{ fontWeight: '700', color: '#24FF00',fontSize: 10 }}>
+            <Text style={{ fontWeight: '700', color: '#27AE60',fontSize: 10 }}>
               USD $ {Raised}
             </Text>
           </View>

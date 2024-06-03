@@ -104,7 +104,7 @@ router.post('/stripe-payment', async (req, res) => {
         const { metaData, amount, currency} = req.body;
         const amountInCents = amount * 100;
         
-        console.log(amount)
+        //console.log(amount)
         //console.log(amountInCents)
         
 
@@ -131,7 +131,7 @@ router.post('/stripe-payment', async (req, res) => {
           }
         });
 
-        //console.log(paymentIntent); 
+        console.log(paymentIntent); 
         res.json({
           paymentIntent: paymentIntent.client_secret, 
           ephemeralKey: ephemeralKey.secret,

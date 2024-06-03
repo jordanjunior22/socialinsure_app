@@ -38,9 +38,11 @@ const Sponsored = () => {
       <View style={{padding:10}}>
         <NavNoProfile Title='Sponsored Details' iconURL={iconURL} onPress={()=>handleBack(item)}/>
         <View style={{height:200,width:'100%'}}>
-          <Image source={item.imageSource} style={{width:'100%', height:'100%'}}/>
+        {typeof item.imageSource === 'string' ? (
+            <Image source={{ uri: item.imageSource }} style={{width:'100%', height:'100%'}} />
+          ) : ''}
         </View>
-        <Text style={{fontWeight:700, backgroundColor:'#18B8A8',color:'white',padding:10,borderBottomRightRadius: 10,borderBottomLeftRadius: 10,}}>{item.title}</Text>
+        <Text style={{fontWeight:700, backgroundColor:'black',color:'white',padding:10,borderBottomRightRadius: 10,borderBottomLeftRadius: 10,}}>{item.title}</Text>
         <Text style={{fontSize:10}}>{item.details}</Text>
       </View>
 

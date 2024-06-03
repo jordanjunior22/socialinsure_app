@@ -26,8 +26,8 @@ const TodoScrollView = () => {
   };
 
   const todoButtonsData = [
-      { id: '1', text: 'Add a Profile Picture 🙎🏻‍♂️' },
-      { id: '2', text: 'Add a Phone Number ' },
+      { id: '1', text: 'Add Profile Picture 🙎🏻‍♂️' },
+      { id: '2', text: 'Add Phone Number ' },
   ];
 
   const filteredButtons = todoButtonsData.filter(item => {
@@ -43,10 +43,10 @@ const TodoScrollView = () => {
   };
 
   return (
-      <View style={{ marginTop: 30, flexDirection: 'column', gap: 10 }}>
+      <View style={{ marginTop: 20, flexDirection: 'column', gap:5 }}>
           {filteredButtons.length > 0 && (
               <>
-                  <Text style={{ textAlign: 'right', color: '#18B8A8', fontWeight: 'bold' }}>My To-dos &gt;</Text>
+                  <Text style={{ textAlign: 'right', color: 'black', fontWeight: 'bold',opacity:0.5 }}>My To-dos</Text>
                   <FlatList
                       data={filteredButtons}
                       keyExtractor={(item) => item.id}

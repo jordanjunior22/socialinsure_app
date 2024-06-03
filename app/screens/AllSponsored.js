@@ -202,9 +202,9 @@ const styles = StyleSheet.create({
   },
   SponsorGridStyles: {
     flex: 1, // Equal space for each item in the row
-    backgroundColor: '#AB2525',
+    backgroundColor: '#27AE60',
     borderWidth: 1,
-    borderColor: '#AB2525',
+    borderColor: 'gray',
     height: 140, // Consistent height for items
     margin:1,
     borderTopLeftRadius:20,

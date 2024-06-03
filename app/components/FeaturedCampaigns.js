@@ -15,7 +15,6 @@ const SocialFeatures = () => {
   const {user} = useContext(UserContext)
   const userId = user?._id;
   const isAWellBeingSubscriber = user?.isAWellBeingSubscriber;
-  const paymentId = contribution.paymentId;
 
   const onPress = () => {
     navigation.navigate('Campaigns');
@@ -48,12 +47,25 @@ const SocialFeatures = () => {
 
 
   const handleCampaignPress = (item) => {
-    navigation.navigate('CampaignSponsorDetailsContainer', {item,isAWellBeingSubscriber,paymentId})
+    const currentDate = new Date();
+    const endDate = new Date(item.endAt);
+    if (endDate < currentDate) {
+        alert("This campaign has already ended. You can no longer contribute.");
+    }else{
+      navigation.navigate('CampaignSponsorDetailsContainer', {item,isAWellBeingSubscriber})
+    }
   };
 
   const handleContributePress = (item) => {
-    console.log('contribute Button for ID :',item._id);
-    navigation.navigate('ContributionPayment', {item})
+      console.log(' Contribute Button:', item._id);
+      const currentDate = new Date();
+      const endDate = new Date(item.endAt);
+      if (endDate < currentDate) {
+          alert("This campaign has already ended. You can no longer contribute.");
+      }else{
+        navigation.navigate('ContributionPayment', {item})
+      }
+    
   }
   
   const calculateDaysLeft = (endAt) => {
@@ -75,36 +87,41 @@ const filteredCampaign = campaignsWithDaysLeft.slice(0, 2).map(campaign => {
   return { ...campaign, subReq }; // Add 'subReq' property to each campaign object
 }); 
 
+const filteredCampaignWithPayment = filteredCampaign.map(campaign =>{
+  const matchedContribution = contribution.find(contribution => contribution.campaign_id === campaign._id);
+  const paymentId = matchedContribution ? contribution?.paymentId : '';
+  return { ...campaign, paymentId };
+})
 
 //console.log("Campaigns with days left:", campaignsWithDaysLeft);
 
   const renderFeaturedCampaign = ({ item }) => (
     <FeaturedCampaignsContainer
-      id={item._id}
-      imageSource={item.imageSource}
-      title={item.title}
+      id={item?._id}
+      imageSource={item?.imageSource}
+      title={item?.title}
       onPress={() => handleCampaignPress(item)}
-      Goal={item.goal}
-      Raised={item.raised}
-      daysLeft={item.daysLeft}
+      Goal={item?.goal}
+      Raised={item?.raised}
+      daysLeft={item?.daysLeft}
       handleContribute={()=>handleContributePress(item)}
 
-      subReq={item.subReq}
+      subReq={item?.subReq}
       isAWellBeingSubscriber={isAWellBeingSubscriber}
-      paymentId={paymentId}
+      paymentId={item?.paymentId}
     />
   );
 
   return (
-    <View style={{paddingBottom:50}}>
+    <View style={{paddingBottom:20}}>
       <SubHeadingLink Title='Featured Campaign' Cmd='View All >' onPress={onPress}/>
       <FlatList
-        data={filteredCampaign}
+        data={filteredCampaignWithPayment}
         renderItem={renderFeaturedCampaign}
         keyExtractor={(item) => item._id}
         horizontal={true}
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{gap: 5,marginTop:10 }}
+        contentContainerStyle={{gap: 5,marginTop:10}}
       />
     </View>
   );
