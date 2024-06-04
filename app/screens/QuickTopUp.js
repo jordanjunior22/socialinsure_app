@@ -36,7 +36,7 @@ const QuickTopUp = () => {
     };
     //console.log(updateParams);
     const fetchPaymentSheetParams = async () => {
-      const response = await fetch(`${BACKEND_URL}/stripe-payment`, {
+      const response = await fetch(`${BACKEND_URL}/top-up-payment`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -92,9 +92,7 @@ const QuickTopUp = () => {
       if (error) {
         Alert.alert(`Error code: ${error.code}`, error.message);
         console.log(error);
-
       }else{
-        console.log(error);
         setLoading(true);
         try{
           const response = await fetch(`${BACKEND_URL}/user/${user._id}/update`, {
@@ -106,9 +104,8 @@ const QuickTopUp = () => {
           });
           
           if(response.status === 200){
-            Alert.alert('Success', 'You have successfully Top-Up Your account');
+            //Alert.alert('Success', 'You have successfully Top-Up Your account');
             navigation.navigate('SuccessFeedback');
-
             setLoading(false);
           }else{
             Alert.alert('Balance Error','An error occured updating your balance. Contact Support');
@@ -126,12 +123,12 @@ const QuickTopUp = () => {
         if(amount){
           initializePaymentSheet();
         }
-    }, []);
+    }, [amount]);
 
     const handleContributions = () => {
         navigation.navigate('Contributions')
       };
-      const handleChangeAmount = (text) => {
+    const handleChangeAmount = (text) => {
         setAmount(text)
       };
     const cardIcon = require('../../assets/creditcard.png')
@@ -157,7 +154,7 @@ const QuickTopUp = () => {
           onPress={openPaymentSheet} 
           imageIcon={cardIcon} 
           containerStyle={{justifyContent:''}}
-          disabled={loading} 
+          disabled={!loading}
           
         />           
         {/* <ButtonFull name='PayPal' onPress={()=>{navigation.navigate('FailedFeedback')}} imageIcon={paypalIcon} containerStyle={{justifyContent:''}}/> */}

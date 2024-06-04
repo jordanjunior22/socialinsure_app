@@ -18,7 +18,7 @@ const Membership = () => {
     const [contributions,setContributions] = useState([])
     const [filteredCampaigns, setFilteredCampaigns] = useState([]);
     const [filteredContribution,setFilteredContribution] = useState([]);
-    const [missedContribution,setMissedContribution] = useState(3);
+    const [missedContribution,setMissedContribution] = useState([]);
     const isAWellBeingSubscriber = user?.isAWellBeingSubscriber;  
     const userId = user?._id;
     const [totalCampaigns, setTotalCampaigns] = useState(0);
@@ -44,8 +44,8 @@ const Membership = () => {
                     const ContributionResponse = await axios.get(`${BACKEND_URL}/contributions/${userId}`);
                     setContributions(ContributionResponse.data);
 
-                    // const MissedContributionResponse = await axios.get(`${BACKEND_URL}/missedContributions/${userId}`)
-                    // setMissedContribution(MissedContributionResponse.data);
+                    const MissedContributionResponse = await axios.get(`${BACKEND_URL}/missedContributions/${userId}`)
+                    setMissedContribution(MissedContributionResponse.data);
 
                     if(campaignResponse.data){
                         const filtered = campaignResponse.data.filter(campaign => campaign.feature_id === "664c9a60ff37a060cd82674f"); 
@@ -70,14 +70,13 @@ const Membership = () => {
                         setNeedsContributions(needsContributionsCount);
                     }
                     
-
+                    setTimeout(() => {
+                        setLoading(false);
+                    }, 5000);
+                    
                 }
             } catch(error) {
                 console.error("error at membership",error)  
-            }finally {
-                setTimeout(() => {
-                    setLoading(false);
-                }, 5000);
             }
         }
         const postMissedContribution = async () => {
@@ -99,16 +98,37 @@ const Membership = () => {
             }
         };
         fetchData();
-        postMissedContribution();
+        
         // const intervalId = setInterval(() => {
         //     fetchData();
         //     postMissedContribution();
         // }, 3 * 1000);
         // return () => clearInterval(intervalId);
     }, [userId, totalCampaigns, totalContributions, needsContributions]); 
+    useEffect(() => {
+        const postMissedContribution = async () => {
+            try {
+                const currentDate = new Date();
+                const missedCampaigns = filteredCampaigns.filter(campaign => {
+                    const campaignEndDate = new Date(campaign.endAt);
+                    return campaignEndDate < currentDate && !contributions.some(contribution => contribution.campaign_id === campaign._id);
+                });
+    
+                for (const campaign of missedCampaigns) {
+                    await axios.post(`${BACKEND_URL}/missedContribution`, {
+                        user_id: userId,
+                        campaign_id: campaign._id
+                    });
+                }
+            } catch (error) {
+                console.error("error posting missed contribution", error);
+            }
+        };
+    
+        postMissedContribution();
+    }, [filteredCampaigns, contributions, userId]);
 
-
-    console.log("Total Campaigns ",totalCampaigns);  
+    //console.log("Total Campaigns ",totalCampaigns);  
     //console.log("Total Contributed ",totalContributions);   
     //console.log("Needs Contribution",needsContributions);
     const calculateDaysLeft = (endAt) => {
@@ -149,7 +169,7 @@ const handleContribute = (item) => {
     }
 };
 
-    if(isAWellBeingSubscriber && (missedContribution < 3)){    
+    if(isAWellBeingSubscriber && (missedContribution.length < 3)){    
         return (
             <SafeAreaView style={{flex:1,padding:10}}>
                 <NavNoProfile Title='Membership' iconURL={iconUrl} onPress={goBack}/>
@@ -167,7 +187,7 @@ const handleContribute = (item) => {
                 <View style={styles.missed}>
                     <Text style={{fontWeight:'bold',color:'white'}}>Missed Contributions</Text>
                     <Text style={{textAlign:'center',color:'white'}}>Once you have missed up to three contributions, you will no longer be a social well-being meber and will have to pay a penalty fee in other to join back.</Text>
-                    <Text style={{fontSize:30,color:'white'}}>{missedContribution}</Text> 
+                    <Text style={{fontSize:30,color:'white'}}>{missedContribution.length}</Text> 
                 </View>
                 <SubHeadingNoLink heading='Needs Contributions'/>
 
@@ -215,7 +235,7 @@ const handleContribute = (item) => {
             </SafeAreaView>
           )
     }
-    if(isAWellBeingSubscriber && (missedContribution > 2)){
+    if(isAWellBeingSubscriber && (missedContribution.length > 2)){
         return (
             <SafeAreaView style={{flex:1,padding:10}}>
                 <NavNoProfile Title='Membership' iconURL={iconUrl} onPress={goBack}/>
@@ -233,10 +253,10 @@ const handleContribute = (item) => {
                 <View style={styles.missed}>
                     <Text style={{fontWeight:'bold',color:'white'}}>Missed Contributions</Text>
                     <Text style={{textAlign:'center',color:'white'}}>Once you have missed up to three contributions, you will no longer be a social well-being meber and will have to pay a penalty fee in other to join back.</Text>
-                    <Text style={{fontSize:30,color:'white'}}>{missedContribution}</Text> 
+                    <Text style={{fontSize:30,color:'white'}}>{missedContribution.length}</Text> 
                 </View>
 
-                <Text style={{color:'red'}}>YOU ARE NO BELONG TO SOCIAL WELLBEING YOU HAVE MISSED {missedContribution} CONTRIBUTIONS.</Text>
+                <Text style={{color:'red'}}>YOU ARE NO BELONG TO SOCIAL WELLBEING YOU HAVE MISSED {missedContribution.length} CONTRIBUTIONS.</Text>
                 <Text>However in other to become a member you must Resubscribe and pay the penalty fee</Text>
                 <ButtonFull name='Re-Subscribe' onPress={handleResubcribe}/>
             </SafeAreaView>

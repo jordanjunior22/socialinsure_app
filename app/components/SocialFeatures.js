@@ -49,7 +49,7 @@ const SocialFeatures = () => {
 
   const handleSocialFeaturePress = (item) => {
     console.log(`Social Feature pressed has ID: ${item._id}`);
-    if(item.subReq === 'Yes' && !user?.isAWellBeingSubscriber && (verification?.status === 'Not Started' || verification?.status === 'Rejected')){
+    if(item.subReq === 'Yes' && !user?.isAWellBeingSubscriber || (verification?.status === 'Not Started' || verification?.status === 'Rejected')){
       navigation.navigate('SubReqFeatureForNonMembers', { item });
     }else if(item.subReq === 'Yes' && user?.isAWellBeingSubscriber && verification?.status === 'Approved'){
       navigation.navigate('SubReqFeatureForMembers', { item });
