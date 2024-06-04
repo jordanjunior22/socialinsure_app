@@ -25,6 +25,7 @@ const Membership = () => {
     const [totalContributions, setTotalContributions] = useState(0);
     const [needsContributions, setNeedsContributions] = useState(0);
     const [loading,setLoading] = useState(true);
+    const userCreatedAt = user?.createdAt;
 
     const goBack = () =>{
         navigation.navigate('Account')
@@ -48,9 +49,18 @@ const Membership = () => {
                     setMissedContribution(MissedContributionResponse.data);
 
                     if(campaignResponse.data){
-                        const filtered = campaignResponse.data.filter(campaign => campaign.feature_id === "664c9a60ff37a060cd82674f"); 
+                        //const filtered = campaignResponse.data.filter(campaign => campaign.feature_id === "664c9a60ff37a060cd82674f"); 
+                        
+                        const filtered = campaignResponse.data.filter(campaign =>{
+                            if (campaign.feature_id !== "664c9a60ff37a060cd82674f") {
+                                return false;
+                            }
+                            // Filter by date
+                            const campaignEndDate = new Date(campaign.endAt);
+                            return campaignEndDate > new Date(userCreatedAt);
+                        })
                         setFilteredCampaigns(filtered);
-    
+
                         const foundCampaigns = filtered.filter(campaign => 
                             contributions.some(contribution => contribution.campaign_id === campaign._id)
                         );
@@ -111,6 +121,9 @@ const Membership = () => {
                 const currentDate = new Date();
                 const missedCampaigns = filteredCampaigns.filter(campaign => {
                     const campaignEndDate = new Date(campaign.endAt);
+                    if (campaignEndDate < new Date(userCreatedAt)) {
+                        return false;
+                    }
                     return campaignEndDate < currentDate && !contributions.some(contribution => contribution.campaign_id === campaign._id);
                 });
     
