@@ -50,6 +50,53 @@ router.post('/paid-contributions', async (req, res) => {
     }
 });
 
+router.post('/paid-contributions-balance', async (req, res) => {
+    try {
+        const { contributionDataArrayBalance,total } = req.body;
+
+        // Save contributions with paymentId
+        const savedContributions = await Promise.all(
+            contributionDataArrayBalance.map(async contributionData => {
+                const newContribution = new Contribution(contributionData);
+                return await newContribution.save();
+            })
+        );
+
+        // Update campaign raised amount for each contribution
+        await Promise.all(
+            contributionDataArrayBalance.map(async contributionData => {
+                const { campaign_id, amount } = contributionData;
+                const campaign = await Campaign.findById(campaign_id);
+                if (!campaign) {
+                    throw new Error('Campaign not found');
+                }
+                campaign.raised += amount;
+                await campaign.save();
+            })
+        );
+
+        // Extract userId from the first contribution in contributionDataArrayBalance
+        const userId = contributionDataArrayBalance[0].user_id;
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Update user's subscription status
+        user.isAWellBeingSubscriber = true;
+        await user.save();
+        const updatedbalance = user.balance - total;
+        await User.findByIdAndUpdate(userId, { balance: updatedbalance });
+        // Delete missed contributions associated with the user
+        await MissedContribution.deleteMany({ user_id: userId });
+        res.status(201).json(savedContributions);
+
+    } catch (error) {
+        res.status(400).json({ message: error.message });
+        console.error(error.message);
+    }
+});
+
   
 
 // Route to delete all contributions with user_id

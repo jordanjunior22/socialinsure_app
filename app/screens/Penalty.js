@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View,ActivityIndicator } from 'react-native'
+import { StyleSheet, Text, View,ActivityIndicator,Alert } from 'react-native'
 import React, { useContext, useEffect,useState } from 'react'
 import NavNoProfile from '../components/NavNoProfile'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -11,6 +11,8 @@ import { BACKEND_URL } from '../../config'
 import StaticInput from '../components/StaticInput'
 import { CardField, useStripe } from '@stripe/stripe-react-native';
 import ButtonFull from '../components/ButtonFull';
+import BlackButton from '../components/BlackButton'
+import uuid from 'react-native-uuid';
 
 const Penalty = () => {
     const {user} = useContext(UserContext);
@@ -27,8 +29,10 @@ const Penalty = () => {
     const { initPaymentSheet, presentPaymentSheet } = useStripe();
     const [paymentID,setPayamentID] = useState('');
     const email = user.email;
+    const balance = user.balance;
     const fullName = user.firstName + ' ' + user.lastName;
-   
+    const uuidString = uuid.v4();
+
     const goBack = () =>{
       navigation.navigate('Account')
     }
@@ -41,6 +45,16 @@ const Penalty = () => {
       amount : campaign.fees,
       email : email,
       paymentId: paymentID
+    }));
+
+    const contributionDataArrayBalance = foundCampaigns.map(campaign => ({
+      campaign_id: campaign._id,
+      campaign_title: campaign.title,
+      user_id : userId,
+      fullName : fullName,
+      amount : campaign.fees,
+      email : email,
+      paymentId: `PWB_${uuidString.substr(0, 26)}`
     }));
 
 
@@ -162,6 +176,39 @@ const Penalty = () => {
       }
     }, [total]); 
 
+    const handleMyBalance = async () => {
+      setLoading(false);
+        if(total>0 && total<=balance){
+          try{
+            const Contributionresponse = await fetch(`${BACKEND_URL}/paid-contributions-balance`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                contributionDataArrayBalance:contributionDataArrayBalance,
+                total: total
+              }),
+            });
+            if(Contributionresponse.status === 201){
+              setLoading(true);
+              //Alert.alert('Success', 'Your Contribution was recieved');
+              navigation.navigate('SuccessFeedback');
+            }
+          }catch(error){
+            console.error("error",error);
+            Alert.alert(`Error code: ${error.code}`, error.message);
+            setLoading(true);
+          }
+        }else if(amount<=0){
+            Alert.alert("Payment Failed","You have not input an amount")
+            setLoading(true);
+        }else{
+          Alert.alert("Payment Failed","You have insufficient funds")
+          setLoading(true);
+        }
+        
+    };
 
     return (
       <SafeAreaView style={{flex:1,padding:10}}>
@@ -175,7 +222,7 @@ const Penalty = () => {
         <Text style={{backgroundColor:'#18B8A8',color:'white',fontSize:25}}>Penalty Fees <Text style={{fontWeight:'bold'}}>${PenaltyFees}</Text> </Text>
         <StaticInput amount={total}/>
         <ButtonFull name='Credit/Debit Cart' onPress={openPaymentSheet} imageIcon={cardIcon}/>
-
+        <BlackButton name='Use My Balance' onPress={handleMyBalance}/>
         
         {!loading && (
                 <View style={styles.overlay}>

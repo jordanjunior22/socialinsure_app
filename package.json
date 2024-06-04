@@ -53,8 +53,10 @@
     "react-native-screens": "~3.29.0",
     "react-native-snap-carousel": "^3.9.1",
     "react-native-super-grid": "^5.1.0",
+    "react-native-uuid": "^2.0.2",
     "react-native-web": "~0.19.6",
-    "react-native-webview": "13.6.4"
+    "react-native-webview": "13.6.4",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"

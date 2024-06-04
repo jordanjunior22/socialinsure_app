@@ -12,7 +12,7 @@ const SubReqFeatureForMembers = () => {
   const route = useRoute();
   const { item } = route.params; 
   const handleCampaign = ()=>{
-    navigation.navigate("Campaigns")
+    navigation.navigate("Membership")
   }
   const iconURL =  require('../../assets/close.png')
 
@@ -35,7 +35,7 @@ const SubReqFeatureForMembers = () => {
           <Text style={{color:'gray'}}>CONTRIBUTIONS</Text>
         </View>
         <TouchableOpacity onPress={handleCampaign} style={{backgroundColor:'#24FF00',padding:5,flex:1,flexDirection:'column',justifyContent:'center',alignItems:'center',borderWidth:1,borderColor:'lightgray'}}>
-          <Text style={{color:'white',fontWeight:700,fontSize:16}}>Campaigns</Text>
+          <Text style={{color:'white',fontWeight:700,fontSize:16}}>Membership</Text>
         </TouchableOpacity>
       </View>
       <Text style={{marginTop:20,color:'blue',fontSize:11,textAlign:'center'}}>If you wish to unsubscribe to this service, you must contact support.</Text>
