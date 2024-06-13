@@ -29,9 +29,15 @@ const Verification = () => {
   const handleVerificationMethod =(method)=>{
     setVerifMethod(method);
   }
-  const handleContinue = () =>{
-    navigation.navigate('UploadId',{item,verifMethod,selectedCountry})
-  }
+  const handleContinue = () => {
+    if (selectedCountry && verifMethod) {
+      navigation.navigate('UploadId', { item, verifMethod, selectedCountry });
+    } else {
+      // Alert the user to select both nationality and a verification method
+      // You can use any alerting mechanism here, like ToastAndroid, Alert.alert, etc.
+      alert('Please select nationality and a verification method before continuing.');
+    }
+  };
 
   useEffect(() => {
     axios

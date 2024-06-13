@@ -143,7 +143,7 @@ const Penalty = () => {
 
     const openPaymentSheet = async () => {
       const { error } = await presentPaymentSheet();
-      setLoading(true);
+      setLoading(false);
       if (error) {
         Alert.alert('Error', error);
         console.error("error occured",error)
@@ -160,11 +160,11 @@ const Penalty = () => {
           });
 
           if(Contributionresponse.status === 201){
-            setLoading(false);
+            setLoading(true);
             navigation.navigate('SuccessFeedback');
           }
         }catch(error){
-          setLoading(false);
+          setLoading(true);
           console.error("error",error);
         }
       }
@@ -200,8 +200,8 @@ const Penalty = () => {
             Alert.alert(`Error code: ${error.code}`, error.message);
             setLoading(true);
           }
-        }else if(amount<=0){
-            Alert.alert("Payment Failed","You have not input an amount")
+        }else if(total<=0){
+            Alert.alert("Payment Failed","You have not input an total")
             setLoading(true);
         }else{
           Alert.alert("Payment Failed","You have insufficient funds")

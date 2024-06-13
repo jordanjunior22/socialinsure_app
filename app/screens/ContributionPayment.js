@@ -12,6 +12,8 @@ import ButtonFull from '../components/ButtonFull';
 import { UserContext } from '../../context/UserContext';
 import { CardField, useStripe } from '@stripe/stripe-react-native';
 import { BACKEND_URL } from '../../config';
+import uuid from 'react-native-uuid';
+
 
 const ContributionPayment = () => {
     const {user} = useContext(UserContext)
@@ -29,10 +31,12 @@ const ContributionPayment = () => {
     const [paymentID,setPayamentID] = useState('');
     const balance = user?.balance;
     const fees_per_person = item.fees;
+    const uuidString = uuid.v4();
     console.log("item at checkout",item)
     const handleChangeAmount = (text) => {
       setAmount(text)
     };
+
 
     const metaData ={
       title,
@@ -57,7 +61,7 @@ const ContributionPayment = () => {
       fullName : fullName,
       amount : amount,
       email : email,
-      paymentId: 'PaidWithBalance'
+      paymentId: `PWB_${uuidString.substr(0, 26)}`
     }
     const updateParams = {
       amount : amount,
@@ -66,7 +70,7 @@ const ContributionPayment = () => {
 
     //console.log(amount)
     const fetchPaymentSheetParams = async () => {
-      const response = await fetch(`${BACKEND_URL}/stripe-payment`, {
+      const response = await fetch(`${BACKEND_URL}/constribution-stripe-payment`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -114,20 +118,21 @@ const ContributionPayment = () => {
     };
 
     useEffect(() => {
+      if(item.feature_id === '664c9a60ff37a060cd82674f' ){
+        setAmount(fees_per_person);
+      }
       if(amount){
         initializePaymentSheet();
       }
-
-    }, []); 
+    }, [amount,fees_per_person,item.feature_id]);
   
     const openPaymentSheet = async () => {
       const { error } = await presentPaymentSheet();
-
+      setLoading(false);
       if (error) {
         Alert.alert('Error', error);
         console.error("error occured",error)
       }else{
-        setLoading(true);
         try{
           const Contributionresponse = await fetch(`${BACKEND_URL}/contributions`, {
             method: 'POST',
@@ -137,32 +142,15 @@ const ContributionPayment = () => {
             body: JSON.stringify(ContributionData),
           });
           if(Contributionresponse.status === 201){
-            try{
-              const CampaignUpdateResponse = await fetch(`${BACKEND_URL}/campaign/${user_id}/update`, {
-                method: 'PUT',
-                headers: {
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(updateParams),
-              });
-              console.log(CampaignUpdateResponse);
-              if(CampaignUpdateResponse){
-                setLoading(false);
-                Alert.alert('Success', 'Your Contribution was recieved');
-                navigation.navigate('Contributions');
-              }
+            setLoading(true);
+            //Alert.alert('Success', 'Your Contribution was recieved');
+            navigation.navigate('SuccessFeedback');
 
-            }catch(error){
-              console.error("error",error);
-              Alert.alert(`Error code: ${error.code}`, error.message);
-              setLoading(false);
             }
-
-          }
         }catch(error){
           console.error("error",error);
           Alert.alert(`Error code: ${error.code}`, error.message);
-          setLoading(false);
+          setLoading(true);
         }
         
       }
@@ -171,7 +159,7 @@ const ContributionPayment = () => {
 
 
     const handleMyBalance = async () => {
-      setLoading(true);
+      setLoading(false);
         if(amount>0 && amount<=balance){
           try{
             const Contributionresponse = await fetch(`${BACKEND_URL}/contributions_handlebalance`, {
@@ -182,39 +170,21 @@ const ContributionPayment = () => {
               body: JSON.stringify(ContributionDataHandleBalance),
             });
             if(Contributionresponse.status === 201){
-              try{
-                const CampaignUpdateResponse = await fetch(`${BACKEND_URL}/campaign/${user_id}/update`, {
-                  method: 'PUT',
-                  headers: {
-                    'Content-Type': 'application/json',
-                  },
-                  body: JSON.stringify(updateParams),
-                });
-                console.log(CampaignUpdateResponse);
-                if(CampaignUpdateResponse){
-                  setLoading(false);
-                  Alert.alert('Success', 'Your Contribution was recieved');
-                  navigation.navigate('Contributions');
-                }
-  
-              }catch(error){
-                console.error("error",error);
-                Alert.alert(`Error code: ${error.code}`, error.message);
-                setLoading(false);
-              }
-  
+              setLoading(true);
+              //Alert.alert('Success', 'Your Contribution was recieved');
+              navigation.navigate('SuccessFeedback');
             }
           }catch(error){
             console.error("error",error);
             Alert.alert(`Error code: ${error.code}`, error.message);
-            setLoading(false);
+            setLoading(true);
           }
         }else if(amount<=0){
             Alert.alert("Payment Failed","You have not input an amount")
-            setLoading(false);
+            setLoading(true);
         }else{
           Alert.alert("Payment Failed","You have insufficient funds")
-          setLoading(false);
+          setLoading(true);
         }
         
     };
@@ -253,11 +223,6 @@ const ContributionPayment = () => {
         </View>
 
     </ScrollView>
-    {loading && (
-            <View style={styles.overlay}>
-              <ActivityIndicator size="large" color="black" />
-            </View>
-            )}
     </SafeAreaView>
   )
 }

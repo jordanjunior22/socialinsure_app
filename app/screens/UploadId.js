@@ -5,6 +5,7 @@ import { useNavigation, useRoute } from '@react-navigation/native'
 import CustomButton from '../components/Button'
 import * as ImagePicker from 'expo-image-picker';
 import BottomMargin from '../components/BottomMargin'
+import ButtonFull from '../components/ButtonFull'
 
 const UploadId = () => {
     const route = useRoute();
@@ -61,7 +62,7 @@ const UploadId = () => {
 
         </View>
         <BottomMargin/>
-        <CustomButton name='Continue' onPress={handleContinue}/>
+        <ButtonFull name='Continue' onPress={handleContinue} disabled={!selectedImage}/>
 
     </View>
     </SafeAreaView>

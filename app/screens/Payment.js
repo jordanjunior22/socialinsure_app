@@ -90,32 +90,26 @@ const Payment = () => {
 
       
       if (!error) {
-        setLoading(false);
-        
+        setLoading(true);
       }
     };
 
     useEffect(() => {
-      initializePaymentSheet();
-    }, []);
+      if(SubscriptionFee){
+        initializePaymentSheet();
+      }
+    }, [SubscriptionFee]);
   
     const openPaymentSheet = async () => {
-
       const { error } = await presentPaymentSheet();
-
-      if (loading) {
-        console.log("Payment sheet is not initialized yet");
-        return;
-      }
-
+      
       if (error) {
         Alert.alert(`Error code: ${error.code}`, error.message);
-        setLoading(false);
       } else {
         //Alert.alert('Success', 'Your order is confirmed!');
+        setLoading(false);
         try{
           if (selectedImage) {
-            setLoading(true);
             const formData = new FormData();
             formData.append('image', {
               uri: selectedImage, 
@@ -143,23 +137,23 @@ const Payment = () => {
                 }),
                 });
                 if(verificationResponse.status === 200){
-                  setLoading(false);
+                  setLoading(true);
                   navigation.navigate("SuccessFeedback");
                 }else {
                   Alert.alert('API Error', 'No worries this error is from our end contact support.');
                   navigation.navigate("Home");
-                  setLoading(false);
+                  setLoading(true);
                 }
               }
               catch(error){
-                setLoading(false);
+                setLoading(true);
                 console.log('Error at saving verification',error)
               }
             }
           }else {
             console.log('error uploading image');
             Alert.alert('API Error', 'No worries this error is from our end contact support.');
-            setLoading(false);
+            setLoading(true);
           }
         }catch(error){
           console.log("imageupload_error",error)
@@ -194,7 +188,7 @@ const Payment = () => {
         </View>
         </View>
 
-        {loading && (
+        {!loading && (
                 <View style={styles.overlay}>
                     <ActivityIndicator size="large" color="black" />
                 </View>

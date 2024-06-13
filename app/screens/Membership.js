@@ -19,6 +19,7 @@ const Membership = () => {
     const [filteredCampaigns, setFilteredCampaigns] = useState([]);
     const [filteredContribution,setFilteredContribution] = useState([]);
     const [missedContribution,setMissedContribution] = useState([]);
+    const [verification, setVerification] = useState([]);
     const isAWellBeingSubscriber = user?.isAWellBeingSubscriber;  
     const userId = user?._id;
     const [totalCampaigns, setTotalCampaigns] = useState(0);
@@ -107,7 +108,19 @@ const Membership = () => {
                 console.error("error posting missed contribution", error);
             }
         };
+
+        const fetchVerificationData = async () => {
+            try {
+              if (userId) {
+                const response = await axios.get(`${BACKEND_URL}/verification/${userId}`);
+                setVerification(response.data);
+              }
+            } catch (error) {
+              console.error('Error fetching verification data:', error);
+            }
+          };
         fetchData();
+        fetchVerificationData();
         
         // const intervalId = setInterval(() => {
         //     fetchData();
@@ -240,7 +253,7 @@ const handleContribute = (item) => {
             </SafeAreaView>
           )
     }
-    if(!isAWellBeingSubscriber){ 
+    if(!isAWellBeingSubscriber && (!verification || verification?.status === 'Not Started' || verification?.status === 'Rejected' || verification?.status === 'Pending')){ 
         return (
             <SafeAreaView style={{flex:1,padding:10}}>
                 <NavNoProfile Title='Membership' iconURL={iconUrl} onPress={goBack}/>
@@ -248,7 +261,7 @@ const handleContribute = (item) => {
             </SafeAreaView>
           )
     }
-    if(isAWellBeingSubscriber && (missedContribution.length > 2)){
+    if(!isAWellBeingSubscriber && (missedContribution.length > 2)){
         return (
             <SafeAreaView style={{flex:1,padding:10}}>
                 <NavNoProfile Title='Membership' iconURL={iconUrl} onPress={goBack}/>

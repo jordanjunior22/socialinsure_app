@@ -77,10 +77,10 @@ const Account = () => {
         <View style={{ flexDirection: 'column', gap: 5 }}>
           <AccountButtons name="Profile" onPress={() => handleButtonPress('Profile')} />
           {/* <AccountButtons name="Payments" onPress={() => handleButtonPress('Payments')} /> */}
-          <AccountButtons name="Badges" onPress={() => handleButtonPress('Badges')} />
+          {/* <AccountButtons name="Badges" onPress={() => handleButtonPress('Badges')} /> */}
           <AccountButtons name="Membership" onPress={() => handleButtonPress('Membership')} />
           <AccountButtons name="Notifications" onPress={() => handleButtonPress('Notifications')} />
-          <AccountButtons name="Social Insure Community" onPress={() => handleButtonPress('Social Insure Community')} />
+          {/* <AccountButtons name="Social Insure Community" onPress={() => handleButtonPress('Social Insure Community')} /> */}
           <AccountButtons name="Social Insure Support" onPress={() => handleButtonPress('Social Insure Support')} />
           {/* <AccountButtons name="App Settings" onPress={() => handleButtonPress('App Settings')} /> */}
           <AccountButtons name="About" onPress={() => handleButtonPress('About')} />

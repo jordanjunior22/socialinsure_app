@@ -65,9 +65,9 @@ router.get('/verification/:userId', async (req, res) => {
     const userId = req.params.userId;
     try {
         const verificationData = await Verification.findOne({ userId });
-        if (!verificationData) {
-            return res.status(404).json({ error: 'Verification data not found for the user' });
-        }
+        // if (!verificationData) {
+        //     return res.status(404).json({ error: 'Verification data not found for the user' });
+        // }
         res.status(200).json(verificationData);
     } catch (error) {
         console.log('Error fetching verification data:', error);

@@ -88,12 +88,11 @@ const QuickTopUp = () => {
     const openPaymentSheet = async () => {
 
       const { error } = await presentPaymentSheet();
-
+      setLoading(false);
       if (error) {
         Alert.alert(`Error code: ${error.code}`, error.message);
         console.log(error);
       }else{
-        setLoading(true);
         try{
           const response = await fetch(`${BACKEND_URL}/user/${user._id}/update`, {
             method: 'PUT',
@@ -106,10 +105,10 @@ const QuickTopUp = () => {
           if(response.status === 200){
             //Alert.alert('Success', 'You have successfully Top-Up Your account');
             navigation.navigate('SuccessFeedback');
-            setLoading(false);
+            setLoading(true);
           }else{
             Alert.alert('Balance Error','An error occured updating your balance. Contact Support');
-            setLoading(false);
+            setLoading(true);
           }
   
         }catch (error) {
@@ -134,7 +133,7 @@ const QuickTopUp = () => {
     const cardIcon = require('../../assets/creditcard.png')
     const paypalIcon = require('../../assets/paypal.png')
     const iconURL =  require('../../assets/close.png')
-    console.log(loading);
+    //console.log(loading);
 
 
   return (
@@ -161,6 +160,7 @@ const QuickTopUp = () => {
         </View>
         
     </ScrollView>
+
     </SafeAreaView>
   )
 }

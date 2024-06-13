@@ -39,6 +39,7 @@ import About from './app/screens/About'
 import Sponsored from './app/components/Sponsored'
 import { StripeProvider } from '@stripe/stripe-react-native';
 import PendingMembers from './app/screens/PendingMembers';
+import RemovedMembers from './app/screens/RemovedMembers'
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -132,6 +133,7 @@ function App() {
             <Stack.Screen name="Sponsored" component={Sponsored} />
             <Stack.Screen name="SignUp" component={SignUp} />
             <Stack.Screen name="PendingMembers" component={PendingMembers} />
+            <Stack.Screen name="RemovedMembers" component={RemovedMembers} />
 
       </Stack.Navigator>
     </NavigationContainer>
@@ -139,7 +141,7 @@ function App() {
     </StripeProvider>
   );
 }
-//PendingMembers
-//<Stack.Screen name="PendingMembers" component={PendingMembers} />
+//RemovedMembers
+//<Stack.Screen name="RemovedMembers" component={RemovedMembers} />
 
 export default App;

@@ -12,6 +12,7 @@ const SocialFeatures = () => {
   const [Features, setFeatures] = useState([])
   const {user} = useContext(UserContext)
   const navigation= useNavigation()
+  const [MissedContribution,setMissedContribution] = useState([]);
   const userId = user?._id;
 
   useEffect(() => {
@@ -38,8 +39,21 @@ const SocialFeatures = () => {
       }
     };
 
+
+    const fetchMissedContributionData = async () => {
+      try {
+        if (userId) {
+          const MissedContributionResponse = await axios.get(`${BACKEND_URL}/missedContributions/${userId}`)
+          setMissedContribution(MissedContributionResponse.data);
+        }
+      } catch (error) {
+        console.error('Error fetching contribution data:', error);
+      }
+    };
+
     fetchAllFeatureData();
     fetchVerificationData(); // Fetch verification data when component mounts
+    fetchMissedContributionData();
   }, [userId]); // Run effect when userId changes
   
 
@@ -49,7 +63,7 @@ const SocialFeatures = () => {
 
   const handleSocialFeaturePress = (item) => {
     console.log(`Social Feature pressed has ID: ${item._id}`);
-    if(item.subReq === 'Yes' && !user?.isAWellBeingSubscriber || (verification?.status === 'Not Started' || verification?.status === 'Rejected')){
+    if(item.subReq === 'Yes' && !user?.isAWellBeingSubscriber && (!verification || verification?.status === 'Not Started' || verification?.status === 'Rejected')){
       navigation.navigate('SubReqFeatureForNonMembers', { item });
     }else if(item.subReq === 'Yes' && user?.isAWellBeingSubscriber && verification?.status === 'Approved'){
       navigation.navigate('SubReqFeatureForMembers', { item });
@@ -58,6 +72,8 @@ const SocialFeatures = () => {
     }
     else if(item.subReq === 'No'){
       navigation.navigate('NoSubReqFeature', { item });
+    }else if(item.subReq === 'Yes' && !user?.isAWellBeingSubscriber && MissedContribution.length>2){
+      navigation.navigate('RemovedMembers', { item });
     }
     else{
       throw "fatal error"

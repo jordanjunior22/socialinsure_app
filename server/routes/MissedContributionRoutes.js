@@ -45,7 +45,7 @@ router.post('/paid-contributions', async (req, res) => {
         res.status(201).json(savedContributions);
 
     } catch (error) {
-        res.status(400).json({ message: error.message });
+        res.status(500).json({ message: error.message });
         console.error(error.message);
     }
 });
@@ -92,7 +92,7 @@ router.post('/paid-contributions-balance', async (req, res) => {
         res.status(201).json(savedContributions);
 
     } catch (error) {
-        res.status(400).json({ message: error.message });
+        res.status(500).json({ message: error.message });
         console.error(error.message);
     }
 });
@@ -106,7 +106,14 @@ router.delete('/missedContributions/:userId', async (req, res) => {
         
         // Delete all contributions with the specified user_id
         await MissedContribution.deleteMany({ user_id: userId });
-        
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        // Update user's iswellbeing status
+        user.isAWellBeingSubscriber = true;
+        await user.save();
+
         res.status(200).json({ message: 'Contributions deleted successfully' });
     } catch (error) {
         console.error('Error deleting contributions:', error);
@@ -118,13 +125,16 @@ router.delete('/missedContributions/:userId', async (req, res) => {
 router.get('/missedContributions/:userId', async (req, res) => {
     try {
         const userId = req.params.userId;
+        console.log(userId);
         const contributions = await MissedContribution.find({ user_id: userId });
-        res.status(200).json(contributions);
+        res.status(200).json(contributions); // Always return 200 status code
+        
     } catch (error) {
         console.error('Error fetching contributions:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 });
+
 
 // POST route to handle missed contributions
 router.post('/missedContribution', async (req, res) => {

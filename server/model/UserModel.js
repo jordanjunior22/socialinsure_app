@@ -16,8 +16,8 @@ const userSchema = new Schema({
     unique: true,
   },
   phoneNumber: {
-    type: String, // Change type to String
-    default: '', // Default to empty string
+    type: String, // Change type to 
+    required:false,
   },
   imageUrl: {
     type: String,
