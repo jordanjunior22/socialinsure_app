@@ -24,18 +24,18 @@ const SocialFeatures = () => {
     const fetchData = async () => {
       try {
         if (userId) {
-          const campaignResponse = await axios.get(`${BACKEND_URL}/campaign`);
+          const campaignResponse = await axios.get(`${BACKEND_URL}/campaign/${userId}`);
           setCampaign(campaignResponse.data);
 
           const contributionResponse = await axios.get(`${BACKEND_URL}/contributions/${userId}`);
           setContribution(contributionResponse.data);
 
-          const featureResponse = await axios.get(`${BACKEND_URL}/features`);
+          const featureResponse = await axios.get(`${BACKEND_URL}/features/${userId}`);
           setFeatures(featureResponse.data); 
           
         }
       } catch (error) {
-        console.error("Fetch data error:", error);
+        //console.error("Fetch Campaign error:", error);
       }
     };
 

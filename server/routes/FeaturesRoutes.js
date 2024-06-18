@@ -2,7 +2,7 @@ const express = require('express');
 const Features = require('../model/Features'); 
 const router = express.Router();
 
-router.get('/features', async (req, res) => {
+router.get('/features/:userId', async (req, res) => {
   try {
     const features = await Features.find();
     res.json(features);

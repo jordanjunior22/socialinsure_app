@@ -6,9 +6,13 @@ import SocialFeatures from '../components/SocialFeatures';
 import FeaturedCampaings from '../components/FeaturedCampaigns';
 import Nav from '../components/Nav';
 import Hero from '../components/Hero';
+import NoNetwork from '../screens/NoNetwork'
+import { useState } from 'react';
+
 
 const Home = () => {
   const navigation = useNavigation();
+  const [Network,setNoNetwork] = useState(false);
 
   const handleContributions = () => {
     navigation.navigate('Contributions')
@@ -28,10 +32,13 @@ const Home = () => {
               />
 
         <TodoScrollView />
-        <SocialFeatures />
+        <SocialFeatures Network={Network} setNoNetwork={setNoNetwork}/>
         <FeaturedCampaings />
 
       </ScrollView>
+      {Network && (
+        <NoNetwork/>
+      )}
     </SafeAreaView>
   );
 };

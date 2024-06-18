@@ -2,11 +2,14 @@
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet,Image, View } from 'react-native';
 
-const BlackButton = ({ name, onPress, imageIcon='', containerStyle}) => {
+const BlackButton = ({ name, onPress, imageIcon='',disabled=false, containerStyle}) => {
   return (
 
-    <TouchableOpacity style={styles.button} onPress={onPress} >
-      
+    <TouchableOpacity
+      style={[styles.button, disabled && styles.disabledButton]}
+      onPress={onPress}
+      disabled={disabled}
+    >      
       <View style={[styles.innerContainer, containerStyle]}>
         {imageIcon && <Image source={imageIcon} style={styles.image} />} 
         <Text style={[styles.buttonText,{fontWeight:700}]}>{name}</Text>
@@ -30,6 +33,9 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#fff',
     fontSize: 16,
+  },
+  disabledButton:{
+    backgroundColor: '#CCCCCC',
   },
   image:{
     width:20,

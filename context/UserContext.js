@@ -2,13 +2,13 @@ import React, { createContext, useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { BACKEND_URL } from '../config';
+import { useNavigation } from '@react-navigation/native';
 // Create a Context for user information
 export const UserContext = createContext();
 
 // Context Provider component
 export function UserContextProvider({ children}) {
   const [user, setUser] = useState(null);
-
 
   // Function to log in
   const login = async (email,navigation) => {
@@ -34,7 +34,8 @@ export function UserContextProvider({ children}) {
         routes: [{ name: 'Splash' }],
       });
     } catch (error) {
-      console.log('Logout Error:', error.message);
+      console.log('Logout Error at user Context:', error.message);
+      
     }
   };
 

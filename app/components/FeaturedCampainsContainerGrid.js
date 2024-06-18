@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity,Platform } from 'react-native';
 import React from 'react';
 import ProgressBar from 'react-native-progress/Bar';
 import Button from '../components/Button';
@@ -85,9 +85,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 20,
     overflow: 'hidden',
-    width: 155,
     borderWidth: 1,
     borderColor: 'lightgray',
+    ...Platform.select({
+      ios: {
+        width: 175, // Width for iOS
+      },
+      android: {
+        width: 158, // Width for Android
+      },
+    }),
   },
   iconImage: {
     width: '100%',
@@ -100,5 +107,5 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     width: '100%',
     padding: 10,
-  },
+  }, 
 });

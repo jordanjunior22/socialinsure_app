@@ -41,7 +41,6 @@ const ProfileDisplay = () => {
     };
 
     const saveProfile = async () => {
-      setIsLoading(true);
       if (selectedImage) {
         const formData = new FormData();
         formData.append('image', {
@@ -52,6 +51,7 @@ const ProfileDisplay = () => {
         formData.append('userId', user?._id);
     
         try {
+          setIsLoading(true)
           const response = await axios.post(`${BACKEND_URL}/uploadprofile`, formData, {
             headers: {
               'Content-Type': 'multipart/form-data', // Required for file uploads
@@ -59,19 +59,21 @@ const ProfileDisplay = () => {
           });
     
           if (response.status === 200) {
-            setIsLoading(false);
             Alert.alert('Profile picture updated successfully!');
+            navigation.navigate('Splash');
           } else {
             Alert.alert('Failed to update profile picture.');
           }
         } catch (error) {
           console.error(error);
           Alert.alert('An error occurred while updating profile picture.');
+        }finally{
+          setIsLoading(false);
         }
       } else {
         Alert.alert('Please select an image to upload.');
       }
-    };
+    };  
 
     
   return (
@@ -154,6 +156,11 @@ const ProfileDisplay = () => {
             </TouchableOpacity>
         </View>
     </ScrollView>
+    {isLoading && (
+    <View style={styles.overlay}>
+      <ActivityIndicator size="large" color="black" />
+    </View>
+    )}
     </SafeAreaView>
   )
 }
@@ -191,5 +198,11 @@ const styles = StyleSheet.create({
         width:60,
         height:60,
         tintColor:'gray'
-      }
+      },
+      overlay: {
+        ...StyleSheet.absoluteFillObject,
+        backgroundColor: 'white', // Semi-transparent black overlay
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
 })

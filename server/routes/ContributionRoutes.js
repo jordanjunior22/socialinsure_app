@@ -22,7 +22,7 @@ router.post('/contributions', async (req, res) => {
     res.status(201).json(savedContribution);
   } catch (error) {
     res.status(500).json({ message: error.message });
-    console.error(error.message)
+    //console.error(error.message)
   }
 });
 
@@ -112,6 +112,30 @@ router.get('/contributions/:userId', async (req, res) => {
     res.json(contributions);
   } catch (error) {
     res.status(500).json({ message: error.message });
+  }
+});
+
+router.get('/sum-contributions/:featureId', async (req, res) => {
+  const { featureId } = req.params;
+
+  try {
+    // Step 1: Filter campaigns by feature_id
+    const campaigns = await Campaign.find({ feature_id: featureId });
+
+    // Step 2: Sum contributions for filtered campaigns
+    const campaignIds = campaigns.map(campaign => campaign._id);
+    const contributions = await Contribution.aggregate([
+      { $match: { campaign_id: { $in: campaignIds } } },
+      { $group: { _id: null, totalAmount: { $sum: '$amount' } } }
+    ]);
+
+    const totalAmount = contributions.length > 0 ? contributions[0].totalAmount : 0;
+
+    // Respond with the total amount
+    res.json({ totalAmount });
+  } catch (error) {
+    console.error('Error filtering campaigns and summing contributions:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 

@@ -2,6 +2,7 @@
   "expo": {
     "name": "Social_Insure_App",
     "slug": "Social_Insure_App",
+    "scheme": "socialinsure",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

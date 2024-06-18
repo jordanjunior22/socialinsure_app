@@ -1,21 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, View, FlatList } from 'react-native';
+import React, { useEffect, useState,useCallback } from 'react';
+import { StyleSheet, Text, View, FlatList, ActivityIndicator } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import NavNoProfile from '../components/NavNoProfile';
 import { useNavigation } from '@react-navigation/native';
 import { BACKEND_URL } from '../../config';
 import axios from 'axios';
+import NoNetwork from '../screens/NoNetwork'
 
-// Sample data for multiple notifications
-// const notificationsData = [
-//   { id: '1', title: 'System Update', message: 'A new system update is available. Please update to the latest version.' },
-//   { id: '2', title: 'Promotion', message: 'Special offer! Get 20% off on your next purchase.' },
-//   { id: '3', title: 'Reminder', message: 'Don’t forget about your appointment tomorrow at 3 PM.' },
-//   { id: '4', title: 'Welcome', message: 'Welcome to our service! We are glad to have you.' },
-//   { id: '5', title: 'Alert', message: 'Security alert! Please change your password.' },
-// ];
 
 const NotificationItem = ({ title, message }) => (
+
   <View style={styles.notificationBox}>
     <Text style={styles.title}>{title}</Text>
     <Text style={styles.message}>{message}</Text>
@@ -23,21 +17,37 @@ const NotificationItem = ({ title, message }) => (
 );
 
 const NotificationList = () => {
-  const [notificationsData,setnotificationsData]= useState([])
+  const [notificationsData,setnotificationsData]= useState([]);
+  const [loading,setLoading] = useState(true);
+  const iconURL = require('../../assets/close.png');
+  const navigation = useNavigation();
+  const INTERVAL = 5000; // Interval in milliseconds (5 seconds)
+  const [Network,setNoNetwork] = useState(false);
+
   useEffect(()=>{
     const fetchData = async () => {
     try{
       const notificationResponse = await axios.get(`${BACKEND_URL}/notifications`);
       setnotificationsData(notificationResponse.data);
+      //console.log('done FETCH');
+      setNoNetwork(false);
     }catch(error){
-      console.error("Notification Error : ",error);
+      //console.error("Notification Error : ",error);
+      //navigation.replace('NoNetwork');
+      setNoNetwork(true);
+
+    }finally{
+      setLoading(false);
     }
     }
-  fetchData();
-  },[])
+      
+    const interval = setInterval(fetchData, INTERVAL);
+    fetchData();
+    return () => clearInterval(interval);
+
+  },[Network])
   
-  const iconURL = require('../../assets/close.png');
-  const navigation = useNavigation();
+
   const handleBack = () => {
     navigation.goBack();
   };
@@ -45,11 +55,25 @@ const NotificationList = () => {
   return (
     <SafeAreaView style={styles.container}>
       <NavNoProfile Title='Notifications' iconURL={iconURL} onPress={handleBack}/>
-      <FlatList
-        data={notificationsData}
-        keyExtractor={(item) => item._id}
-        renderItem={({ item }) => <NotificationItem title={item.title} message={item.message} />}
-      />
+      {notificationsData.length === 0 && !loading ? (
+        <View style={styles.noNotificationContainer}>
+          <Text style={styles.noNotificationText}>No notifications</Text>
+        </View>
+      ) : (
+        <FlatList
+          data={notificationsData}
+          keyExtractor={(item) => item._id}
+          renderItem={({ item }) => <NotificationItem title={item.title} message={item.message} />}
+        />
+      )}
+      {loading && (
+        <View style={styles.overlay}>
+          <ActivityIndicator size="large" color="black" />
+        </View>
+      )}
+      {Network && (
+        <NoNetwork/>
+      )}
     </SafeAreaView>
   );
 };
@@ -83,4 +107,19 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#495057',
   },
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'white', // Semi-transparent black overlay
+    justifyContent: 'center',
+    alignItems: 'center',
+},
+noNotificationContainer: {
+  flex: 1,
+  justifyContent: 'center',
+  alignItems: 'center',
+},
+noNotificationText: {
+  fontSize: 18,
+  color: '#495057',
+},
 });

@@ -3,8 +3,15 @@ const router = express.Router();
 const Campaign = require('../model/Campaign');
 const User = require('../model/UserModel')
 // Route for saving contribution data
-router.get('/campaign', async (req, res) => {
-    try {
+
+router.get('/campaign/:userId', async (req, res) => {
+  const userId = req.params.userId;
+
+  try {
+      const user = await User.findById(userId);
+      if (!user) {
+        return res.status(404).json({ message: 'This User Cannot Perform This Operation.' });
+      }
       const campaignData = await Campaign.find();
       res.json(campaignData);
     } catch (error) {

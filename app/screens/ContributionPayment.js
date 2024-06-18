@@ -131,7 +131,7 @@ const ContributionPayment = () => {
       setLoading(false);
       if (error) {
         Alert.alert('Error', error);
-        console.error("error occured",error)
+        //console.error("error occured",error)
       }else{
         try{
           const Contributionresponse = await fetch(`${BACKEND_URL}/contributions`, {
@@ -148,7 +148,7 @@ const ContributionPayment = () => {
 
             }
         }catch(error){
-          console.error("error",error);
+          //console.error("error",error);
           Alert.alert(`Error code: ${error.code}`, error.message);
           setLoading(true);
         }
@@ -159,9 +159,10 @@ const ContributionPayment = () => {
 
 
     const handleMyBalance = async () => {
-      setLoading(false);
+      
         if(amount>0 && amount<=balance){
           try{
+            setLoading(true);
             const Contributionresponse = await fetch(`${BACKEND_URL}/contributions_handlebalance`, {
               method: 'POST',
               headers: {
@@ -170,21 +171,23 @@ const ContributionPayment = () => {
               body: JSON.stringify(ContributionDataHandleBalance),
             });
             if(Contributionresponse.status === 201){
-              setLoading(true);
+              
               //Alert.alert('Success', 'Your Contribution was recieved');
               navigation.navigate('SuccessFeedback');
             }
           }catch(error){
-            console.error("error",error);
+            //console.error("error",error);
             Alert.alert(`Error code: ${error.code}`, error.message);
-            setLoading(true);
+            
+          }finally{
+            setLoading(false);
           }
         }else if(amount<=0){
             Alert.alert("Payment Failed","You have not input an amount")
-            setLoading(true);
+            
         }else{
           Alert.alert("Payment Failed","You have insufficient funds")
-          setLoading(true);
+          
         }
         
     };
@@ -219,10 +222,11 @@ const ContributionPayment = () => {
           disabled={!loading} 
         /> 
             {/* <ButtonFull name='PayPal' onPress={()=>{navigation.navigate('FailedFeedback')}} imageIcon={paypalIcon} containerStyle={{justifyContent:''}}/> */}
-            <BlackButton name='Use My Balance' onPress={handleMyBalance}/>
+            <BlackButton disabled={!loading} name='Use My Balance' onPress={handleMyBalance}/>
         </View>
 
     </ScrollView>
+
     </SafeAreaView>
   )
 }

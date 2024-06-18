@@ -9,6 +9,7 @@ import { BACKEND_URL } from '../../config'
 import CampaignGrid from '../components/CampainGrid'
 import axios from 'axios'
 import SubHeadingNoLink from '../components/SubHeadingNoLink'
+import NoNetwork from '../screens/NoNetwork'
 
 const Membership = () => {
     const navigation = useNavigation();
@@ -27,6 +28,8 @@ const Membership = () => {
     const [needsContributions, setNeedsContributions] = useState(0);
     const [loading,setLoading] = useState(true);
     const userCreatedAt = user?.createdAt;
+    const INTERVAL = 5000; // Interval in milliseconds (5 seconds)
+    const [Network,setNoNetwork] = useState(false);
 
     const goBack = () =>{
         navigation.navigate('Account')
@@ -40,7 +43,7 @@ const Membership = () => {
         const fetchData = async () => {
             try {
                 if (userId) {
-                    const campaignResponse = await axios.get(`${BACKEND_URL}/campaign`);
+                    const campaignResponse = await axios.get(`${BACKEND_URL}/campaign/${userId}`);
                     setCampaign(campaignResponse.data);
 
                     const ContributionResponse = await axios.get(`${BACKEND_URL}/contributions/${userId}`);
@@ -84,50 +87,40 @@ const Membership = () => {
                     setTimeout(() => {
                         setLoading(false);
                     }, 5000);
-                    
+
+                    setNoNetwork(false);
                 }
             } catch(error) {
-                console.error("error at membership",error)  
+                //console.error("error at membership",error)  
+                setNoNetwork(true);
             }
         }
-        const postMissedContribution = async () => {
-            try {
-                const currentDate = new Date();
-                const missedCampaigns = filteredCampaigns.filter(campaign => {
-                    const campaignEndDate = new Date(campaign.endAt);
-                    return campaignEndDate < currentDate && !contributions.some(contribution => contribution.campaign_id === campaign._id);
-                });
-    
-                for (const campaign of missedCampaigns) { 
-                    await axios.post(`${BACKEND_URL}/missedContribution`, { 
-                        user_id: userId,
-                        campaign_id: campaign._id
-                    });
-                }
-            } catch(error) {
-                console.error("error posting missed contribution", error);
-            }
-        };
 
         const fetchVerificationData = async () => {
             try {
               if (userId) {
                 const response = await axios.get(`${BACKEND_URL}/verification/${userId}`);
                 setVerification(response.data);
+                setNoNetwork(false);
               }
             } catch (error) {
-              console.error('Error fetching verification data:', error);
+              //console.error('Error fetching verification data:', error);
+              setNoNetwork(true);
             }
           };
         fetchData();
         fetchVerificationData();
         
-        // const intervalId = setInterval(() => {
-        //     fetchData();
-        //     postMissedContribution();
-        // }, 3 * 1000);
-        // return () => clearInterval(intervalId);
-    }, [userId, totalCampaigns, totalContributions, needsContributions]); 
+        const interval = setInterval(() => {
+            fetchData();
+            fetchVerificationData();
+          }, INTERVAL);
+        
+          // Clean up interval on component unmount
+          return () => clearInterval(interval);
+    }, [userId, totalCampaigns, totalContributions, needsContributions,Network]); 
+
+
     useEffect(() => {
         const postMissedContribution = async () => {
             try {
@@ -285,6 +278,9 @@ const handleContribute = (item) => {
                 <Text style={{color:'red'}}>YOU ARE NO BELONG TO SOCIAL WELLBEING YOU HAVE MISSED {missedContribution.length} CONTRIBUTIONS.</Text>
                 <Text>However in other to become a member you must Resubscribe and pay the penalty fee</Text>
                 <ButtonFull name='Re-Subscribe' onPress={handleResubcribe}/>
+                {Network && (
+                    <NoNetwork/>
+                )}
             </SafeAreaView>
           )
     }

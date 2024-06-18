@@ -41,7 +41,7 @@ const SponsorGrid = () => {
         }
 
       }catch(error){
-        console.error("Fetch Features error :",error);
+        //console.error("Fetch Features error :",error);
       }
     }
     fetchAllSponsorData();

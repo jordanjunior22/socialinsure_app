@@ -60,12 +60,12 @@ const FeatureGrid = () => {
       const fetchAllFeatureData = async () =>{
         try{
           if(userId){
-            const FeatureResponse = await axios.get(`${BACKEND_URL}/features`);
+            const FeatureResponse = await axios.get(`${BACKEND_URL}/features/${userId}`);
             setFeatures(FeatureResponse.data);
           }
   
         }catch(error){
-          console.error("Fetch Features error :",error);
+          //console.error("Fetch Features error :",error);
         }
       }
       
@@ -74,7 +74,7 @@ const FeatureGrid = () => {
           const response = await axios.get(`${BACKEND_URL}/verification/${userId}`);
           setVerification(response.data);
         } catch (error) {
-          console.error('Error fetching verification data:', error);
+          //console.error('Error fetching verification data:', error);
         }
       };
       fetchAllFeatureData();

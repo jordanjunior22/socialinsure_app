@@ -125,7 +125,7 @@ router.delete('/missedContributions/:userId', async (req, res) => {
 router.get('/missedContributions/:userId', async (req, res) => {
     try {
         const userId = req.params.userId;
-        console.log(userId);
+        //console.log(userId);
         const contributions = await MissedContribution.find({ user_id: userId });
         res.status(200).json(contributions); // Always return 200 status code
         
@@ -152,6 +152,12 @@ router.post('/missedContribution', async (req, res) => {
             });
             await missedContribution.save();
             res.status(201).json({ message: 'Missed contribution recorded successfully' });
+
+            const missedContributionsCount = await MissedContribution.countDocuments({ user_id });
+            if (missedContributionsCount > 2) {
+                // Update user's isWellbeingMember to false
+                await User.updateOne({ _id: user_id }, { isAWellBeingSubscriber: false });
+            }
         } else {
             // If a duplicate exists, return nothing (silently)
             res.status(204).end(); // 204 No Content

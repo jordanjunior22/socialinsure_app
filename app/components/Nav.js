@@ -17,7 +17,7 @@ const Nav = ({ onPress,Title = '', name='', iconURL=null }) => {
           const notificationResponse = await axios.get(`${BACKEND_URL}/notifications`);
           setnotificationsData(notificationResponse.data);
       }catch(error){
-        console.error("Notification Error : ",error);
+        //console.error("Notification Error : ",error);
       }
       }
     fetchData();

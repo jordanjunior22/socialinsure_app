@@ -3,7 +3,7 @@ import { View, Text, Image, ActivityIndicator } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { useState, useEffect } from 'react';
+import { useState, useEffect} from 'react'; 
 import Notification from './app/screens/Notification'
 import Campaigns from './app/screens/Campaigns';
 import Account from './app/screens/Account';
@@ -92,17 +92,55 @@ const MainTabNavigator = () => {
     </Tab.Navigator>
   );
 };
+import { useStripe } from '@stripe/stripe-react-native';
+import { Linking } from 'react-native';
+
 
 function App() {
+  const { handleURLCallback } = useStripe();
 
+  const handleDeepLink = React.useCallback(
+    async (url) => {
+      if (url) {
+        const stripeHandled = await handleURLCallback(url);
+        if (stripeHandled) {
+          // This was a Stripe URL - you can return or add extra handling here as you see fit
+        } else {
+          // This was NOT a Stripe URL – handle as you normally would
+        }
+      }
+    },
+    [handleURLCallback]
+  );
+
+  useEffect(() => {
+    const getUrlAsync = async () => {
+      const initialUrl = await Linking.getInitialURL();
+      handleDeepLink(initialUrl);
+    };
+
+    getUrlAsync();
+
+    const deepLinkListener = Linking.addEventListener(
+      'url',
+      (event) => {
+        handleDeepLink(event.url);
+      }
+    );
+
+    return () => deepLinkListener.remove();
+  }, [handleDeepLink]);
+
+  
   return (
     <StripeProvider
     publishableKey="pk_test_51PGPDcDOkNDlRQgbiw90SlKMERk2TBW2jV4aQoEs0rgDcwNL0f9wN58MHwxyK8dqqJQ73voME0QXox0WTj9gf7rf00sRumEJQN"
-    urlScheme="your-url-scheme" // required for 3D Secure and bank redirects
+    urlScheme="socialinsure" // required for 3D Secure and bank redirects
     merchantIdentifier="merchant.com.{{YOUR_APP_NAME}}" // required for Apple Pay
   >
-    <UserContextProvider>
+    
       <NavigationContainer>
+      <UserContextProvider>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
             <Stack.Screen name="Splash" component={Splash} />
             <Stack.Screen name="Intro" component={Intro} />
@@ -134,14 +172,14 @@ function App() {
             <Stack.Screen name="SignUp" component={SignUp} />
             <Stack.Screen name="PendingMembers" component={PendingMembers} />
             <Stack.Screen name="RemovedMembers" component={RemovedMembers} />
-
       </Stack.Navigator>
+      </UserContextProvider>
     </NavigationContainer>
-    </UserContextProvider>
+
     </StripeProvider>
   );
 }
 //RemovedMembers
-//<Stack.Screen name="RemovedMembers" component={RemovedMembers} />
+//<Stack.Screen name="NoNetwork" component={NoNetwork} />
 
 export default App;

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Image, ScrollView, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Image, ScrollView, SafeAreaView, ActivityIndicator } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 import Nav from '../components/Nav';
 import CampaignGrid from '../components/CampainGrid';
@@ -8,6 +8,7 @@ import { useNavigation} from '@react-navigation/native';
 import { UserContext } from '../../context/UserContext';
 import axios from 'axios';
 import { BACKEND_URL } from '../../config';
+import NoNetwork from '../screens/NoNetwork'
 
 const Campaigns = () => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -19,29 +20,38 @@ const Campaigns = () => {
   const {user} = useContext(UserContext)
   const userId = user?._id;
   const isAWellBeingSubscriber = user?.isAWellBeingSubscriber;
+  const [loading,setLoading] = useState(true);
+  const INTERVAL = 5000; // Interval in milliseconds (5 seconds)
+  const [Network,setNoNetwork] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         if (userId) {
-          const campaignResponse = await axios.get(`${BACKEND_URL}/campaign`);
+          const campaignResponse = await axios.get(`${BACKEND_URL}/campaign/${userId}`);
           setCampaign(campaignResponse.data);
 
           const contributionResponse = await axios.get(`${BACKEND_URL}/contributions/${userId}`);
           setContribution(contributionResponse.data);
 
-          const featureResponse = await axios.get(`${BACKEND_URL}/features`);
+          const featureResponse = await axios.get(`${BACKEND_URL}/features/${userId}`);
           setFeatures(featureResponse.data); 
           
+          setNoNetwork(false);
         }
       } catch (error) {
-        console.error("Fetch data error:", error);
+        //console.error("Fetch data error at campaign screen:", error);
+        setNoNetwork(true);
+      }finally{
+        setLoading(false);
       }
     };
 
+    const interval = setInterval(fetchData, INTERVAL);
     fetchData();
-  }, [userId, contribution.paymentId]);
-  console.log(contribution)
+    return () => clearInterval(interval);
+  }, [userId, contribution.paymentId,Network]);
+  //console.log(contribution)
 
   const calculateDaysLeft = (endAt) => {
     const endDate = new Date(endAt);
@@ -68,58 +78,7 @@ const Campaigns = () => {
     return { ...campaign, paymentId };
   })
 
-  console.log("campaogns",filteredCampaignWithPayment);
-  //console.log(filteredCampaign);
-  const campaignData = [
-    {
-      id: '1',
-      imageSource: require('../../assets/ted.jpg'),
-      title: 'Solidarity For John Deo',
-      goal: 10000,
-      raised: 4500,
-      daysLeft: 15,
-      description: 'Example description 1',
-      featureType: 'Social Well-being',
-      details: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-      ,date: '01/02/2023'
-    },
-    {
-      id: '2',
-      imageSource: require('../../assets/pah.jpg'),
-      title: 'Health Contribution',
-      goal: 10000,
-      raised: 8000,
-      daysLeft: 15,
-      description: 'Example description 2',
-      featureType: 'Social Health',
-      details: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-      ,date: '01/02/2023'
-    },
-    {
-      id: '3',
-      imageSource: require('../../assets/pah.jpg'),
-      title: 'Medical Assistance Fund',
-      goal: 20000,
-      raised: 10000,
-      daysLeft: 10,
-      description: 'Example description 3',
-      featureType: 'Medical Aid',
-      details: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-      ,date: '01/02/2023'
-    },
-    {
-      id: '4',
-      imageSource: require('../../assets/ted.jpg'),
-      title: 'Solidarity For Jane Doe',
-      goal: 15000,
-      raised: 6000,
-      daysLeft: 5,
-      description: 'Example description 4',
-      featureType: 'Social Well-being',
-      details: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-      ,date: '01/02/2023'
-    },
-  ];
+  //console.log("campaogns",filteredCampaignWithPayment);
 
   const handleContribute = (item) => {
     //console.log(' Contribute Button:', item._id);
@@ -161,10 +120,12 @@ const Campaigns = () => {
         campaign.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
         (!selectedFilter || campaign.featureType === selectedFilter)
     );
+// Filter out campaigns where the end date has passed
+const activeCampaigns = filteredCampaigns.filter(campaign => calculateDaysLeft(campaign.endAt) > 0);
 
   return (
-    <SafeAreaView style={styles.container}>
-    <ScrollView style={{padding: 10}}>
+<SafeAreaView style={styles.container}>
+    <ScrollView style={{ padding: 10 }}>
       <Nav Title="All Campaigns" />
 
       {/* Search Box with Custom Icon */}
@@ -197,38 +158,51 @@ const Campaigns = () => {
       </View>
 
       {/* Display Campaigns */}
-      <View>
-        {filteredCampaigns.map((campaign, index) => {
-          // Group campaigns in pairs for grid-style display
-          if (index % 2 === 0) {
-            const item1 = filteredCampaigns[index];
-            const item2 = filteredCampaigns[index + 1]; // Ensure there's a second item
+      {loading ? (
+        // Render loading indicator if loading is true
+        <View style={styles.overlay}>
+          <ActivityIndicator size="large" color="black" />
+        </View>
+      ) : activeCampaigns.length === 0 ? (
+        // Render message when there are no active campaigns
+        <Text>No campaigns available</Text>
+      ) : (
+        // Render active campaigns
+        <View>
+          {activeCampaigns.map((campaign, index) => {
+            // Group campaigns in pairs for grid-style display
+            if (index % 2 === 0) {
+              const item1 = activeCampaigns[index];
+              const item2 = activeCampaigns[index + 1]; // Ensure there's a second item
 
-            return (
-              <CampaignGrid
-                key={index}
-                item1={item1}
-                item2={item2}
-                onPress1={() => handleContribute(item1)}
-                onPress2={() => handleContribute(item2)}
-                gridStyles={styles.FeatureGridStyle}
-                handleCampaignPress1={() =>campaignPress(item1)}
-                handleCampaignPress2={() =>campaignPress(item2)}
-                subReq1={item1?.subReq}
-                subReq2={item2?.subReq}
-                isAWellBeingSubscriber={isAWellBeingSubscriber}
-                paymentId1={item1?.paymentId}
-                paymentId2={item2?.paymentId}
-              />
-            );
-          }
-          return null; // If there is no second item, skip
-        })}
-      </View>
-
+              return (
+                <CampaignGrid
+                  key={index}
+                  item1={item1}
+                  item2={item2}
+                  onPress1={() => handleContribute(item1)}
+                  onPress2={() => handleContribute(item2)}
+                  gridStyles={styles.FeatureGridStyle}
+                  handleCampaignPress1={() => campaignPress(item1)}
+                  handleCampaignPress2={() => campaignPress(item2)}
+                  subReq1={item1?.subReq}
+                  subReq2={item2?.subReq}
+                  isAWellBeingSubscriber={isAWellBeingSubscriber}
+                  paymentId1={item1?.paymentId}
+                  paymentId2={item2?.paymentId}
+                />
+              );
+            }
+            return null; // If there is no second item, skip
+          })}
+        </View>
+      )}
       <BottomMargin />
     </ScrollView>
-    </SafeAreaView>
+    {Network && (
+        <NoNetwork/>
+      )}
+  </SafeAreaView>
   );
 };
 

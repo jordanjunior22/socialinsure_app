@@ -63,7 +63,7 @@ const Penalty = () => {
       const fetchData = async () => {
       if(userId){
         try{
-          const campaignResponse = await axios.get(`${BACKEND_URL}/campaign`);
+          const campaignResponse = await axios.get(`${BACKEND_URL}/campaign/${userId}`);
           setCampaign(campaignResponse.data);
 
           const MissedContributionResponse = await axios.get(`${BACKEND_URL}/missedContributions/${userId}`)

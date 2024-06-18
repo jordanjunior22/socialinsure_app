@@ -32,6 +32,16 @@ cloudinary.config({
   api_secret: 'ajWs2GzlZX_JNWTlYVXdE1dM3N4' 
 });
 
+router.get('/well-being-subscribers', async (req, res) => {
+  try {
+    const count = await User.countDocuments({ isAWellBeingSubscriber: true });
+    res.json({ totalWellBeingSubscribers: count });
+  } catch (error) {
+    console.error("Error counting well-being subscribers:", error);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
 router.post('/register', async (req, res) => {
   const {
     firstName,
