@@ -38,4 +38,4 @@ const contributionSchema = new Schema({
   },
 });
 
-module.exports = models.Contribution || model("Contribution", contributionSchema);
+module.exports = models?.Contribution || model("Contribution", contributionSchema);

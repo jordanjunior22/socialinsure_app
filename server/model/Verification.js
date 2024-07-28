@@ -39,5 +39,5 @@ const verificationSchema = new Schema({
   });
   
   // Export the Verification model using CommonJS
-  module.exports = models.Verification || model("Verification", verificationSchema);
+  module.exports = models?.Verification || model("Verification", verificationSchema);
   

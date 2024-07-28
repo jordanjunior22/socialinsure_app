@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const { model, Schema } = mongoose;
+const { models,model, Schema } = mongoose;
 
 const missedContributionSchema = new Schema({
   user_id: {
@@ -18,4 +18,4 @@ const missedContributionSchema = new Schema({
   },
 });
 
-module.exports = model("MissedContribution", missedContributionSchema);
+module.exports = models?.MissedContribution || model("MissedContribution", missedContributionSchema);

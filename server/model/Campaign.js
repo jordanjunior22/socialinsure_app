@@ -49,4 +49,4 @@ const CampaignSchema = new Schema({
   },
 });
 
-module.exports = models.Campaign || model("Campaign", CampaignSchema);
+module.exports = models?.Campaign || model("Campaign", CampaignSchema);

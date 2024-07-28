@@ -44,4 +44,4 @@ const featureSchema = new Schema({
   }
 });
 
-module.exports = models.Features || model("Features", featureSchema);
+module.exports = models?.Features || model("Features", featureSchema);

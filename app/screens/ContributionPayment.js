@@ -108,7 +108,8 @@ const ContributionPayment = () => {
         allowsDelayedPaymentMethods: true,
         defaultBillingDetails: {
           name: 'Jane Doe',
-        }
+        },
+        returnURL: 'socialinsure://stripe-redirect',
       });
 
       

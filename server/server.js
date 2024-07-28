@@ -36,8 +36,6 @@ app.use('/api', NotificationRoutes)
 app.use('/api', MissedContributionRoutes)
 app.use('/api', PaymentRoutes)
 
-
-
 // Start the server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

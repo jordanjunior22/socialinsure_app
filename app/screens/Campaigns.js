@@ -118,7 +118,7 @@ const Campaigns = () => {
     .filter(
       (campaign) =>
         campaign.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
-        (!selectedFilter || campaign.featureType === selectedFilter)
+        (selectedFilter === null || campaign.featureType === selectedFilter)
     );
 // Filter out campaigns where the end date has passed
 const activeCampaigns = filteredCampaigns.filter(campaign => calculateDaysLeft(campaign.endAt) > 0);

@@ -50,4 +50,4 @@ const userSchema = new Schema({
 });
 
 // Export the User model using CommonJS
-module.exports = models.User || model("User", userSchema);
+module.exports = models?.User || model("User", userSchema);

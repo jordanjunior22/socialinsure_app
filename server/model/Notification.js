@@ -12,4 +12,4 @@ const notificationSchema = new Schema({
   },
 });
 
-module.exports = models.Notification || model("Notification", notificationSchema);
+module.exports = models?.Notification || model("Notification", notificationSchema);

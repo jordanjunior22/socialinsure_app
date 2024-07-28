@@ -24,4 +24,4 @@ const sponsorSchema = new Schema({
     },
   });
 
-module.exports = models.Sponsor || model("Sponsor", sponsorSchema);
+module.exports = models?.Sponsor || model("Sponsor", sponsorSchema);
